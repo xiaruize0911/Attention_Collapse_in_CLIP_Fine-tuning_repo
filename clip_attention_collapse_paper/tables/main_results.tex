@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\caption{Main experiment results. Positive $\Delta$Entropy and $\Delta$ERF indicate broader attention support relative to the corresponding pretrained baseline; positive $\Delta$Gini indicates more concentrated attention.}
+\label{tab:main-results}
+\small
+\begin{tabular}{llrrrrrrr}
+\toprule
+Method & Dataset & Task Acc. (\%) & $\Delta$Entropy (\%) & $\Delta$ERF (\%) & $\Delta$Gini (\%) & $\Delta$HeadDiv (\%) & CIFAR-100 ZS (\%) & Flowers102 ZS (\%) \\
+\midrule
+Full FT & EuroSAT & 99.30 & -0.14 & -1.73 & -3.54 & -0.62 & 12.71 & 1.37 \\
+Full FT & Oxford-IIIT Pets & 90.79 & -1.82 & -4.23 & +10.54 & -35.91 & 5.89 & 0.88 \\
+LoRA r=4 & EuroSAT & 98.67 & +0.98 & +1.09 & -9.94 & +3.86 & 60.22 & 0.20 \\
+LoRA r=8 & EuroSAT & 98.96 & +0.58 & +0.37 & -6.48 & +7.17 & 60.22 & 0.20 \\
+LoRA r=16 & EuroSAT & 98.93 & +0.44 & +0.03 & -5.43 & +5.14 & 60.22 & 0.20 \\
+LoRA r=8 & Oxford-IIIT Pets & 92.07 & -0.73 & -2.64 & +3.20 & -15.00 & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,231 @@
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[margin=0.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xcolor}
+\usepackage{caption}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={Attention Structural Change in Fine-Tuned CLIP},
+}
+
+\title{Attention Structural Change in Fine-Tuned CLIP:\\A Comparative Study of Full Fine-Tuning, LoRA, and Regularization}
+\author{Anonymous Author}
+\date{March 18, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Large-scale vision--language models are frequently adapted to downstream visual classification tasks, yet the extent to which such adaptation alters the internal attention structure of the visual encoder remains insufficiently characterized. This study investigates attention structural change in CLIP ViT-B/32 under full fine-tuning, low-rank adaptation (LoRA), and explicit regularization. Using 21 stored experiment configurations spanning EuroSAT and Oxford-IIIT Pets, we measure CLS-to-patch attention entropy, effective receptive field (ERF@0.95), Gini concentration, and head diversity, and we supplement these metrics with attention rollout, patch-to-patch entropy, layerwise centered kernel alignment (CKA), and evaluation-subset sensitivity checks. The results show that full fine-tuning yields mild entropy contraction on EuroSAT and stronger contraction on Oxford-IIIT Pets, whereas the EuroSAT LoRA configurations broaden attention support relative to the pretrained baseline in the analyzed run set. Exact permutation tests confirm that learning rate is a strong control variable for structural change ($r=-0.893$, $p=0.0333$; Spearman $\rho=-1.0$, $p=0.0167$ on five learning rates). After Holm--Bonferroni correction, however, no regularizer remains statistically significant in the current per-layer family of comparisons. Adapter-aware zero-shot reevaluation further shows that LoRA does not perfectly preserve transfer, but degrades substantially less than full fine-tuning on CIFAR-100 (47.28\% for LoRA r=8 versus 9.43\% for full fine-tuning, with a pretrained baseline of 60.22\%). Because the current study still lacks completed multi-seed replications for the main training configurations, run-level inferential claims are kept conservative and per-layer tests are treated as exploratory. Overall, the evidence supports attention structure as a useful descriptive lens on how downstream optimization reshapes CLIP.
+\end{abstract}
+
+\section{Introduction}
+Contrastive vision--language pretraining has made CLIP a widely used foundation model for visual recognition, retrieval, and transfer learning \citep{radford2021learning}. In practical deployment, however, downstream adaptation often improves in-domain accuracy while degrading out-of-domain behavior. Prior work has attributed part of this degradation to distortion of pretrained features under fine-tuning \citep{kumar2022finetuning,wortsman2022robust}. What remains less clear is how the internal attention structure of the CLIP visual encoder changes during this process.
+
+This question matters for two reasons. First, self-attention constitutes the primary mechanism by which a Vision Transformer distributes information across spatial tokens \citep{dosovitskiy2021image}. Second, changes in attention concentration may provide a measurable proxy for the extent to which adaptation preserves or overwrites pretrained information-routing patterns. In this paper, we therefore study \emph{attention structural change} in CLIP fine-tuning, with particular emphasis on the contrast between full fine-tuning and low-rank adaptation.
+
+We treat attention as a structural descriptor rather than a causal explanation of model predictions. This framing is important given the ongoing debate regarding the interpretability of attention maps \citep{jain2019attention,wiegreffe2019attention}. Our goal is not to claim that attention weights directly explain model behavior, but to determine whether measurable changes in attention geometry systematically accompany different adaptation strategies.
+
+The study addresses four questions: (i) whether full fine-tuning systematically contracts attention support relative to the pretrained baseline, (ii) whether LoRA preserves attention structure more effectively than full fine-tuning, (iii) whether learning rate is a major determinant of structural change, and (iv) whether explicit regularization can mitigate such change without substantial loss of in-domain accuracy. The primary contributions are as follows:
+\begin{itemize}
+    \item a comparative empirical analysis of attention structural change in CLIP under full fine-tuning, LoRA, and regularized full fine-tuning;
+    \item a unified metric suite based on entropy, ERF@0.95, Gini concentration, and head diversity;
+    \item a statistically grounded evaluation of regime differences and learning-rate sensitivity; and
+    \item a conservative assessment of zero-shot transfer behavior that explicitly accounts for the current evaluation-path limitation for LoRA checkpoints.
+\end{itemize}
+
+\section{Related Work}
+CLIP \citep{radford2021learning} established large-scale vision--language pretraining as a strong basis for transfer. The visual backbone used in this work follows the Vision Transformer formulation of \citet{dosovitskiy2021image}, in which global token interactions are mediated by self-attention. Because this architecture exposes explicit layer- and head-wise attention distributions, it is well suited to a structural analysis of adaptation dynamics.
+
+Parameter-efficient fine-tuning methods, particularly LoRA \citep{hu2022lora}, aim to reduce the degrees of freedom of downstream adaptation by restricting updates to low-rank subspaces. Although these methods are often studied in terms of parameter count or downstream accuracy, they also offer a natural setting in which to test whether constraining the update space preserves pretrained attention structure.
+
+Our analysis is also related to work on transformer information flow. \citet{abnar2020quantifying} proposed attention rollout as a means of aggregating attention across layers, highlighting that individual attention matrices can be meaningfully studied as part of larger routing behavior. More broadly, prior evidence that fine-tuning can distort pretrained features and reduce out-of-distribution generalization \citep{kumar2022finetuning,wortsman2022robust} motivates the present study of whether attention concentration provides a useful structural correlate of such distortion.
+
+Finally, attention analysis must be interpreted carefully. \citet{jain2019attention} argued that attention is not, in general, a sufficient explanation of model decisions, whereas \citet{wiegreffe2019attention} emphasized that attention can still support informative analyses under appropriate framing. We follow the latter cautionary position and use attention metrics as descriptive measurements of internal structure rather than causal explanations.
+
+\section{Method}
+\subsection{Problem Formulation}
+Let $f_0$ denote the pretrained CLIP visual encoder and $f_\theta$ denote the encoder after downstream adaptation. For an input image, each transformer layer produces a set of multi-head self-attention distributions over the token sequence. We study the CLS-to-patch attention vectors because they provide a compact summary of how the global image representation allocates mass across spatial tokens. The central objective is to quantify how these distributions change as a function of adaptation regime.
+
+\subsection{Structural Metrics}
+The analysis operates on normalized CLS-to-patch attention distributions from the CLIP ViT-B/32 visual encoder. For a normalized attention vector $a \in \Delta^{48}$ over the 49 patch tokens, we use four structural metrics.
+
+\paragraph{Attention entropy.}
+We measure concentration through
+\begin{equation}
+H(a) = -\sum_{j=1}^{49} a_j \ln a_j.
+\end{equation}
+The primary training and evaluation pipeline uses the natural logarithm, so entropy values are reported in nats unless a table explicitly states otherwise. Lower entropy indicates more peaked attention.
+
+\paragraph{ERF@0.95.}
+Let $a_{(1)} \geq a_{(2)} \geq \dots \geq a_{(49)}$ be the sorted attention weights. The effective receptive field is
+\begin{equation}
+\mathrm{ERF}_{0.95}(a) = \frac{k^*}{49}, \quad k^* = \min\Big\{k : \sum_{j=1}^{k} a_{(j)} \geq 0.95\Big\}.
+\end{equation}
+Smaller values indicate that fewer patches carry most of the mass.
+
+\paragraph{Gini concentration.}
+We compute the standard Gini coefficient over the attention weights. Higher values correspond to stronger concentration and therefore stronger structural collapse.
+
+\paragraph{Head diversity.}
+For each layer, head diversity is defined as one minus the mean pairwise cosine similarity between head-level CLS-to-patch attention patterns. Lower head diversity indicates increasing agreement among heads.
+
+Collectively, these metrics capture complementary aspects of structural change: entropy and ERF reflect the spatial spread of attention, Gini reflects concentration inequality, and head diversity reflects inter-head specialization.
+
+\subsection{Additional Validation Metrics}
+To address the concern that CLS-to-patch attention alone may provide too narrow a view of structural change, we add four auxiliary analyses. First, we compute attention rollout \citep{abnar2020quantifying} to obtain a multilayer CLS-to-patch routing summary. Second, we compute patch-to-patch row entropy by averaging the entropy of patch-token attention rows after excluding the CLS token. Third, we estimate layerwise representational drift by computing linear CKA between pretrained and adapted CLS representations on a fixed evaluation subset. Fourth, we test subset sensitivity by recomputing the main entropy statistics across five balanced evaluation subsets to quantify dependence on image selection.
+
+\subsection{Regularization Objective}
+The repository uses \emph{attention preservation regularization} (APR) as an internal name for a KL-divergence penalty between adapted and pretrained CLS-to-patch attention distributions. For a selected set of layers $L$, the objective is
+\begin{equation}
+\mathcal{L}_{\mathrm{APR}} = \lambda \cdot \frac{1}{|L|} \sum_{\ell \in L}
+\mathrm{KL}\big(A_{\theta}^{(\ell)} \;\|\; A_{0}^{(\ell)}\big),
+\end{equation}
+where $A_{\theta}^{(\ell)}$ and $A_{0}^{(\ell)}$ denote the adapted and pretrained CLS-to-patch attention distributions, respectively. In this paper, APR is treated as a repository-specific regularizer rather than a claimed prior method.
+
+\subsection{Hypotheses}
+The study tests the following hypotheses in the analyzed experiment set: (i) full fine-tuning tends to contract attention support relative to the pretrained baseline, (ii) LoRA preserves attention structure more effectively than full fine-tuning, (iii) larger learning rates intensify structural change, and (iv) explicit regularization can mitigate such change while retaining high in-domain accuracy.
+
+\section{Experimental Setup}
+The experiments cover 21 stored runs based on \texttt{openai/clip-vit-base-patch32}. The main task datasets are EuroSAT \citep{helber2019eurosat} and Oxford-IIIT Pets \citep{parkhi2012cats}. The principal comparisons involve full fine-tuning and LoRA on both datasets, complemented by a EuroSAT learning-rate sweep, frozen-layer ablations, and regularization experiments. Zero-shot evaluation is reported on CIFAR-100 \citep{krizhevsky2009learning} and, as a supplemental benchmark, Flowers102 \citep{nilsback2008automated}.
+
+For full fine-tuning, the repository trains the CLIP visual encoder and visual projection with AdamW, cosine decay with warmup, batch size 64, and default learning rate $10^{-5}$. The text encoder remains frozen. For LoRA, adapters are applied to the vision encoder attention projections, with the default configuration using $r=8$, $\alpha=16$, dropout $0.05$, and target modules \texttt{q\_proj} and \texttt{v\_proj}; the classifier head and visual projection remain trainable. The ablation study additionally includes a \texttt{qkvo} variant targeting \texttt{q\_proj}, \texttt{k\_proj}, \texttt{v\_proj}, and \texttt{out\_proj}. Unless otherwise stated, EuroSAT runs use 20 epochs and Oxford-IIIT Pets runs use 30 epochs in the stored histories.
+
+Attention metrics are computed on balanced fixed evaluation subsets of 200 images. Head diversity is computed by averaging CLS-to-patch attention over the evaluation batch for each head within a layer and then taking one minus the mean pairwise cosine similarity across the 12 heads. All reported tables are generated directly from the JSON outputs associated with the run histories and the follow-up analysis file \texttt{outputs/metrics/followup\_analysis.json}.
+
+Because per-layer measurements within a single run are not independent, per-layer $t$-tests are treated as exploratory rather than confirmatory. For the five-point learning-rate analysis, we therefore replace approximate small-sample $p$-values with exact permutation tests. For the family of regularizer comparisons, we report Holm--Bonferroni-adjusted $p$-values. The current evidence nonetheless remains limited by the absence of completed multi-seed replications for the main training configurations.
+
+\section{Results}
+\subsection{Overall Comparison of Adaptation Regimes}
+Table~\ref{tab:main-results} summarizes the central comparisons. Full FT reaches the highest EuroSAT validation accuracy (99.30\%) but slightly reduces average attention entropy ($-0.14\%$) and ERF ($-1.73\%$) relative to the pretrained baseline. On Pets, Full FT produces a larger entropy decrease ($-1.82\%$), a larger ERF contraction ($-4.23\%$), and a substantial Gini increase ($+10.54\%$), indicating stronger concentration. By contrast, EuroSAT LoRA runs consistently increase entropy and reduce Gini relative to the baseline, while keeping task accuracy above 98.6\%.
+
+\input{tables/main_results.tex}
+
+Figure~\ref{fig:baseline-structure} shows that the pretrained model already exhibits heterogeneous attention structure across depth, so the appropriate question is not whether fine-tuning creates structure from nothing, but whether it pushes that structure toward greater concentration. Figure~\ref{fig:ft-vs-lora} then shows that Full FT and LoRA trace visibly different trajectories in entropy, ERF, Gini, and head diversity.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig2_baseline_structure.png}
+    \caption{Baseline attention structure of pretrained CLIP ViT-B/32 across layers. The model is already depth-heterogeneous before any downstream adaptation.}
+    \label{fig:baseline-structure}
+\end{figure}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/fig5_fullft_vs_lora.png}
+    \caption{EuroSAT Full FT versus LoRA. LoRA increases entropy and ERF relative to baseline in the stored EuroSAT runs, while Full FT remains near-neutral to mildly contractive.}
+    \label{fig:ft-vs-lora}
+\end{figure*}
+
+\subsection{Statistical Evidence and Layerwise Patterns}
+Figure~\ref{fig:layer-heatmap} shows that the direction and magnitude of per-layer entropy change depend on both dataset and adaptation regime. However, because layers within a single trained model are not statistically independent, we do not treat these per-layer comparisons as formal independent-sample evidence. Instead, we interpret the layerwise patterns descriptively and reserve inferential claims for analyses whose sampling assumptions are more defensible.
+
+\input{tables/stat_tests.tex}
+
+The clearest corrected inferential result concerns learning rate. When the five EuroSAT full fine-tuning learning rates are analyzed with exact permutation tests, the negative association between learning rate and $\Delta$entropy remains significant (Pearson $p=0.0333$; Spearman $p=0.0167$). By contrast, the regularization family no longer contains a configuration that survives Holm--Bonferroni correction, including entropy floor with $\lambda=0.1$.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig10_per_layer_delta_heatmap.png}
+    \caption{Per-layer entropy change across selected experiments. The sign and magnitude of change depend on training regime and dataset.}
+    \label{fig:layer-heatmap}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig11_statistical_summary.png}
+    \caption{Summary of exploratory per-layer comparisons and corrected statistical analyses, including the learning-rate trend and layer-group summaries.}
+    \label{fig:stats-summary}
+\end{figure}
+
+\subsection{Learning Rate as the Dominant Control Knob}
+Among the manipulated hyperparameters, learning rate is the clearest driver of structural change. Table~\ref{tab:lr-sweep} shows a monotonic trend: entropy increases at $10^{-6}$, is nearly neutral at $10^{-5}$, and decreases sharply at $5\times 10^{-5}$ and $10^{-4}$. Under exact permutation testing on the five learning-rate settings, the Pearson correlation between $\log_{10}(\mathrm{LR})$ and $\Delta$entropy is $-0.893$ ($p=0.0333$), while the Spearman coefficient is $-1.0$ ($p=0.0167$).
+
+\input{tables/lr_sweep.tex}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig6_lr_sweep.png}
+    \caption{Learning-rate sweep for EuroSAT Full FT. Larger learning rates produce stronger entropy decreases and stronger ERF contraction.}
+    \label{fig:lr-sweep}
+\end{figure}
+
+This result matters because it reframes collapse as an optimization-scale phenomenon, not merely a binary property of ``full fine-tuning'' versus ``parameter-efficient tuning.'' In the revised analysis, the effect remains when the small-sample correlation test is recomputed exactly rather than through asymptotic approximations.
+
+\subsection{Regularization and Training Dynamics}
+Table~\ref{tab:regularization} summarizes the regularization study. Both APR and entropy-floor regularization shift entropy upward relative to the no-regularizer baseline, and these settings preserve high task accuracy. However, after Holm--Bonferroni correction across the regularizer family, no individual configuration remains statistically significant in the current per-layer comparison framework. The regularization results should therefore be interpreted as promising but preliminary.
+
+\input{tables/regularization.tex}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig8_regularization.png}
+    \caption{Regularization results. Both APR and entropy floor preserve broader attention structure than the no-regularizer baseline in descriptive terms, but none of the tested settings survives Holm--Bonferroni correction across the regularizer family.}
+    \label{fig:regularization}
+\end{figure}
+
+Figure~\ref{fig:dynamics} complements the final-state tables by showing training trajectories and collapse onset markers. The main qualitative lesson is that structural drift appears early when the learning rate is high, whereas LoRA traces a flatter path. Again, this is descriptive evidence rather than a mechanistic proof.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/fig12_training_dynamics.png}
+    \caption{Training dynamics and collapse-onset analysis. High-learning-rate Full FT exhibits the earliest and strongest entropy decrease.}
+    \label{fig:dynamics}
+\end{figure*}
+
+\subsection{Auxiliary Structural Validation}
+To test whether the main conclusions are specific to CLS-to-patch entropy, Table~\ref{tab:auxiliary-validation} reports the follow-up rollout, patch-to-patch, representational-similarity, and subset-sensitivity analyses for the clearest EuroSAT comparison. LoRA r=8 exhibits higher rollout entropy, larger rollout ERF@0.95, lower rollout Gini, and higher patch-to-patch entropy than Full FT, indicating that the broader-support pattern is not confined to the original CLS-to-patch metric. LoRA also yields higher mean layerwise CKA to the pretrained model (0.815 versus 0.694), suggesting less representational drift. Finally, the coefficient of variation of the entropy metric across five balanced evaluation subsets is below 0.001 for both methods, indicating that the reported structural metrics are not highly sensitive to the choice of evaluation images.
+
+\input{tables/auxiliary_validation.tex}
+
+\subsection{Zero-Shot Transfer: Evidence and Caveats}
+The zero-shot table is included for completeness, but its interpretation requires care. In the original repository analysis, LoRA appeared to preserve zero-shot transfer almost perfectly; however, that conclusion was confounded by an evaluation path that did not activate LoRA adapters at inference. We therefore re-evaluate the EuroSAT checkpoints with an adapter-aware image-encoding path.
+
+\input{tables/zero_shot.tex}
+
+The revised results materially change the interpretation. LoRA does not preserve the full pretrained CIFAR-100 accuracy of 60.22\%, but it degrades far less than full fine-tuning: LoRA r=8 reaches 47.28\%, compared with 9.43\% for full fine-tuning. LoRA therefore remains structurally and functionally more conservative than Full FT in this setting, but the earlier stronger claim of near-perfect transfer preservation is not supported once adapters are evaluated correctly.
+
+The Flowers102 numbers are also uniformly low (all at or below 1.37\%), suggesting that the current prompt or label-mapping setup is not a reliable primary benchmark for this paper. For that reason, we treat Flowers102 as supplemental rather than central evidence.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig15_zeroshot_extended.png}
+    \caption{Extended zero-shot evaluation under the repository's current protocol. CIFAR-100 is the more interpretable benchmark here; the Flowers102 values are uniformly too low to support strong conclusions.}
+    \label{fig:zeroshot}
+\end{figure}
+
+\section{Discussion}\label{sec:discussion}
+The results suggest that attention structural change is neither negligible nor uniform across adaptation strategies. In the current run set, full fine-tuning tends to move the model toward narrower attention support, particularly on Oxford-IIIT Pets, whereas EuroSAT LoRA maintains or slightly broadens attention support relative to the pretrained baseline. The auxiliary rollout and patch-to-patch analyses reinforce this interpretation, and the CKA results indicate that LoRA remains closer to the pretrained representation geometry than Full FT.
+
+The learning-rate sweep further indicates that the magnitude of optimization steps is a key determinant of structural change. This observation is noteworthy because it implies that attention contraction is not simply an intrinsic property of full fine-tuning; rather, it is strongly modulated by training scale. From a practical perspective, this suggests that structurally conservative adaptation may be achievable not only through parameter-efficient methods such as LoRA, but also through careful optimization control.
+
+The regularization results provide only cautious support for this interpretation. Although APR and entropy-floor regularization shift the model toward broader attention distributions, the current per-layer evidence does not survive a family-wise multiple-comparison correction. These results therefore motivate, but do not yet establish, regularization as a reliable solution.
+
+\subsection{Limitations}
+Three limitations deserve explicit mention.
+
+First, the paper remains limited to a single CLIP backbone, ViT-B/32, and to a relatively small set of downstream tasks. Second, the main training configurations still lack completed multi-seed replications, so run-level inferential claims must remain conservative and the per-layer analyses should be interpreted as descriptive rather than confirmatory. Third, the out-of-domain transfer story still relies mainly on CIFAR-100, because the Flowers102 benchmark is too weak under the present prompt and label setup to bear strong interpretive weight.
+
+Despite these limitations, the study remains reproducible at the artifact level: the figures and tables are generated directly from the stored experimental outputs, and the manuscript's quantitative claims are constrained to those verified artifacts.
+
+\section{Conclusion}
+This study examined attention structural change in fine-tuned CLIP through a comparative analysis of full fine-tuning, LoRA, and regularized adaptation. The revised analysis strengthens the paper in three ways: it replaces fragile small-sample statistics with exact tests where appropriate, corrects the LoRA zero-shot evaluation to use an adapter-aware path, and adds rollout, patch-to-patch, CKA, and subset-sensitivity analyses to triangulate the main findings. Under this more conservative analysis, the central qualitative conclusion remains intact: adaptation regime and learning rate materially affect attention structure, and LoRA is substantially less disruptive than full fine-tuning on the clearest EuroSAT comparison. At the same time, the paper now draws a sharper boundary around what has not yet been established, particularly with respect to run-level inference and the generality of the findings across seeds, backbones, and transfer benchmarks.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,742 @@
+{
+  "source_repo": "/workspace/Attention_Collapse_in_CLIP_Fine-tuning_repo",
+  "metrics_dir": "/workspace/Attention_Collapse_in_CLIP_Fine-tuning_repo/outputs/metrics",
+  "figures_dir": "/workspace/Attention_Collapse_in_CLIP_Fine-tuning_repo/outputs/figures",
+  "copied_figures": [
+    "fig2_baseline_structure.png",
+    "fig5_fullft_vs_lora.png",
+    "fig6_lr_sweep.png",
+    "fig8_regularization.png",
+    "fig10_per_layer_delta_heatmap.png",
+    "fig11_statistical_summary.png",
+    "fig12_training_dynamics.png",
+    "fig15_zeroshot_extended.png"
+  ],
+  "main_results": [
+    {
+      "experiment": "E2_full_ft_eurosat",
+      "method": "Full FT",
+      "dataset": "EuroSAT",
+      "best_val_acc": 0.9929629629629629,
+      "delta_entropy": -0.14450894024004782,
+      "delta_erf": -1.728586041917684,
+      "delta_gini": -3.5370114978408465,
+      "delta_head_div": -0.6174143842467098,
+      "zs_cifar100": 0.1271,
+      "zs_flowers102": 0.013725490196078431
+    },
+    {
+      "experiment": "E3_full_ft_pets",
+      "method": "Full FT",
+      "dataset": "Oxford-IIIT Pets",
+      "best_val_acc": 0.9078768056691197,
+      "delta_entropy": -1.8240669636514057,
+      "delta_erf": -4.225849104105841,
+      "delta_gini": 10.535948980078874,
+      "delta_head_div": -35.90942601923502,
+      "zs_cifar100": 0.0589,
+      "zs_flowers102": 0.008823529411764706
+    },
+    {
+      "experiment": "E4_lora_r4_eurosat",
+      "method": "LoRA r=4",
+      "dataset": "EuroSAT",
+      "best_val_acc": 0.9866666666666667,
+      "delta_entropy": 0.9823138568897614,
+      "delta_erf": 1.0924340760676206,
+      "delta_gini": -9.939459979158563,
+      "delta_head_div": 3.8577859882279983,
+      "zs_cifar100": 0.6022,
+      "zs_flowers102": 0.00196078431372549
+    },
+    {
+      "experiment": "E5_lora_r8_eurosat",
+      "method": "LoRA r=8",
+      "dataset": "EuroSAT",
+      "best_val_acc": 0.9896296296296296,
+      "delta_entropy": 0.5834151299766761,
+      "delta_erf": 0.37316806581366885,
+      "delta_gini": -6.480233662697881,
+      "delta_head_div": 7.174390023723627,
+      "zs_cifar100": 0.6022,
+      "zs_flowers102": 0.00196078431372549
+    },
+    {
+      "experiment": "E6_lora_r16_eurosat",
+      "method": "LoRA r=16",
+      "dataset": "EuroSAT",
+      "best_val_acc": 0.9892592592592593,
+      "delta_entropy": 0.44341613620114434,
+      "delta_erf": 0.025381992424847715,
+      "delta_gini": -5.4257904163229895,
+      "delta_head_div": 5.142925600679881,
+      "zs_cifar100": 0.6022,
+      "zs_flowers102": 0.00196078431372549
+    },
+    {
+      "experiment": "E7_lora_r8_pets",
+      "method": "LoRA r=8",
+      "dataset": "Oxford-IIIT Pets",
+      "best_val_acc": 0.9206868356500408,
+      "delta_entropy": -0.7337427065945284,
+      "delta_erf": -2.636427920746806,
+      "delta_gini": 3.2033367674605064,
+      "delta_head_div": -15.000969323481625,
+      "zs_cifar100": null,
+      "zs_flowers102": null
+    }
+  ],
+  "lr_sweep": [
+    {
+      "lr": "1e-6",
+      "best_val_acc": 0.9885185185185185,
+      "delta_entropy": 1.4489852353817387,
+      "delta_erf": 1.939487885371607,
+      "delta_gini": -16.60294136011255,
+      "zs_cifar100": null,
+      "zs_flowers102": null
+    },
+    {
+      "lr": "5e-6",
+      "best_val_acc": 0.9911111111111112,
+      "delta_entropy": 0.3277514180946893,
+      "delta_erf": -0.49156547790235394,
+      "delta_gini": -6.677698911681178,
+      "zs_cifar100": null,
+      "zs_flowers102": null
+    },
+    {
+      "lr": "1e-5",
+      "best_val_acc": 0.9929629629629629,
+      "delta_entropy": -0.14450894024004782,
+      "delta_erf": -1.728586041917684,
+      "delta_gini": -3.5370114978408465,
+      "zs_cifar100": 0.1271,
+      "zs_flowers102": 0.013725490196078431
+    },
+    {
+      "lr": "5e-5",
+      "best_val_acc": 0.9888888888888889,
+      "delta_entropy": -4.188562822928515,
+      "delta_erf": -8.48499262003238,
+      "delta_gini": 23.435817087349108,
+      "zs_cifar100": 0.0207,
+      "zs_flowers102": 0.008823529411764706
+    },
+    {
+      "lr": "1e-4",
+      "best_val_acc": 0.9785185185185186,
+      "delta_entropy": -10.404284430492057,
+      "delta_erf": -18.01591053677091,
+      "delta_gini": 56.94003106759011,
+      "zs_cifar100": 0.0186,
+      "zs_flowers102": 0.00980392156862745
+    }
+  ],
+  "regularization": [
+    {
+      "label": "No regularizer",
+      "best_val_acc": 0.9929629629629629,
+      "delta_entropy": -0.14450894024004782,
+      "delta_erf": -1.728586041917684,
+      "delta_gini": -3.5370114978408465
+    },
+    {
+      "label": "APR $\\lambda=0.01$",
+      "best_val_acc": 0.9925925925925926,
+      "delta_entropy": 0.8606146588720578,
+      "delta_erf": 1.4961909331217038,
+      "delta_gini": -8.829026887180015
+    },
+    {
+      "label": "APR $\\lambda=0.1$",
+      "best_val_acc": 0.9918518518518519,
+      "delta_entropy": 0.5619801111106689,
+      "delta_erf": 1.0269268735250585,
+      "delta_gini": -5.36341057520011
+    },
+    {
+      "label": "APR $\\lambda=1.0$",
+      "best_val_acc": 0.9896296296296296,
+      "delta_entropy": 0.08703750482824316,
+      "delta_erf": 0.15551749105461088,
+      "delta_gini": -0.747920120367589
+    },
+    {
+      "label": "Entropy floor $\\lambda=0.01$",
+      "best_val_acc": 0.9911111111111112,
+      "delta_entropy": 0.5809095870380163,
+      "delta_erf": -0.09191594331175909,
+      "delta_gini": -6.413322896489729
+    },
+    {
+      "label": "Entropy floor $\\lambda=0.1$",
+      "best_val_acc": 0.9907407407407407,
+      "delta_entropy": 0.794397674112643,
+      "delta_erf": 0.3006171063599718,
+      "delta_gini": -8.221417355333209
+    },
+    {
+      "label": "Weight decay 0.0",
+      "best_val_acc": 0.9918518518518519,
+      "delta_entropy": -0.18037666630838797,
+      "delta_erf": -1.8122128845932353,
+      "delta_gini": -3.155994324288914
+    },
+    {
+      "label": "Weight decay 0.1",
+      "best_val_acc": 0.9914814814814815,
+      "delta_entropy": -0.25274688475967017,
+      "delta_erf": -1.8967937476054324,
+      "delta_gini": -2.3807769772937384
+    }
+  ],
+  "zero_shot": [
+    {
+      "label": "Pretrained baseline",
+      "cifar100": 0.6022,
+      "flowers102": 0.00196078431372549
+    },
+    {
+      "label": "Full FT EuroSAT",
+      "cifar100": 0.0943,
+      "flowers102": 0.013725490196078431
+    },
+    {
+      "label": "LoRA r=4 EuroSAT",
+      "cifar100": 0.4051,
+      "flowers102": 0.012745098039215686
+    },
+    {
+      "label": "LoRA r=8 EuroSAT",
+      "cifar100": 0.4728,
+      "flowers102": 0.00784313725490196
+    },
+    {
+      "label": "LoRA r=16 EuroSAT",
+      "cifar100": 0.3935,
+      "flowers102": 0.00980392156862745
+    }
+  ],
+  "statistical_tests": {
+    "corrected_lr_correlation": {
+      "x_log10_lr": [
+        -6.0,
+        -5.301029995663981,
+        -5.0,
+        -4.301029995663981,
+        -4.0
+      ],
+      "delta_entropy": [
+        1.4489852353817387,
+        0.3277514180946893,
+        -0.14450894024004782,
+        -4.188562822928515,
+        -10.404284430492057
+      ],
+      "pearson_exact": {
+        "statistic": -0.8928693011502947,
+        "p_value": 0.03333333333333333
+      },
+      "spearman_exact": {
+        "statistic": -0.9999999999999999,
+        "p_value": 0.016666666666666666
+      },
+      "pearson_bootstrap_ci": [
+        -6.79048617580459,
+        0.6817928733425617
+      ]
+    },
+    "corrected_regularization": {
+      "APR_0.01": {
+        "paired_t": 2.131612366582257,
+        "raw_p": 0.05642139890052116,
+        "mean_diff": 0.037019919781457765,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "APR_0.1": {
+        "paired_t": 1.8506452630555998,
+        "raw_p": 0.0912386934340572,
+        "mean_diff": 0.026020847615741565,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "APR_1.0": {
+        "paired_t": 0.849448317518818,
+        "raw_p": 0.4137373138679981,
+        "mean_diff": 0.008528136071704662,
+        "holm_bonferroni_p": 0.4137373138679981,
+        "reject_0.05": false
+      },
+      "EntFloor_0.01": {
+        "paired_t": 2.1478777348600224,
+        "raw_p": 0.054849012148001836,
+        "mean_diff": 0.026718043145679344,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "EntFloor_0.1": {
+        "paired_t": 2.638116630535723,
+        "raw_p": 0.023070615150071392,
+        "mean_diff": 0.034581068016233917,
+        "holm_bonferroni_p": 0.11535307575035696,
+        "reject_0.05": false
+      }
+    },
+    "adapter_aware_zero_shot": {
+      "E2_full_ft_eurosat": {
+        "cifar100": {
+          "accuracy": 0.0943,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.013725490196078431,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E5_lora_r8_eurosat": {
+        "cifar100": {
+          "accuracy": 0.4728,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.00784313725490196,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E4_lora_r4_eurosat": {
+        "cifar100": {
+          "accuracy": 0.4051,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.012745098039215686,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E6_lora_r16_eurosat": {
+        "cifar100": {
+          "accuracy": 0.3935,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.00980392156862745,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      }
+    },
+    "rollout_patch_metrics": {
+      "E2_full_ft_eurosat": {
+        "rollout_entropy_bits_mean": 5.593238591176058,
+        "rollout_entropy_bits_std": 0.006666313773486439,
+        "rollout_erf95_mean": 0.9437863997050694,
+        "rollout_gini_mean": 0.09043384449822563,
+        "patch_to_patch_entropy_bits_per_layer": [
+          4.831028393336704,
+          4.821481704711914,
+          4.3383316312517435,
+          4.144084521702358,
+          3.695415905543736,
+          4.635715688977923,
+          4.7338361740112305,
+          4.66687045778547,
+          5.049365724836077,
+          5.159660271235874,
+          5.162633146558489,
+          5.417362553732736
+        ],
+        "patch_to_patch_entropy_bits_mean": 4.721315514473688
+      },
+      "E5_lora_r8_eurosat": {
+        "rollout_entropy_bits_mean": 5.604654946954031,
+        "rollout_entropy_bits_std": 0.0016506342306251264,
+        "rollout_erf95_mean": 0.9516216857092721,
+        "rollout_gini_mean": 0.06427061291677612,
+        "patch_to_patch_entropy_bits_per_layer": [
+          4.770639828273228,
+          4.830215181623187,
+          4.372600555419922,
+          4.186785697937012,
+          3.8142378670828685,
+          4.866084166935512,
+          4.948867729731968,
+          4.914845398494175,
+          5.208189964294434,
+          5.164156913757324,
+          5.016696725572858,
+          5.438499927520752
+        ],
+        "patch_to_patch_entropy_bits_mean": 4.79431832972027
+      }
+    },
+    "layerwise_cka": {
+      "E2_full_ft_eurosat": {
+        "layerwise_cka": [
+          0.00036502102739177644,
+          0.8504295945167542,
+          0.7696171402931213,
+          0.9158084392547607,
+          0.9492030739784241,
+          0.9272015690803528,
+          0.9260701537132263,
+          0.8851308226585388,
+          0.8355178236961365,
+          0.6417245268821716,
+          0.4632488787174225,
+          0.4464191496372223,
+          0.4077765643596649
+        ],
+        "mean_cka": 0.6937317506011683,
+        "min_cka": 0.00036502102739177644
+      },
+      "E5_lora_r8_eurosat": {
+        "layerwise_cka": [
+          0.003017698647454381,
+          0.9919060468673706,
+          0.9945256114006042,
+          0.9982787370681763,
+          0.9945420026779175,
+          0.9867819547653198,
+          0.9678597450256348,
+          0.9355235695838928,
+          0.9334535002708435,
+          0.8813045620918274,
+          0.7360954880714417,
+          0.6256733536720276,
+          0.5462440848350525
+        ],
+        "mean_cka": 0.8150158734598125,
+        "min_cka": 0.003017698647454381
+      }
+    },
+    "subset_sensitivity": {
+      "E2_full_ft_eurosat": {
+        "entropy_bits_mean": {
+          "values": [
+            5.301272780360888,
+            5.306685213607591,
+            5.306725334703141,
+            5.299991521896435,
+            5.307837337670196
+          ],
+          "mean": 5.304502437647651,
+          "std": 0.003212674508115631,
+          "cv": 0.0006056504914228538
+        },
+        "rollout_entropy_bits_mean": {
+          "values": [
+            5.594666342005621,
+            5.59501713747548,
+            5.593238591176058,
+            5.593639015925166,
+            5.5947135635277565
+          ],
+          "mean": 5.594254930022016,
+          "std": 0.0006888917969406946,
+          "cv": 0.00012314272509169694
+        }
+      },
+      "E5_lora_r8_eurosat": {
+        "entropy_bits_mean": {
+          "values": [
+            5.356453938027822,
+            5.35847685529482,
+            5.354041291694669,
+            5.352021723994539,
+            5.351839496091473
+          ],
+          "mean": 5.354566661020664,
+          "std": 0.00257066449425209,
+          "cv": 0.00048008824186747563
+        },
+        "rollout_entropy_bits_mean": {
+          "values": [
+            5.6051607233612675,
+            5.605542721397785,
+            5.604654946954031,
+            5.604776710670842,
+            5.604918276961452
+          ],
+          "mean": 5.605010675869075,
+          "std": 0.0003147719897468584,
+          "cv": 5.6159034826101525e-05
+        }
+      }
+    },
+    "multiseed_followup": {
+      "status": "pending",
+      "available_fullft": 1,
+      "available_lora": 1
+    }
+  },
+  "followup_analysis": {
+    "corrected_lr_correlation": {
+      "x_log10_lr": [
+        -6.0,
+        -5.301029995663981,
+        -5.0,
+        -4.301029995663981,
+        -4.0
+      ],
+      "delta_entropy": [
+        1.4489852353817387,
+        0.3277514180946893,
+        -0.14450894024004782,
+        -4.188562822928515,
+        -10.404284430492057
+      ],
+      "pearson_exact": {
+        "statistic": -0.8928693011502947,
+        "p_value": 0.03333333333333333
+      },
+      "spearman_exact": {
+        "statistic": -0.9999999999999999,
+        "p_value": 0.016666666666666666
+      },
+      "pearson_bootstrap_ci": [
+        -6.79048617580459,
+        0.6817928733425617
+      ]
+    },
+    "corrected_regularization": {
+      "APR_0.01": {
+        "paired_t": 2.131612366582257,
+        "raw_p": 0.05642139890052116,
+        "mean_diff": 0.037019919781457765,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "APR_0.1": {
+        "paired_t": 1.8506452630555998,
+        "raw_p": 0.0912386934340572,
+        "mean_diff": 0.026020847615741565,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "APR_1.0": {
+        "paired_t": 0.849448317518818,
+        "raw_p": 0.4137373138679981,
+        "mean_diff": 0.008528136071704662,
+        "holm_bonferroni_p": 0.4137373138679981,
+        "reject_0.05": false
+      },
+      "EntFloor_0.01": {
+        "paired_t": 2.1478777348600224,
+        "raw_p": 0.054849012148001836,
+        "mean_diff": 0.026718043145679344,
+        "holm_bonferroni_p": 0.21939604859200734,
+        "reject_0.05": false
+      },
+      "EntFloor_0.1": {
+        "paired_t": 2.638116630535723,
+        "raw_p": 0.023070615150071392,
+        "mean_diff": 0.034581068016233917,
+        "holm_bonferroni_p": 0.11535307575035696,
+        "reject_0.05": false
+      }
+    },
+    "adapter_aware_zero_shot": {
+      "E2_full_ft_eurosat": {
+        "cifar100": {
+          "accuracy": 0.0943,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.013725490196078431,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E5_lora_r8_eurosat": {
+        "cifar100": {
+          "accuracy": 0.4728,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.00784313725490196,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E4_lora_r4_eurosat": {
+        "cifar100": {
+          "accuracy": 0.4051,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.012745098039215686,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      },
+      "E6_lora_r16_eurosat": {
+        "cifar100": {
+          "accuracy": 0.3935,
+          "num_classes": 100,
+          "n_samples": 10000
+        },
+        "flowers102": {
+          "accuracy": 0.00980392156862745,
+          "num_classes": 102,
+          "n_samples": 1020
+        }
+      }
+    },
+    "rollout_patch_metrics": {
+      "E2_full_ft_eurosat": {
+        "rollout_entropy_bits_mean": 5.593238591176058,
+        "rollout_entropy_bits_std": 0.006666313773486439,
+        "rollout_erf95_mean": 0.9437863997050694,
+        "rollout_gini_mean": 0.09043384449822563,
+        "patch_to_patch_entropy_bits_per_layer": [
+          4.831028393336704,
+          4.821481704711914,
+          4.3383316312517435,
+          4.144084521702358,
+          3.695415905543736,
+          4.635715688977923,
+          4.7338361740112305,
+          4.66687045778547,
+          5.049365724836077,
+          5.159660271235874,
+          5.162633146558489,
+          5.417362553732736
+        ],
+        "patch_to_patch_entropy_bits_mean": 4.721315514473688
+      },
+      "E5_lora_r8_eurosat": {
+        "rollout_entropy_bits_mean": 5.604654946954031,
+        "rollout_entropy_bits_std": 0.0016506342306251264,
+        "rollout_erf95_mean": 0.9516216857092721,
+        "rollout_gini_mean": 0.06427061291677612,
+        "patch_to_patch_entropy_bits_per_layer": [
+          4.770639828273228,
+          4.830215181623187,
+          4.372600555419922,
+          4.186785697937012,
+          3.8142378670828685,
+          4.866084166935512,
+          4.948867729731968,
+          4.914845398494175,
+          5.208189964294434,
+          5.164156913757324,
+          5.016696725572858,
+          5.438499927520752
+        ],
+        "patch_to_patch_entropy_bits_mean": 4.79431832972027
+      }
+    },
+    "layerwise_cka": {
+      "E2_full_ft_eurosat": {
+        "layerwise_cka": [
+          0.00036502102739177644,
+          0.8504295945167542,
+          0.7696171402931213,
+          0.9158084392547607,
+          0.9492030739784241,
+          0.9272015690803528,
+          0.9260701537132263,
+          0.8851308226585388,
+          0.8355178236961365,
+          0.6417245268821716,
+          0.4632488787174225,
+          0.4464191496372223,
+          0.4077765643596649
+        ],
+        "mean_cka": 0.6937317506011683,
+        "min_cka": 0.00036502102739177644
+      },
+      "E5_lora_r8_eurosat": {
+        "layerwise_cka": [
+          0.003017698647454381,
+          0.9919060468673706,
+          0.9945256114006042,
+          0.9982787370681763,
+          0.9945420026779175,
+          0.9867819547653198,
+          0.9678597450256348,
+          0.9355235695838928,
+          0.9334535002708435,
+          0.8813045620918274,
+          0.7360954880714417,
+          0.6256733536720276,
+          0.5462440848350525
+        ],
+        "mean_cka": 0.8150158734598125,
+        "min_cka": 0.003017698647454381
+      }
+    },
+    "subset_sensitivity": {
+      "E2_full_ft_eurosat": {
+        "entropy_bits_mean": {
+          "values": [
+            5.301272780360888,
+            5.306685213607591,
+            5.306725334703141,
+            5.299991521896435,
+            5.307837337670196
+          ],
+          "mean": 5.304502437647651,
+          "std": 0.003212674508115631,
+          "cv": 0.0006056504914228538
+        },
+        "rollout_entropy_bits_mean": {
+          "values": [
+            5.594666342005621,
+            5.59501713747548,
+            5.593238591176058,
+            5.593639015925166,
+            5.5947135635277565
+          ],
+          "mean": 5.594254930022016,
+          "std": 0.0006888917969406946,
+          "cv": 0.00012314272509169694
+        }
+      },
+      "E5_lora_r8_eurosat": {
+        "entropy_bits_mean": {
+          "values": [
+            5.356453938027822,
+            5.35847685529482,
+            5.354041291694669,
+            5.352021723994539,
+            5.351839496091473
+          ],
+          "mean": 5.354566661020664,
+          "std": 0.00257066449425209,
+          "cv": 0.00048008824186747563
+        },
+        "rollout_entropy_bits_mean": {
+          "values": [
+            5.6051607233612675,
+            5.605542721397785,
+            5.604654946954031,
+            5.604776710670842,
+            5.604918276961452
+          ],
+          "mean": 5.605010675869075,
+          "std": 0.0003147719897468584,
+          "cv": 5.6159034826101525e-05
+        }
+      }
+    },
+    "multiseed_followup": {
+      "status": "pending",
+      "available_fullft": 1,
+      "available_lora": 1
+    }
+  },
+  "zero_shot_caveat": "Adapter-aware follow-up evaluation is now available in outputs/metrics/followup_analysis.json; the paper uses those values for LoRA zero-shot results."
+}
