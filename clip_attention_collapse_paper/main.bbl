@@ -1,0 +1,92 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abnar and Zuidema(2020)]{abnar2020quantifying}
+Samira Abnar and Willem Zuidema.
+\newblock Quantifying attention flow in transformers.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4190--4197, 2020.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby]{dosovitskiy2021image}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at
+  scale.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+
+\bibitem[Helber et~al.(2019)Helber, Bischke, Dengel, and
+  Borth]{helber2019eurosat}
+Patrick Helber, Benjamin Bischke, Andreas Dengel, and Damian Borth.
+\newblock Eurosat: A novel dataset and deep learning benchmark for land use and
+  land cover classification.
+\newblock \emph{IEEE Journal of Selected Topics in Applied Earth Observations
+  and Remote Sensing}, 12\penalty0 (7):\penalty0 2217--2226, 2019.
+
+\bibitem[Hu et~al.(2022)Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and
+  Chen]{hu2022lora}
+Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
+  Wang, Lu~Wang, and Weizhu Chen.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Jain and Wallace(2019)]{jain2019attention}
+Sarthak Jain and Byron~C. Wallace.
+\newblock Attention is not explanation.
+\newblock \emph{arXiv preprint arXiv:1902.10186}, 2019.
+
+\bibitem[Krizhevsky(2009)]{krizhevsky2009learning}
+Alex Krizhevsky.
+\newblock Learning multiple layers of features from tiny images.
+\newblock Technical report, University of Toronto, 2009.
+
+\bibitem[Kumar et~al.(2022)Kumar, Raghunathan, Jones, Ma, and
+  Liang]{kumar2022finetuning}
+Ananya Kumar, Aditi Raghunathan, Rob Jones, Tengyu Ma, and Percy Liang.
+\newblock Fine-tuning can distort pretrained features and underperform
+  out-of-distribution.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Nilsback and Zisserman(2008)]{nilsback2008automated}
+Maria-Elena Nilsback and Andrew Zisserman.
+\newblock Automated flower classification over a large number of classes.
+\newblock \emph{Indian Conference on Computer Vision, Graphics and Image
+  Processing}, 2008.
+
+\bibitem[Parkhi et~al.(2012)Parkhi, Vedaldi, Zisserman, and
+  Jawahar]{parkhi2012cats}
+Omkar~M. Parkhi, Andrea Vedaldi, Andrew Zisserman, and C.~V. Jawahar.
+\newblock Cats and dogs.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition},
+  pages 3498--3505, 2012.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal,
+  Sastry, Askell, Mishkin, Clark, Krueger, and Sutskever]{radford2021learning}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh,
+  Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark,
+  Gretchen Krueger, and Ilya Sutskever.
+\newblock Learning transferable visual models from natural language
+  supervision.
+\newblock \emph{arXiv preprint arXiv:2103.00020}, 2021.
+
+\bibitem[Wiegreffe and Pinter(2019)]{wiegreffe2019attention}
+Sarah Wiegreffe and Yuval Pinter.
+\newblock Attention is not not explanation.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing}, pages 11--20, 2019.
+
+\bibitem[Wortsman et~al.(2022)Wortsman, Ilharco, Kim, Li, Kornblith, Roelofs,
+  Lopes, Hajishirzi, Farhadi, Namkoong, and Schmidt]{wortsman2022robust}
+Mitchell Wortsman, Gabriel Ilharco, Jong~Wook Kim, Mike Li, Simon Kornblith,
+  Rebecca Roelofs, Raphael~Gontijo Lopes, Hannaneh Hajishirzi, Ali Farhadi,
+  Hongseok Namkoong, and Ludwig Schmidt.
+\newblock Robust fine-tuning of zero-shot models.
+\newblock \emph{arXiv preprint arXiv:2109.01903}, 2022.
+
+\end{thebibliography}

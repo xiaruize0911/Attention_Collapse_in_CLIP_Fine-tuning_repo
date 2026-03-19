@@ -11,9 +11,31 @@ import time
 import datetime
 import copy
 from pathlib import Path
-from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import CosineAnnealingLR, LambdaLR
-from tqdm import tqdm
+
+try:
+    from tqdm import tqdm
+except ModuleNotFoundError:
+    def tqdm(iterable, *args, **kwargs):
+        return iterable
+
+try:
+    from torch.utils.tensorboard import SummaryWriter
+except ModuleNotFoundError:
+    class SummaryWriter:  # type: ignore[override]
+        """No-op fallback when tensorboard is unavailable."""
+
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def add_scalar(self, *args, **kwargs):
+            pass
+
+        def flush(self):
+            pass
+
+        def close(self):
+            pass
 
 sys.path.insert(0, str(Path(__file__).parent))
 from src.model import CLIPClassifier, create_lora_model, get_pretrained_model, count_parameters
@@ -25,6 +47,7 @@ from src.regularizer import AttentionPreservationRegularizer, EntropyFloorRegula
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEED = 42
 OUTPUT_DIR = Path("outputs")
+DEFAULT_MODEL_NAME = "openai/clip-vit-base-patch32"
 
 
 def set_seed(seed=42):
@@ -32,6 +55,43 @@ def set_seed(seed=42):
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     torch.backends.cudnn.deterministic = True
+
+
+def load_dataset_bundle(dataset_name):
+    if dataset_name == "eurosat":
+        return load_eurosat(cache_dir="./data")
+    if dataset_name == "pets":
+        return load_oxford_pets(cache_dir="./data")
+    raise ValueError(f"Unsupported dataset: {dataset_name}")
+
+
+def build_eval_loaders(train_dataset, test_dataset, num_classes):
+    train_loader = get_dataloader(train_dataset, batch_size=64, shuffle=True, num_workers=2)
+    val_loader = get_dataloader(test_dataset, batch_size=64, shuffle=False, num_workers=2)
+    eval_subset, _ = create_fixed_eval_subset(test_dataset, num_samples=200,
+                                              num_classes=num_classes, seed=SEED)
+    eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
+    return train_loader, val_loader, eval_loader
+
+
+def create_regularizer(reg_type, lambda_reg, baseline_metrics, model_name=DEFAULT_MODEL_NAME):
+    if reg_type == "apr":
+        from transformers import CLIPModel
+
+        pretrained = CLIPModel.from_pretrained(
+            model_name, attn_implementation="eager"
+        ).vision_model
+        return AttentionPreservationRegularizer(
+            pretrained, lambda_reg=lambda_reg, device=DEVICE
+        )
+    if reg_type == "entropy_floor":
+        return EntropyFloorRegularizer(
+            baseline_entropy_per_layer=baseline_metrics['entropy_per_layer'],
+            floor_ratio=0.7, lambda_reg=lambda_reg
+        )
+    if reg_type in {None, "none"}:
+        return None
+    raise ValueError(f"Unsupported regularizer: {reg_type}")
 
 
 def compute_metrics_on_eval(model, eval_loader, device):
@@ -377,19 +437,17 @@ def run_baseline_analysis():
 
 
 def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=None,
-                            weight_decay=0.01, freeze_layers=0, baseline_metrics=None):
+                            weight_decay=0.01, freeze_layers=0, baseline_metrics=None,
+                            model_name=DEFAULT_MODEL_NAME):
     """Run Full Fine-tuning experiment."""
     set_seed(SEED)
-    
-    if dataset_name == "eurosat":
-        train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
-    else:
-        train_dataset, test_dataset, num_classes, class_names = load_oxford_pets(cache_dir="./data")
+
+    train_dataset, test_dataset, num_classes, class_names = load_dataset_bundle(dataset_name)
     
     if experiment_id is None:
         experiment_id = f"full_ft_{dataset_name}_lr{lr}"
     
-    model = CLIPClassifier(num_classes=num_classes).to(DEVICE)
+    model = CLIPClassifier(model_name=model_name, num_classes=num_classes).to(DEVICE)
     
     # Optionally freeze layers
     if freeze_layers > 0:
@@ -397,12 +455,7 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
             for p in model.vision_model.encoder.layers[i].parameters():
                 p.requires_grad = False
     
-    train_loader = get_dataloader(train_dataset, batch_size=64, shuffle=True, num_workers=2)
-    val_loader = get_dataloader(test_dataset, batch_size=64, shuffle=False, num_workers=2)
-    
-    eval_subset, _ = create_fixed_eval_subset(test_dataset, num_samples=200,
-                                                num_classes=num_classes, seed=SEED)
-    eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
+    train_loader, val_loader, eval_loader = build_eval_loaders(train_dataset, test_dataset, num_classes)
     
     tb_dir = OUTPUT_DIR / "logs" / "tensorboard" / experiment_id
     writer = SummaryWriter(log_dir=str(tb_dir))
@@ -410,7 +463,7 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
     config = {
         'method': 'full_ft', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': weight_decay,
-        'freeze_layers': freeze_layers, 'model_name': 'openai/clip-vit-base-patch32'
+        'freeze_layers': freeze_layers, 'model_name': model_name
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader, 
@@ -423,14 +476,12 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
 
 
 def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
-                         experiment_id=None, target_modules=None):
+                         experiment_id=None, target_modules=None,
+                         model_name=DEFAULT_MODEL_NAME):
     """Run LoRA Fine-tuning experiment."""
     set_seed(SEED)
-    
-    if dataset_name == "eurosat":
-        train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
-    else:
-        train_dataset, test_dataset, num_classes, class_names = load_oxford_pets(cache_dir="./data")
+
+    train_dataset, test_dataset, num_classes, class_names = load_dataset_bundle(dataset_name)
     
     if experiment_id is None:
         experiment_id = f"lora_r{lora_r}_{dataset_name}_lr{lr}"
@@ -439,16 +490,11 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
         target_modules = ["q_proj", "v_proj"]
     
     model = create_lora_model(
-        num_classes=num_classes, lora_r=lora_r,
+        model_name=model_name, num_classes=num_classes, lora_r=lora_r,
         lora_alpha=2*lora_r, target_modules=target_modules
     )
-    
-    train_loader = get_dataloader(train_dataset, batch_size=64, shuffle=True, num_workers=2)
-    val_loader = get_dataloader(test_dataset, batch_size=64, shuffle=False, num_workers=2)
-    
-    eval_subset, _ = create_fixed_eval_subset(test_dataset, num_samples=200,
-                                                num_classes=num_classes, seed=SEED)
-    eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
+
+    train_loader, val_loader, eval_loader = build_eval_loaders(train_dataset, test_dataset, num_classes)
     
     tb_dir = OUTPUT_DIR / "logs" / "tensorboard" / experiment_id
     writer = SummaryWriter(log_dir=str(tb_dir))
@@ -458,7 +504,7 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
         'method': 'lora', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'lora_r': lora_r, 'lora_alpha': 2*lora_r, 'target_modules': target_modules,
-        'model_name': 'openai/clip-vit-base-patch32'
+        'model_name': model_name
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -470,44 +516,22 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
     return history
 
 
-def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics, 
-                                    dataset_name="eurosat", lr=1e-5, num_epochs=20):
+def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
+                                    dataset_name="eurosat", lr=1e-5, num_epochs=20,
+                                    experiment_id=None, model_name=DEFAULT_MODEL_NAME):
     """Run regularization experiment (APR or Entropy Floor)."""
     set_seed(SEED)
+
+    train_dataset, test_dataset, num_classes, class_names = load_dataset_bundle(dataset_name)
     
-    if dataset_name == "eurosat":
-        train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
-    else:
-        train_dataset, test_dataset, num_classes, class_names = load_oxford_pets(cache_dir="./data")
+    if experiment_id is None:
+        experiment_id = f"reg_{reg_type}_lambda{lambda_reg}_{dataset_name}"
     
-    experiment_id = f"reg_{reg_type}_lambda{lambda_reg}_{dataset_name}"
-    
-    model = CLIPClassifier(num_classes=num_classes).to(DEVICE)
-    
-    # Create regularizer
-    if reg_type == "apr":
-        # Load a fresh pretrained vision model for APR
-        from transformers import CLIPModel
-        pretrained = CLIPModel.from_pretrained(
-            "openai/clip-vit-base-patch32", attn_implementation="eager"
-        ).vision_model
-        regularizer = AttentionPreservationRegularizer(
-            pretrained, lambda_reg=lambda_reg, device=DEVICE
-        )
-    elif reg_type == "entropy_floor":
-        regularizer = EntropyFloorRegularizer(
-            baseline_entropy_per_layer=baseline_metrics['entropy_per_layer'],
-            floor_ratio=0.7, lambda_reg=lambda_reg
-        )
-    else:
-        regularizer = None
-    
-    train_loader = get_dataloader(train_dataset, batch_size=64, shuffle=True, num_workers=2)
-    val_loader = get_dataloader(test_dataset, batch_size=64, shuffle=False, num_workers=2)
-    
-    eval_subset, _ = create_fixed_eval_subset(test_dataset, num_samples=200,
-                                                num_classes=num_classes, seed=SEED)
-    eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
+    model = CLIPClassifier(model_name=model_name, num_classes=num_classes).to(DEVICE)
+
+    regularizer = create_regularizer(reg_type, lambda_reg, baseline_metrics, model_name=model_name)
+
+    train_loader, val_loader, eval_loader = build_eval_loaders(train_dataset, test_dataset, num_classes)
     
     tb_dir = OUTPUT_DIR / "logs" / "tensorboard" / experiment_id
     writer = SummaryWriter(log_dir=str(tb_dir))
@@ -516,7 +540,7 @@ def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
         'method': f'full_ft+{reg_type}', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'reg_type': reg_type, 'lambda_reg': lambda_reg,
-        'model_name': 'openai/clip-vit-base-patch32'
+        'model_name': model_name
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -525,6 +549,54 @@ def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
     writer.close()
     
     # Clean up APR pretrained model
+    if reg_type == "apr":
+        del regularizer.pretrained_model
+    del model
+    torch.cuda.empty_cache()
+    return history
+
+
+def run_regularized_lora_experiment(dataset_name, reg_type, lambda_reg, baseline_metrics,
+                                    lora_r=8, lr=1e-4, num_epochs=20, experiment_id=None,
+                                    target_modules=None, model_name=DEFAULT_MODEL_NAME):
+    """Run LoRA fine-tuning with an additional attention regularizer."""
+    set_seed(SEED)
+
+    train_dataset, test_dataset, num_classes, class_names = load_dataset_bundle(dataset_name)
+
+    if experiment_id is None:
+        experiment_id = f"lora_r{lora_r}_{reg_type}_lambda{lambda_reg}_{dataset_name}"
+
+    if target_modules is None:
+        target_modules = ["q_proj", "v_proj"]
+
+    model = create_lora_model(
+        model_name=model_name,
+        num_classes=num_classes,
+        lora_r=lora_r,
+        lora_alpha=2 * lora_r,
+        target_modules=target_modules,
+    )
+
+    regularizer = create_regularizer(reg_type, lambda_reg, baseline_metrics, model_name=model_name)
+    train_loader, val_loader, eval_loader = build_eval_loaders(train_dataset, test_dataset, num_classes)
+
+    tb_dir = OUTPUT_DIR / "logs" / "tensorboard" / experiment_id
+    writer = SummaryWriter(log_dir=str(tb_dir))
+
+    config = {
+        'method': f'lora+{reg_type}', 'dataset': dataset_name, 'lr': lr,
+        'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
+        'lora_r': lora_r, 'lora_alpha': 2 * lora_r, 'target_modules': target_modules,
+        'reg_type': reg_type, 'lambda_reg': lambda_reg,
+        'model_name': model_name,
+    }
+
+    history = train_one_experiment(config, model, train_loader, val_loader,
+                                   eval_loader, writer, experiment_id,
+                                   regularizer=regularizer)
+    writer.close()
+
     if reg_type == "apr":
         del regularizer.pretrained_model
     del model
@@ -602,7 +674,7 @@ def run_zero_shot_evaluation(model_path, config_override=None):
 # =====================================================
 def main():
     set_seed(SEED)
-    os.chdir("/workspace/project")
+    os.chdir(Path(__file__).resolve().parent)
     
     start_time = time.time()
     all_results = {}

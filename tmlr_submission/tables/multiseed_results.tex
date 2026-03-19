@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Run-level multi-seed comparisons on mean $\Delta$entropy. Values are reported as percentage change relative to the corresponding pretrained baseline, aggregated across completed seed runs.}
+\label{tab:multiseed}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Comparison & Seeds & Mean $\Delta$Entropy (\%) & Welch $t$ & Welch $p$ & Cohen's $d$ \\
+\midrule
+Full FT vs. LoRA r=8 (EuroSAT) & 3 vs 3 & -0.22 vs +0.87 & -7.157 & 0.0127 & -5.844 \\
+Full FT vs. LoRA r=8 (Pets) & 3 vs 3 & -2.10 vs -0.84 & -7.969 & 0.0064 & -6.507 \\
+Full FT vs. APR $\lambda=0.1$ (EuroSAT) & 3 vs 3 & -0.22 vs +0.55 & -18.441 & 0.0020 & -15.057 \\
+Full FT vs. Entropy floor $\lambda=0.1$ (EuroSAT) & 3 vs 3 & -0.22 vs +0.70 & -14.439 & 0.0002 & -11.789 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

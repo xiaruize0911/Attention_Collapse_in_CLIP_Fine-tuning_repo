@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering
+\caption{Backbone comparison between CLIP ViT-B/32 and ViT-B/16 on EuroSAT. Metric cells show B/32 / B/16 values.}
+\label{tab:backbone-comparison}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Method & $\Delta$Entropy (\%) & $\Delta$ERF (\%) & $\Delta$Gini (\%) & Task Acc. (\%) & Entropy Gap \\
+\midrule
+Full FT on EuroSAT & -0.14 / +3.57 & -1.73 / +6.66 & -3.54 / -8.83 & 99.30 / 99.15 & +3.72 \\
+LoRA r=8 on EuroSAT & +0.58 / -0.59 & +0.37 / +4.88 & -6.48 / -4.09 & 98.96 / 98.89 & -1.18 \\
+\bottomrule
+\end{tabular}
+\end{table}

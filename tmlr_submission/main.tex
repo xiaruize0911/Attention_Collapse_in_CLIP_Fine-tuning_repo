@@ -1,30 +1,26 @@
-\documentclass[10pt,twocolumn]{article}
+\documentclass[10pt]{article}
+\usepackage{tmlr}
 
-\usepackage[margin=0.75in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\input{math_commands.tex}
+
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{amsmath,amssymb}
+\usepackage{amssymb}
 \usepackage{multirow}
 \usepackage{hyperref}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage{xcolor}
-\usepackage{caption}
-
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue,
-    pdftitle={Attention Structural Change in Fine-Tuned CLIP},
-}
+\usepackage{url}
+\usepackage{placeins}
 
 \title{Attention Structural Change in Fine-Tuned CLIP:\\A Comparative Study of Full Fine-Tuning, LoRA, and Regularization}
-\author{Anonymous Author}
-\date{March 19, 2026}
+
+\author{\name Anonymous Authors \\
+\addr Anonymous Institution \\
+\email anonymous@example.com}
+
+\def\month{03}
+\def\year{2026}
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}}
 
 \begin{document}
 \maketitle
@@ -119,17 +115,17 @@ Figure~\ref{fig:baseline-structure} shows that the pretrained model already exhi
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig2_baseline_structure.png}
+    \includegraphics[width=\linewidth]{figures/fig2_baseline_structure.png}
     \caption{Baseline attention structure of pretrained CLIP ViT-B/32 across layers. The model is already depth-heterogeneous before any downstream adaptation.}
     \label{fig:baseline-structure}
 \end{figure}
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/fig5_fullft_vs_lora.png}
+    \includegraphics[width=\linewidth]{figures/fig5_fullft_vs_lora.png}
     \caption{EuroSAT Full FT versus LoRA. LoRA increases entropy and ERF relative to baseline in the stored EuroSAT runs, while Full FT remains near-neutral to mildly contractive.}
     \label{fig:ft-vs-lora}
-\end{figure*}
+\end{figure}
 
 \subsection{Statistical Evidence and Layerwise Patterns}
 Figure~\ref{fig:layer-heatmap} shows that the direction and magnitude of per-layer entropy change depend on both dataset and adaptation regime. However, because layers within a single trained model are not statistically independent, we do not treat these per-layer comparisons as formal independent-sample evidence. Instead, we interpret the layerwise patterns descriptively and reserve inferential claims for analyses whose sampling assumptions are more defensible.
@@ -147,14 +143,14 @@ The regularized EuroSAT replications also move consistently in the structurally 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig10_per_layer_delta_heatmap.png}
+    \includegraphics[width=\linewidth]{figures/fig10_per_layer_delta_heatmap.png}
     \caption{Per-layer entropy change across selected experiments. The sign and magnitude of change depend on training regime and dataset.}
     \label{fig:layer-heatmap}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig11_statistical_summary.png}
+    \includegraphics[width=\linewidth]{figures/fig11_statistical_summary.png}
     \caption{Summary of exploratory per-layer comparisons and corrected statistical analyses, including the learning-rate trend and layer-group summaries.}
     \label{fig:stats-summary}
 \end{figure}
@@ -166,7 +162,7 @@ Among the manipulated hyperparameters, learning rate is the clearest driver of s
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig6_lr_sweep.png}
+    \includegraphics[width=\linewidth]{figures/fig6_lr_sweep.png}
     \caption{Learning-rate sweep for EuroSAT Full FT. Larger learning rates produce stronger entropy decreases and stronger ERF contraction.}
     \label{fig:lr-sweep}
 \end{figure}
@@ -180,19 +176,19 @@ Table~\ref{tab:regularization} summarizes the regularization study. Both APR and
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig8_regularization.png}
+    \includegraphics[width=\linewidth]{figures/fig8_regularization.png}
     \caption{Regularization results. Both APR and entropy floor preserve broader attention structure than the no-regularizer baseline in descriptive terms, but none of the tested settings survives Holm--Bonferroni correction across the regularizer family.}
     \label{fig:regularization}
 \end{figure}
 
 Figure~\ref{fig:dynamics} complements the final-state tables by showing training trajectories and collapse onset markers. The main qualitative lesson is that structural drift appears early when the learning rate is high, whereas LoRA traces a flatter path. Again, this is descriptive evidence rather than a mechanistic proof.
 
-\begin{figure*}[t]
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/fig12_training_dynamics.png}
+    \includegraphics[width=\linewidth]{figures/fig12_training_dynamics.png}
     \caption{Training dynamics and collapse-onset analysis. High-learning-rate Full FT exhibits the earliest and strongest entropy decrease.}
     \label{fig:dynamics}
-\end{figure*}
+\end{figure}
 
 \subsection{Auxiliary Structural Validation}
 To test whether the main conclusions are specific to CLS-to-patch entropy, Table~\ref{tab:auxiliary-validation} reports the follow-up rollout, patch-to-patch, representational-similarity, and subset-sensitivity analyses for the clearest EuroSAT comparison. LoRA r=8 exhibits higher rollout entropy, larger rollout ERF@0.95, lower rollout Gini, and higher patch-to-patch entropy than Full FT, indicating that the broader-support pattern is not confined to the original CLS-to-patch metric. LoRA also yields higher mean layerwise CKA to the pretrained model (0.815 versus 0.694), suggesting less representational drift. Finally, the coefficient of variation of the entropy metric across five balanced evaluation subsets is below 0.001 for both methods, indicating that the reported structural metrics are not highly sensitive to the choice of evaluation images.
@@ -221,10 +217,12 @@ The Flowers102 numbers are also uniformly low (all at or below 1.37\%), suggesti
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/fig15_zeroshot_extended.png}
+    \includegraphics[width=\linewidth]{figures/fig15_zeroshot_extended.png}
     \caption{Extended zero-shot evaluation under the repository's current protocol. CIFAR-100 is the more interpretable benchmark here; the Flowers102 values are uniformly too low to support strong conclusions.}
     \label{fig:zeroshot}
 \end{figure}
+
+\FloatBarrier
 
 \section{Discussion}\label{sec:discussion}
 The results suggest that attention structural change is neither negligible nor uniform across adaptation strategies. In the completed run set, full fine-tuning tends to move the model toward narrower attention support on Oxford-IIIT Pets and remains less structurally conservative than LoRA across the three-seed EuroSAT and Pets replications. The auxiliary rollout and patch-to-patch analyses reinforce this interpretation, and the CKA results indicate that runs that remain closer to the pretrained representation geometry also tend to preserve broader attention support.
@@ -240,10 +238,16 @@ First, the backbone validation is still narrow: the paper now includes ViT-B/16 
 
 Despite these limitations, the study remains reproducible at the artifact level: the figures and tables are generated directly from the stored experimental outputs, and the manuscript's quantitative claims are constrained to those verified artifacts.
 
+\subsubsection*{Broader Impact Statement}
+This paper studies how different adaptation strategies alter the internal attention structure of a pretrained vision--language model. The work is primarily diagnostic and does not introduce a new deployment system. Its most direct positive impact is methodological: better measurement of representational drift may help practitioners choose tuning strategies that preserve robustness and transfer more reliably. Potential downstream misuse is indirect but real, because stronger adaptation diagnostics could be applied when optimizing models for surveillance or other sensitive classification settings. For that reason, we recommend using such analyses to improve transparency, auditing, and conservative model selection rather than as a tool for maximizing task performance without regard to downstream harm.
+
+\subsubsection*{Reproducibility Statement}
+All quantitative claims in the manuscript are tied to stored experiment artifacts in the repository. The paper tables are generated from JSON metrics, the figures are copied from the repository outputs, and the submission folder includes the scripts and assets needed to rebuild the manuscript PDF. This reduces manual transcription risk and makes it possible to trace each reported number back to a corresponding experimental record.
+
 \section{Conclusion}
 This study examined attention structural change in fine-tuned CLIP through a comparative analysis of full fine-tuning, LoRA, and regularized adaptation. The completed revision strengthens the paper in five ways: it replaces fragile small-sample statistics with exact or Monte Carlo permutation tests where appropriate, corrects the LoRA zero-shot evaluation to use an adapter-aware path, adds rollout, patch-to-patch, CKA, and subset-sensitivity analyses to triangulate the main findings, completes three-seed follow-up replications for the main EuroSAT/Pets contrasts, and adds ViT-B/16 backbone validation on EuroSAT. Under this stronger evidence base, the central conclusion remains intact but more precise: learning rate, adaptation regime, and backbone all materially affect attention structure, and LoRA is substantially less disruptive than Full FT on the clearest replicated comparisons. At the same time, the paper now draws a sharper boundary around what has not yet been established, particularly with respect to higher-seed run-level inference, broader backbone coverage, and stronger out-of-domain benchmarks.
 
-\bibliographystyle{plainnat}
+\bibliographystyle{tmlr}
 \bibliography{references}
 
 \end{document}
