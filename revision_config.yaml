@@ -1,0 +1,28 @@
+backbone: openai/clip-vit-base-patch32
+source_dataset: eurosat
+method: full_ft
+seed: 42
+lr: 1.0e-5
+epochs: 10
+batch_size: 32
+grad_accum_steps: 4
+weight_decay: 0.01
+early_stopping_patience: 2
+output_root: outputs/revision_v2
+data_root: data/revision_v2
+manifest_seed: 20260325
+num_workers: 4
+use_amp: true
+pilot_fraction: 0.1
+transfer_batch_size: 64
+fixed_lora_rank: 8
+fixed_lora_alpha: 16
+fixed_lora_dropout: 0.0
+fixed_lora_targets:
+  - q_proj
+  - v_proj
+cars_root: ""
+entropy_floor_lambda: 0.1
+train_flip_probability: 0.5
+log_every_steps: 20
+max_metric_batches: 8
