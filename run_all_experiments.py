@@ -1,5 +1,5 @@
 """
-run_all_experiments.py - Complete experiment pipeline for CLIP Attention Structural Collapse
+run_all_experiments.py - Complete experiment pipeline for CLIP attention structure studies.
 """
 import torch
 import torch.nn as nn
@@ -38,7 +38,13 @@ except ModuleNotFoundError:
             pass
 
 sys.path.insert(0, str(Path(__file__).parent))
-from src.model import CLIPClassifier, create_lora_model, get_pretrained_model, count_parameters
+from src.model import (
+    CLIPClassifier,
+    create_lora_model,
+    get_pretrained_model,
+    count_parameters,
+    load_classifier_from_checkpoint,
+)
 from src.dataset import (load_eurosat, load_oxford_pets, create_fixed_eval_subset,
                           get_dataloader, get_clip_transform, load_cifar100, load_flowers102)
 from src.metrics import compute_all_metrics, compute_attention_rollout
@@ -46,6 +52,7 @@ from src.regularizer import AttentionPreservationRegularizer, EntropyFloorRegula
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEED = 42
+EVAL_SUBSET_SEED = 42
 OUTPUT_DIR = Path("outputs")
 DEFAULT_MODEL_NAME = "openai/clip-vit-base-patch32"
 
@@ -69,7 +76,7 @@ def build_eval_loaders(train_dataset, test_dataset, num_classes):
     train_loader = get_dataloader(train_dataset, batch_size=64, shuffle=True, num_workers=2)
     val_loader = get_dataloader(test_dataset, batch_size=64, shuffle=False, num_workers=2)
     eval_subset, _ = create_fixed_eval_subset(test_dataset, num_samples=200,
-                                              num_classes=num_classes, seed=SEED)
+                                              num_classes=num_classes, seed=EVAL_SUBSET_SEED)
     eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
     return train_loader, val_loader, eval_loader
 
@@ -79,7 +86,9 @@ def create_regularizer(reg_type, lambda_reg, baseline_metrics, model_name=DEFAUL
         from transformers import CLIPModel
 
         pretrained = CLIPModel.from_pretrained(
-            model_name, attn_implementation="eager"
+            model_name,
+            attn_implementation="eager",
+            use_safetensors=True,
         ).vision_model
         return AttentionPreservationRegularizer(
             pretrained, lambda_reg=lambda_reg, device=DEVICE
@@ -166,6 +175,7 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         'train_loss': [], 'train_acc': [], 'val_acc': [],
         'attention_metrics': [], 'steps': [], 'epochs': []
     }
+    attention_eval_mode = config.get('attention_eval_mode', 'step')
     
     checkpoint_dir = OUTPUT_DIR / "checkpoints" / experiment_id
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
@@ -231,35 +241,37 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
             log_interval = max(1, len(train_loader) // 5)  # ~5 times per epoch
             if step % log_interval == 0:
                 train_acc = epoch_correct / max(epoch_total, 1)
-                
-                # Compute attention metrics on fixed eval set
-                attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
-                model.train()  # Switch back to train mode
-                
+                attn_metrics = None
+
+                if attention_eval_mode == 'step':
+                    attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
+                    model.train()  # Switch back to train mode
+
                 # TensorBoard logging
                 writer.add_scalar('train/loss', loss.item(), step)
                 writer.add_scalar('train/accuracy', train_acc, step)
                 writer.add_scalar('train/lr', optimizer.param_groups[0]['lr'], step)
-                
-                for layer_idx in range(12):
-                    writer.add_scalar(f'attention/entropy_layer_{layer_idx}',
-                                     attn_metrics['entropy_per_layer'][layer_idx], step)
-                    writer.add_scalar(f'attention/erf95_layer_{layer_idx}',
-                                     attn_metrics['erf95_per_layer'][layer_idx], step)
-                    writer.add_scalar(f'attention/gini_layer_{layer_idx}',
-                                     attn_metrics['gini_per_layer'][layer_idx], step)
-                
-                writer.add_scalar('attention/entropy_mean', attn_metrics['entropy_mean'], step)
-                writer.add_scalar('attention/erf95_mean', attn_metrics['erf95_mean'], step)
-                writer.add_scalar('attention/gini_mean', attn_metrics['gini_mean'], step)
-                writer.add_scalar('attention/head_diversity_mean', attn_metrics['head_diversity_mean'], step)
-                
-                # Record history
-                history['steps'].append(step)
-                history['train_loss'].append(loss.item())
-                history['train_acc'].append(train_acc)
-                history['attention_metrics'].append(attn_metrics)
-                
+
+                if attn_metrics is not None:
+                    for layer_idx in range(12):
+                        writer.add_scalar(f'attention/entropy_layer_{layer_idx}',
+                                         attn_metrics['entropy_per_layer'][layer_idx], step)
+                        writer.add_scalar(f'attention/erf95_layer_{layer_idx}',
+                                         attn_metrics['erf95_per_layer'][layer_idx], step)
+                        writer.add_scalar(f'attention/gini_layer_{layer_idx}',
+                                         attn_metrics['gini_per_layer'][layer_idx], step)
+
+                    writer.add_scalar('attention/entropy_mean', attn_metrics['entropy_mean'], step)
+                    writer.add_scalar('attention/erf95_mean', attn_metrics['erf95_mean'], step)
+                    writer.add_scalar('attention/gini_mean', attn_metrics['gini_mean'], step)
+                    writer.add_scalar('attention/head_diversity_mean', attn_metrics['head_diversity_mean'], step)
+
+                    # Record history when attention metrics are computed.
+                    history['steps'].append(step)
+                    history['train_loss'].append(loss.item())
+                    history['train_acc'].append(train_acc)
+                    history['attention_metrics'].append(attn_metrics)
+
                 # JSONL log
                 log_entry = {
                     "step": step, "epoch": epoch + batch_idx / len(train_loader),
@@ -280,8 +292,30 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         val_acc = evaluate_accuracy(model, val_loader, DEVICE)
         history['val_acc'].append(val_acc)
         history['epochs'].append(epoch)
-        
+
         writer.add_scalar('eval/accuracy', val_acc, epoch)
+
+        if attention_eval_mode == 'epoch':
+            attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
+            history['steps'].append(step)
+            history['train_loss'].append(epoch_loss / max(len(train_loader), 1))
+            history['train_acc'].append(epoch_correct / max(epoch_total, 1))
+            history['attention_metrics'].append(attn_metrics)
+
+            for layer_idx in range(12):
+                writer.add_scalar(f'attention/entropy_layer_{layer_idx}',
+                                 attn_metrics['entropy_per_layer'][layer_idx], epoch)
+                writer.add_scalar(f'attention/erf95_layer_{layer_idx}',
+                                 attn_metrics['erf95_per_layer'][layer_idx], epoch)
+                writer.add_scalar(f'attention/gini_layer_{layer_idx}',
+                                 attn_metrics['gini_per_layer'][layer_idx], epoch)
+
+            writer.add_scalar('attention/entropy_mean', attn_metrics['entropy_mean'], epoch)
+            writer.add_scalar('attention/erf95_mean', attn_metrics['erf95_mean'], epoch)
+            writer.add_scalar('attention/gini_mean', attn_metrics['gini_mean'], epoch)
+            writer.add_scalar('attention/head_diversity_mean', attn_metrics['head_diversity_mean'], epoch)
+        else:
+            attn_metrics = history['attention_metrics'][-1]
         
         if val_acc > best_val_acc:
             best_val_acc = val_acc
@@ -294,7 +328,7 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         train_acc = epoch_correct / max(epoch_total, 1)
         print(f"  Epoch {epoch+1}: loss={epoch_loss/len(train_loader):.4f}, "
               f"train_acc={train_acc:.4f}, val_acc={val_acc:.4f}, "
-              f"entropy={history['attention_metrics'][-1]['entropy_mean']:.4f}")
+              f"entropy={attn_metrics['entropy_mean']:.4f}")
     
     # Final metrics
     final_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
@@ -332,7 +366,7 @@ def run_baseline_analysis():
     # Load EuroSAT for eval images
     train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
     eval_subset, eval_indices = create_fixed_eval_subset(test_dataset, num_samples=200, 
-                                                          num_classes=num_classes, seed=SEED)
+                                                          num_classes=num_classes, seed=EVAL_SUBSET_SEED)
     eval_loader = get_dataloader(eval_subset, batch_size=32, shuffle=False, num_workers=2)
     
     # Save eval indices
@@ -438,7 +472,7 @@ def run_baseline_analysis():
 
 def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=None,
                             weight_decay=0.01, freeze_layers=0, baseline_metrics=None,
-                            model_name=DEFAULT_MODEL_NAME):
+                            model_name=DEFAULT_MODEL_NAME, attention_eval_mode="step"):
     """Run Full Fine-tuning experiment."""
     set_seed(SEED)
 
@@ -463,7 +497,9 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
     config = {
         'method': 'full_ft', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': weight_decay,
-        'freeze_layers': freeze_layers, 'model_name': model_name
+        'freeze_layers': freeze_layers, 'model_name': model_name,
+        'num_classes': num_classes,
+        'attention_eval_mode': attention_eval_mode,
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader, 
@@ -477,7 +513,7 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
 
 def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
                          experiment_id=None, target_modules=None,
-                         model_name=DEFAULT_MODEL_NAME):
+                         model_name=DEFAULT_MODEL_NAME, attention_eval_mode="step"):
     """Run LoRA Fine-tuning experiment."""
     set_seed(SEED)
 
@@ -504,7 +540,8 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
         'method': 'lora', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'lora_r': lora_r, 'lora_alpha': 2*lora_r, 'target_modules': target_modules,
-        'model_name': model_name
+        'model_name': model_name, 'num_classes': num_classes,
+        'attention_eval_mode': attention_eval_mode,
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -518,7 +555,8 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
 
 def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
                                     dataset_name="eurosat", lr=1e-5, num_epochs=20,
-                                    experiment_id=None, model_name=DEFAULT_MODEL_NAME):
+                                    experiment_id=None, model_name=DEFAULT_MODEL_NAME,
+                                    attention_eval_mode="step"):
     """Run regularization experiment (APR or Entropy Floor)."""
     set_seed(SEED)
 
@@ -540,7 +578,8 @@ def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
         'method': f'full_ft+{reg_type}', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'reg_type': reg_type, 'lambda_reg': lambda_reg,
-        'model_name': model_name
+        'model_name': model_name, 'num_classes': num_classes,
+        'attention_eval_mode': attention_eval_mode,
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -589,7 +628,7 @@ def run_regularized_lora_experiment(dataset_name, reg_type, lambda_reg, baseline
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'lora_r': lora_r, 'lora_alpha': 2 * lora_r, 'target_modules': target_modules,
         'reg_type': reg_type, 'lambda_reg': lambda_reg,
-        'model_name': model_name,
+        'model_name': model_name, 'num_classes': num_classes,
     }
 
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -605,29 +644,54 @@ def run_regularized_lora_experiment(dataset_name, reg_type, lambda_reg, baseline
 
 
 def run_zero_shot_evaluation(model_path, config_override=None):
-    """Evaluate a checkpoint on zero-shot tasks using CLIP text encoder."""
-    # For zero-shot, we use CLIP's text-image matching
+    """Evaluate a checkpoint on zero-shot tasks using an adapter-aware image path."""
     from transformers import CLIPModel, CLIPProcessor
     
     print("  Running zero-shot evaluation...")
     
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
     clip_model = CLIPModel.from_pretrained(
-        "openai/clip-vit-base-patch32", attn_implementation="eager"
+        "openai/clip-vit-base-patch32",
+        attn_implementation="eager",
+        use_safetensors=True,
     ).to(DEVICE)
     
-    # If given a checkpoint, load vision model weights
+    image_feature_model = None
     if model_path and os.path.exists(model_path):
-        checkpoint = torch.load(model_path, map_location=DEVICE, weights_only=False)
-        # Only load vision model weights (may be partial)
-        state = checkpoint.get('model_state_dict', checkpoint)
-        vision_state = {k.replace('vision_model.', ''): v for k, v in state.items() 
-                       if k.startswith('vision_model.')}
-        if vision_state:
-            clip_model.vision_model.load_state_dict(vision_state, strict=False)
+        image_feature_model, _, config = load_classifier_from_checkpoint(model_path, map_location=DEVICE)
+        model_name = config.get("model_name", DEFAULT_MODEL_NAME)
+        if model_name != DEFAULT_MODEL_NAME:
+            processor = CLIPProcessor.from_pretrained(model_name)
+            clip_model = CLIPModel.from_pretrained(
+                model_name,
+                attn_implementation="eager",
+                use_safetensors=True,
+            ).to(DEVICE)
     
     clip_model.eval()
     results = {}
+
+    def encode_text(inputs):
+        text_outputs = clip_model.text_model(
+            input_ids=inputs["input_ids"],
+            attention_mask=inputs.get("attention_mask"),
+            output_attentions=False,
+        )
+        return clip_model.text_projection(text_outputs.pooler_output)
+
+    def encode_images(pixel_values):
+        if image_feature_model is None:
+            vision_outputs = clip_model.vision_model(
+                pixel_values=pixel_values,
+                output_attentions=False,
+            )
+            return clip_model.visual_projection(vision_outputs.pooler_output)
+
+        vision_outputs = image_feature_model.vision_model(
+            pixel_values=pixel_values,
+            output_attentions=False,
+        )
+        return image_feature_model.visual_projection(vision_outputs.pooler_output)
     
     # Evaluate on CIFAR-100
     try:
@@ -641,7 +705,7 @@ def run_zero_shot_evaluation(model_path, config_override=None):
         ).to(DEVICE)
         
         with torch.no_grad():
-            text_features = clip_model.get_text_features(**text_inputs)
+            text_features = encode_text(text_inputs)
             text_features = text_features / text_features.norm(dim=-1, keepdim=True)
         
         correct = 0
@@ -649,7 +713,7 @@ def run_zero_shot_evaluation(model_path, config_override=None):
         for images, labels in cifar_loader:
             images = images.to(DEVICE)
             with torch.no_grad():
-                image_features = clip_model.get_image_features(pixel_values=images)
+                image_features = encode_images(images)
                 image_features = image_features / image_features.norm(dim=-1, keepdim=True)
                 similarity = (image_features @ text_features.T)
                 predicted = similarity.argmax(dim=-1)
@@ -664,6 +728,8 @@ def run_zero_shot_evaluation(model_path, config_override=None):
         print(f"    CIFAR-100 evaluation failed: {e}")
         results['cifar100'] = None
     
+    if image_feature_model is not None:
+        del image_feature_model
     del clip_model
     torch.cuda.empty_cache()
     return results
