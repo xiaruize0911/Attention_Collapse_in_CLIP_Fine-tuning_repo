@@ -10,7 +10,9 @@ import sys
 import time
 import datetime
 import copy
+from contextlib import nullcontext
 from pathlib import Path
+from torch.utils.data import Subset
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import CosineAnnealingLR, LambdaLR
 from tqdm import tqdm
@@ -22,16 +24,30 @@ from src.dataset import (load_eurosat, load_oxford_pets, create_fixed_eval_subse
 from src.metrics import compute_all_metrics, compute_attention_rollout
 from src.regularizer import AttentionPreservationRegularizer, EntropyFloorRegularizer
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available():
+    DEVICE = torch.device("cuda")
+elif torch.backends.mps.is_available():
+    DEVICE = torch.device("mps")
+else:
+    DEVICE = torch.device("cpu")
 SEED = 42
 OUTPUT_DIR = Path("outputs")
 
 
 def set_seed(seed=42):
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     torch.backends.cudnn.deterministic = True
+
+
+def empty_device_cache():
+    """Release accelerator caches without assuming a CUDA host."""
+    if DEVICE.type == "cuda":
+        torch.cuda.empty_cache()
+    elif DEVICE.type == "mps":
+        torch.mps.empty_cache()
 
 
 def compute_metrics_on_eval(model, eval_loader, device):
@@ -99,13 +115,15 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
     
     scheduler = LambdaLR(optimizer, lr_lambda)
     criterion = nn.CrossEntropyLoss()
-    scaler = torch.amp.GradScaler()
+    use_cuda_amp = DEVICE.type == "cuda"
+    scaler = torch.amp.GradScaler("cuda", enabled=use_cuda_amp)
     
     # Results tracking
     history = {
         'train_loss': [], 'train_acc': [], 'val_acc': [],
         'attention_metrics': [], 'steps': [], 'epochs': []
     }
+    attention_eval_mode = config.get('attention_eval_mode', 'step')
     
     checkpoint_dir = OUTPUT_DIR / "checkpoints" / experiment_id
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
@@ -139,7 +157,11 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         for batch_idx, (images, labels) in enumerate(pbar):
             images, labels = images.to(DEVICE), labels.to(DEVICE)
             
-            with torch.amp.autocast(device_type='cuda', dtype=torch.float16):
+            amp_context = (
+                torch.amp.autocast(device_type="cuda", dtype=torch.float16)
+                if use_cuda_amp else nullcontext()
+            )
+            with amp_context:
                 logits, attentions = model(images, output_attentions=True)
                 loss = criterion(logits, labels)
                 
@@ -171,34 +193,35 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
             log_interval = max(1, len(train_loader) // 5)  # ~5 times per epoch
             if step % log_interval == 0:
                 train_acc = epoch_correct / max(epoch_total, 1)
-                
-                # Compute attention metrics on fixed eval set
-                attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
-                model.train()  # Switch back to train mode
+                attn_metrics = None
+
+                if attention_eval_mode == 'step':
+                    attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
+                    model.train()  # Switch back to train mode
                 
                 # TensorBoard logging
                 writer.add_scalar('train/loss', loss.item(), step)
                 writer.add_scalar('train/accuracy', train_acc, step)
                 writer.add_scalar('train/lr', optimizer.param_groups[0]['lr'], step)
                 
-                for layer_idx in range(12):
-                    writer.add_scalar(f'attention/entropy_layer_{layer_idx}',
-                                     attn_metrics['entropy_per_layer'][layer_idx], step)
-                    writer.add_scalar(f'attention/erf95_layer_{layer_idx}',
-                                     attn_metrics['erf95_per_layer'][layer_idx], step)
-                    writer.add_scalar(f'attention/gini_layer_{layer_idx}',
-                                     attn_metrics['gini_per_layer'][layer_idx], step)
-                
-                writer.add_scalar('attention/entropy_mean', attn_metrics['entropy_mean'], step)
-                writer.add_scalar('attention/erf95_mean', attn_metrics['erf95_mean'], step)
-                writer.add_scalar('attention/gini_mean', attn_metrics['gini_mean'], step)
-                writer.add_scalar('attention/head_diversity_mean', attn_metrics['head_diversity_mean'], step)
-                
-                # Record history
-                history['steps'].append(step)
-                history['train_loss'].append(loss.item())
-                history['train_acc'].append(train_acc)
-                history['attention_metrics'].append(attn_metrics)
+                if attn_metrics is not None:
+                    for layer_idx in range(12):
+                        writer.add_scalar(f'attention/entropy_layer_{layer_idx}',
+                                         attn_metrics['entropy_per_layer'][layer_idx], step)
+                        writer.add_scalar(f'attention/erf95_layer_{layer_idx}',
+                                         attn_metrics['erf95_per_layer'][layer_idx], step)
+                        writer.add_scalar(f'attention/gini_layer_{layer_idx}',
+                                         attn_metrics['gini_per_layer'][layer_idx], step)
+
+                    writer.add_scalar('attention/entropy_mean', attn_metrics['entropy_mean'], step)
+                    writer.add_scalar('attention/erf95_mean', attn_metrics['erf95_mean'], step)
+                    writer.add_scalar('attention/gini_mean', attn_metrics['gini_mean'], step)
+                    writer.add_scalar('attention/head_diversity_mean', attn_metrics['head_diversity_mean'], step)
+
+                    history['steps'].append(step)
+                    history['train_loss'].append(loss.item())
+                    history['train_acc'].append(train_acc)
+                    history['attention_metrics'].append(attn_metrics)
                 
                 # JSONL log
                 log_entry = {
@@ -206,7 +229,10 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
                     "train_loss": loss.item(), "train_accuracy": train_acc,
                     "attention_metrics": attn_metrics,
                     "lr": optimizer.param_groups[0]['lr'],
-                    "gpu_memory_gb": round(torch.cuda.memory_allocated() / 1024**3, 2),
+                    "gpu_memory_gb": (
+                        round(torch.cuda.memory_allocated() / 1024**3, 2)
+                        if DEVICE.type == "cuda" else None
+                    ),
                 }
                 with open(log_path, 'a') as f:
                     json.dump(log_entry, f)
@@ -222,6 +248,15 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         history['epochs'].append(epoch)
         
         writer.add_scalar('eval/accuracy', val_acc, epoch)
+
+        if attention_eval_mode == 'epoch':
+            attn_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
+            history['steps'].append(step)
+            history['train_loss'].append(epoch_loss / max(len(train_loader), 1))
+            history['train_acc'].append(epoch_correct / max(epoch_total, 1))
+            history['attention_metrics'].append(attn_metrics)
+        else:
+            attn_metrics = history['attention_metrics'][-1]
         
         if val_acc > best_val_acc:
             best_val_acc = val_acc
@@ -234,7 +269,7 @@ def train_one_experiment(config, model, train_loader, val_loader, eval_loader,
         train_acc = epoch_correct / max(epoch_total, 1)
         print(f"  Epoch {epoch+1}: loss={epoch_loss/len(train_loader):.4f}, "
               f"train_acc={train_acc:.4f}, val_acc={val_acc:.4f}, "
-              f"entropy={history['attention_metrics'][-1]['entropy_mean']:.4f}")
+              f"entropy={attn_metrics['entropy_mean']:.4f}")
     
     # Final metrics
     final_metrics = compute_metrics_on_eval(model, eval_loader, DEVICE)
@@ -371,13 +406,14 @@ def run_baseline_analysis():
     print(f"  Per-layer ERF@0.95: {[f'{e:.3f}' for e in baseline_metrics['erf95_per_layer']]}")
     
     del model
-    torch.cuda.empty_cache()
+    empty_device_cache()
     
     return baseline_result
 
 
 def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=None,
-                            weight_decay=0.01, freeze_layers=0, baseline_metrics=None):
+                            weight_decay=0.01, freeze_layers=0, baseline_metrics=None,
+                            attention_eval_mode="step", max_train_samples=None):
     """Run Full Fine-tuning experiment."""
     set_seed(SEED)
     
@@ -385,6 +421,11 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
         train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
     else:
         train_dataset, test_dataset, num_classes, class_names = load_oxford_pets(cache_dir="./data")
+
+    if max_train_samples is not None and max_train_samples < len(train_dataset):
+        rng = np.random.RandomState(SEED)
+        indices = rng.choice(len(train_dataset), size=max_train_samples, replace=False)
+        train_dataset = Subset(train_dataset, indices.tolist())
     
     if experiment_id is None:
         experiment_id = f"full_ft_{dataset_name}_lr{lr}"
@@ -410,7 +451,9 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
     config = {
         'method': 'full_ft', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': weight_decay,
-        'freeze_layers': freeze_layers, 'model_name': 'openai/clip-vit-base-patch32'
+        'freeze_layers': freeze_layers, 'model_name': 'openai/clip-vit-base-patch32',
+        'attention_eval_mode': attention_eval_mode,
+        'max_train_samples': max_train_samples,
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader, 
@@ -418,12 +461,13 @@ def run_full_ft_experiment(dataset_name, lr=1e-5, num_epochs=20, experiment_id=N
     writer.close()
     
     del model
-    torch.cuda.empty_cache()
+    empty_device_cache()
     return history
 
 
 def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
-                         experiment_id=None, target_modules=None):
+                         experiment_id=None, target_modules=None,
+                         attention_eval_mode="step", max_train_samples=None):
     """Run LoRA Fine-tuning experiment."""
     set_seed(SEED)
     
@@ -431,6 +475,11 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
         train_dataset, test_dataset, num_classes, class_names = load_eurosat(cache_dir="./data")
     else:
         train_dataset, test_dataset, num_classes, class_names = load_oxford_pets(cache_dir="./data")
+
+    if max_train_samples is not None and max_train_samples < len(train_dataset):
+        rng = np.random.RandomState(SEED)
+        indices = rng.choice(len(train_dataset), size=max_train_samples, replace=False)
+        train_dataset = Subset(train_dataset, indices.tolist())
     
     if experiment_id is None:
         experiment_id = f"lora_r{lora_r}_{dataset_name}_lr{lr}"
@@ -458,7 +507,9 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
         'method': 'lora', 'dataset': dataset_name, 'lr': lr,
         'num_epochs': num_epochs, 'batch_size': 64, 'weight_decay': 0.01,
         'lora_r': lora_r, 'lora_alpha': 2*lora_r, 'target_modules': target_modules,
-        'model_name': 'openai/clip-vit-base-patch32'
+        'model_name': 'openai/clip-vit-base-patch32',
+        'attention_eval_mode': attention_eval_mode,
+        'max_train_samples': max_train_samples,
     }
     
     history = train_one_experiment(config, model, train_loader, val_loader,
@@ -466,7 +517,7 @@ def run_lora_experiment(dataset_name, lora_r=8, lr=1e-4, num_epochs=20,
     writer.close()
     
     del model
-    torch.cuda.empty_cache()
+    empty_device_cache()
     return history
 
 
@@ -528,7 +579,7 @@ def run_regularization_experiment(reg_type, lambda_reg, baseline_metrics,
     if reg_type == "apr":
         del regularizer.pretrained_model
     del model
-    torch.cuda.empty_cache()
+    empty_device_cache()
     return history
 
 
@@ -593,7 +644,7 @@ def run_zero_shot_evaluation(model_path, config_override=None):
         results['cifar100'] = None
     
     del clip_model
-    torch.cuda.empty_cache()
+    empty_device_cache()
     return results
 
 
@@ -602,7 +653,7 @@ def run_zero_shot_evaluation(model_path, config_override=None):
 # =====================================================
 def main():
     set_seed(SEED)
-    os.chdir("/workspace/project")
+    os.chdir(Path(__file__).resolve().parent)
     
     start_time = time.time()
     all_results = {}
