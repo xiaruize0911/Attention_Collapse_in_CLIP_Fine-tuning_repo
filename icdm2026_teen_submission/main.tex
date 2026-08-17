@@ -1,0 +1,177 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{balance}
+\usepackage{placeins}
+
+\hypersetup{
+    pdftitle={What to Watch While Fine-Tuning CLIP: Attention Drift Describes the Change, Representation Drift Predicts the Damage},
+    pdfauthor={Ruize Xia},
+    pdfkeywords={CLIP, attention, fine-tuning, LoRA, catastrophic forgetting, vision transformers}
+}
+
+\title{What to Watch While Fine-Tuning CLIP:\\
+Attention Drift Describes the Change,\\
+Representation Drift Predicts the Damage}
+
+\author{\IEEEauthorblockN{Ruize Xia}
+\IEEEauthorblockA{\textit{High School Student, Nanjing Foreign Language School}\\
+Nanjing, Jiangsu, China\\
+xiaruize0911@gmail.com}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Fine-tuning CLIP raises target accuracy and destroys part of its zero-shot ability, but the damage is normally discovered only by running a held-out benchmark afterwards. We ask whether it can be seen from the inside, from unlabeled target images alone. Six label-free signals are compared as predictors of how much CIFAR-100 zero-shot accuracy a run will lose, from CLS-attention entropy, effective receptive field and Gini to layerwise CKA, embedding drift and relative weight change. The grid crosses two datasets, full fine-tuning against LoRA, four matched learning rates and three seeds, with validation carved out of training so the test split is read once per run. Learning rate, not method identity, is the first-order control on structure: full fine-tuning moves from attention broadening to contraction as the rate rises, whereas LoRA stays broadening on EuroSAT. The predictive picture splits in two. Within one dataset, method and backbone the signed entropy change tracks forgetting closely --- best of any signal we measured, though in the one group with almost no forgetting to track it is the weakest; across configurations its \emph{sign} does not travel --- it is positive in one of four backbone-method groups and negative in the rest, where layerwise CKA is positive in all four --- so choosing a configuration by attention drift can be worse than choosing at random. Representation probes work in both regimes, after a single epoch. Per-run records and a script that regenerates every number accompany the paper.
+\end{abstract}
+
+\begin{IEEEkeywords}
+CLIP, attention, fine-tuning, LoRA, catastrophic forgetting, vision transformers
+\end{IEEEkeywords}
+
+\section{Introduction}
+CLIP acquires broadly transferable visual features from natural-language supervision \cite{radford2021learning}, and fine-tuning trades some of that generality for target-task accuracy \cite{kumar2022finetuning}. The size of the trade is normally learned after the fact, by evaluating on a benchmark that represents the pretraining distribution --- an evaluation that is expensive and often simply unavailable, since someone fine-tuning CLIP on their own satellite imagery has no reason to keep a general-purpose benchmark, and no labels for one.
+
+This paper asks a practical question: can the damage be measured from the inside, from unlabeled target images alone, before the benchmark is run? A candidate answer motivated this project. CLIP's CLS-to-patch attention visibly contracts when the model is fine-tuned aggressively, and the contraction is milder under low-rank adaptation, which suggests using attention drift as a warning light. We test that candidate against alternatives, and the answer is more interesting than the hypothesis.
+
+\textbf{Contributions.}
+\begin{enumerate}
+    \item A leakage-free replication of the dose-response between optimization scale and attention drift, with per-run records kept so every number can be recomputed (48 matched runs plus reference configurations, 66 in total, all on one laptop GPU).
+    \item A head-to-head evaluation of label-free drift signals as \emph{predictors} of zero-shot forgetting, under three tests: rank correlation across runs, an early-warning variant that sees only the first epoch, and a decision test that picks a configuration using the signal alone.
+    \item A result that corrects our own premise in a specific way: attention drift predicts forgetting well \emph{within} a fixed dataset and method, where its sign is constant, and poorly \emph{across} configurations, where its sign is not --- so it is a dose meter, not a damage meter.
+    \item Reference configurations (linear probe, last-block) and a frozen-projection LoRA ablation separating encoder damage from projection damage.
+\end{enumerate}
+
+\section{Related Work}
+\textbf{Adapting CLIP without breaking it.}
+Ordinary fine-tuning distorts pretrained features and degrades out-of-distribution behaviour \cite{kumar2022finetuning}. Remedies act on the weights or the objective: interpolation between zero-shot and fine-tuned models \cite{wortsman2022robust}, task arithmetic \cite{ilharco2023editing}, fine-tuning with the pretraining loss \cite{goyal2023finetune}, and low-rank adaptation \cite{hu2022lora}. All are evaluated by end-state accuracy on held-out benchmarks; we ask instead what can be measured \emph{during} adaptation from unlabeled target images.
+
+\textbf{What the signals come from.}
+Vision transformers expose attention over spatial tokens \cite{dosovitskiy2021image}, but attention weights are not causal explanations \cite{jain2019attention,wiegreffe2019attention}, so we treat them purely as a measured property. Zhai et al.\ show that collapsing attention entropy accompanies unstable transformer \emph{training} \cite{zhai2023stabilizing}; we ask whether the same statistic tracks damage during \emph{adaptation}. Because concentrated attention is itself normal in trained transformers \cite{xiao2024efficient,darcet2024vision}, we always report change relative to the pretrained model. On the representation side, centered kernel alignment compares models \cite{kornblith2019similarity}, and the projection norm predicts out-of-distribution \emph{error} from the size of a weight update \cite{yu2022predicting}. We ask the complementary question --- which internal signal best predicts the \emph{loss of pretrained} capability --- and put attention, representation and weight drift on one footing.
+
+\section{Method}
+\subsection{Label-Free Drift Signals}
+All signals are computed on one fixed set of unlabeled target-domain images, the \emph{probe set}, so each is available to a practitioner who has only the data they are already fine-tuning on.
+
+For block $\ell$, head $h$ and probe image, let $a_{\ell h}$ be the CLS attention over the patch tokens ($7\times7$ for ViT-B/32, $14\times14$ for the ViT-B/16 check), renormalised after removing CLS self-attention. Entropy in nats is
+\begin{equation}
+H(a_{\ell h})=-\sum_{j=1}^{49}a_{\ell hj}\log a_{\ell hj},
+\end{equation}
+averaged over images, heads and the 12 blocks. ERF@0.95 is the fraction of the 49 patches needed, in descending order of attention, to reach 95\% of the mass; the Gini coefficient measures concentration. For any quantity $M$, drift is the relative change from the pretrained model, $\Delta M=100(M_{\mathrm{adapted}}-M_{\mathrm{pretrained}})/M_{\mathrm{pretrained}}$. We report $\Delta H$ averaged over blocks and $\Delta H_{12}$ for the last block, since averaging cancels opposite-signed changes.
+
+Three non-attention signals compete. \emph{Relative weight change} is $\lVert\Delta W\rVert_{2}/\lVert W_{0}\rVert_{2}$ over the visual encoder; for LoRA, $\Delta W$ is the scaled adapter product $\tfrac{\alpha}{r}BA$, so both methods are expressed on one scale, and no forward pass is needed at all. \emph{Embedding drift} is $1-\cos(z_{0},z)$ between pretrained and current image embeddings on the probe set. \emph{CKA} is the mean linear centered kernel alignment \cite{kornblith2019similarity} between pretrained and current CLS activations, block by block. Target-task training loss and target-task accuracy are included as baselines; the latter is the only signal in the comparison that requires labels.
+
+\subsection{Study A: Large Matched-Learning-Rate Grid}
+Study A fully crosses two datasets (EuroSAT \cite{helber2019eurosat}, Oxford-IIIT Pets \cite{parkhi2012cats}), two methods, four shared learning rates $\{10^{-6},5\!\cdot\!10^{-6},10^{-5},5\!\cdot\!10^{-5}\}$ and five seeds --- 80 runs on the complete training splits, 20 epochs for EuroSAT and 30 for Pets at batch size 64. It establishes the dose-response at full data scale. Its protocol has one weakness that Study B removes: the provided test split also supplied the epoch-selection signal, so its accuracies are optimistic and we draw no accuracy conclusion from it alone.
+
+\subsection{Study B: Protocol-Hardened Grid}
+Study B repeats the design with a leakage-free protocol, adds reference points, and records every signal at every epoch. Validation images (300 for EuroSAT, 370 for Pets) and the unlabeled probe set (200 and 222 images) are carved out of the training split and are disjoint from the training subset; the provided test split is read exactly once per run, at the epoch with the best validation accuracy. Training uses a fixed class-balanced subset (1{,}600 and 1{,}480 images), batch size 32, six epochs, AdamW with weight decay 0.01, 5\% linear warmup with cosine decay, and gradient clipping at 1.0. Because the schedule is shorter than Study A's, the matched grid is shifted to $\{3\!\cdot\!10^{-6},10^{-5},3\!\cdot\!10^{-5},10^{-4}\}$ so that it spans the same qualitative range, from barely adapted to visibly damaged. Seeds are $\{7,11,19\}$. One record per run is written to disk, including the per-epoch history, and one script recomputes every table and figure here from those records. Study~A's per-run logs were produced on other hardware and are no longer available, so its numbers appear only as cell means, released as a table with the paper.
+
+Both studies use \texttt{openai/clip-vit-base-patch32} with the text encoder frozen. Full FT updates the visual encoder, the visual projection and a linear classifier; LoRA inserts rank-8 updates ($\alpha=16$, dropout 0.05) into every visual query and value projection and also trains the projection and classifier. Three reference configurations bracket the comparison: a \emph{linear probe} (encoder and projection frozen), \emph{last-block} fine-tuning (final block plus the output layer norm), and \emph{LoRA with a frozen visual projection}, which isolates the encoder's share of LoRA's transfer advantage.
+
+\subsection{What the Signals Must Predict}
+Zero-shot transfer is evaluated through the live, adapter-active image encoder: the selected model's own visual pathway produces the image embedding, which is matched against text embeddings of ``a photo of a \{class\}.'' Evaluating a LoRA checkpoint through an unmodified CLIP instance instead silently reports the pretrained score, an error that is easy to make and invisible in the output. We report CIFAR-100 \cite{krizhevsky2009learning} (all 10{,}000 test images) and CIFAR-10 (2{,}000 balanced images) as \emph{retention}, the percentage of pretrained CLIP's accuracy that survives; pretrained CLIP scores 61.33\% and 87.40\%.
+
+A signal is judged by how well it \emph{ranks} runs by their eventual forgetting (Spearman correlation with CIFAR-100 retention), by the same correlation using only its value after the first epoch, and by a decision test: among the runs within two points of the best \emph{validation} accuracy, pick the one the signal likes best and measure how much of the achievable retention that choice captures.
+
+\section{Results}
+\subsection{Optimization Scale Dominates Method Identity}
+Fig.~\ref{fig:dose} and Table~\ref{tab:grid} show the grid: learning rate moves every quantity we measure, and moves it in opposite directions for the two methods. On EuroSAT, Full FT \emph{broadens} attention at the smallest matched rate (1.53\,$\pm$\,0.25\%), is neutral in the middle of the grid (+0.06\%) and contracts at the largest (-2.34\%); the trend is monotone in the rate (Spearman $\rho=-0.972$, $p=1.4\!\cdot\!10^{-7}$). LoRA does the reverse: its entropy \emph{rises} with the learning rate, from +0.01\% to +0.98\% ($\rho=0.972$). Pets is more contractive throughout: Full FT falls from -0.62\% to -3.23\% and LoRA from -0.00\% to -0.35\%.
+
+Transfer moves in one direction only. CIFAR-100 retention falls with the learning rate in three of the four groups (Spearman $\rho=-0.972$ in each), from 55.0\% to 3.7\% for EuroSAT Full FT and from 99.6\% to 86.4\% for LoRA. The exception is LoRA on Pets, which is so conservative that it forgets almost nothing anywhere in the grid (100.0\% to 97.7\%, $\rho=-0.324$, $p=0.30$). The two facts together already show that entropy change cannot be read as a damage meter: on EuroSAT the two methods pass through the same $\Delta H\approx+1\%$ at very different levels of forgetting.
+
+Paired over identical (learning rate, seed) cells, LoRA keeps 64.2 percentage points more of pretrained CIFAR-100 accuracy than Full FT on EuroSAT ($p=2.0\!\cdot\!10^{-7}$ after Holm correction, $|d_z|=4.14$) and 62.5 points more on Pets ($p=2.9\!\cdot\!10^{-5}$). It also stays closer to the pretrained representation (mean CKA higher by 0.164, $p=3.4\!\cdot\!10^{-12}$). The attention statistic is the weakest discriminator of the two methods and the only one whose verdict depends on the dataset: on EuroSAT the paired difference in $\Delta H$ is 0.41 points at $p=0.49$, while on Pets it is 1.63 points at $p=3.2\!\cdot\!10^{-4}$.
+
+At each method's own best-validation operating point the trade-off is stark rather than subtle. On EuroSAT, Full FT selects $10^{-5}$ and reaches 97.19\% test accuracy with 41.2\% retention, while LoRA selects $10^{-4}$ and reaches 95.16\% with 86.4\%. On Pets, LoRA is better on \emph{both} axes: 89.88\% versus 88.26\% target accuracy and 97.7\% versus 21.8\% retention.
+
+Study~A agrees at a different data scale and rate range --- EuroSAT Full FT moved from $+1.83\%$ entropy at $10^{-6}$ to $-3.99\%$ at $5\!\cdot\!10^{-5}$ while LoRA stayed positive, and grid-averaged CIFAR-100 accuracy was 11.3\% against 45.1\% for LoRA --- so both effects survive a protocol that removes the leak.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.78\textwidth]{figures/study2_dose_response.png}
+    \caption{Study~B dose-response; means over three seeds, bands one SD, dotted line the linear-probe reference. Full fine-tuning crosses from attention broadening to contraction (centre) while LoRA's entropy \emph{rises} with the learning rate, yet retention (right) falls monotonically for both --- so equal forgetting corresponds to opposite-signed entropy changes.}
+    \label{fig:dose}
+\end{figure*}
+
+\begin{table*}[t]
+\caption{Study~B matched-learning-rate grid: mean $\pm$ across-seed SD over $n$ seeds. $\Delta H$ is the block-averaged entropy change from pretrained CLIP, $\Delta H_{12}$ the last-block change; retention is the surviving percentage of pretrained zero-shot accuracy (61.33\% on CIFAR-100; CIFAR-10 tracks it closely, 87.40\% pretrained). Test accuracy is read once, at the validation-selected epoch.}
+\label{tab:grid}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{llrrrrrr}
+\toprule
+Dataset & Method & LR & $n$ & Test acc.\ (\%) & $\Delta H$ (\%) & $\Delta H_{12}$ (\%) & C100 ret.\ (\%) \\
+\midrule
+EuroSAT & Full FT & $3\!\cdot\!10^{-6}$ & 3 & 96.81\,$\pm$\,0.07 & 1.53\,$\pm$\,0.25 & 3.39\,$\pm$\,0.38 & 55.03\,$\pm$\,4.33 \\
+EuroSAT & Full FT & $10^{-5}$ & 3 & 97.19\,$\pm$\,0.33 & 0.99\,$\pm$\,0.17 & 1.24\,$\pm$\,0.36 & 41.15\,$\pm$\,2.31 \\
+EuroSAT & Full FT & $3\!\cdot\!10^{-5}$ & 3 & 95.98\,$\pm$\,1.36 & 0.06\,$\pm$\,0.21 & -2.39\,$\pm$\,0.48 & 22.27\,$\pm$\,4.52 \\
+EuroSAT & Full FT & $10^{-4}$ & 3 & 94.02\,$\pm$\,0.43 & -2.34\,$\pm$\,0.40 & -7.75\,$\pm$\,2.87 & 3.65\,$\pm$\,0.62 \\
+EuroSAT & LoRA r=8 & $3\!\cdot\!10^{-6}$ & 3 & 45.54\,$\pm$\,0.80 & 0.01\,$\pm$\,0.02 & 0.00\,$\pm$\,0.08 & 99.65\,$\pm$\,0.42 \\
+EuroSAT & LoRA r=8 & $10^{-5}$ & 3 & 78.83\,$\pm$\,1.54 & 0.16\,$\pm$\,0.07 & 0.37\,$\pm$\,0.33 & 98.18\,$\pm$\,0.69 \\
+EuroSAT & LoRA r=8 & $3\!\cdot\!10^{-5}$ & 3 & 91.73\,$\pm$\,0.19 & 0.71\,$\pm$\,0.08 & 2.04\,$\pm$\,0.38 & 94.52\,$\pm$\,0.41 \\
+EuroSAT & LoRA r=8 & $10^{-4}$ & 3 & 95.16\,$\pm$\,0.44 & 0.98\,$\pm$\,0.03 & 1.71\,$\pm$\,0.27 & 86.44\,$\pm$\,1.09 \\
+Oxford-IIIT Pets & Full FT & $3\!\cdot\!10^{-6}$ & 3 & 75.82\,$\pm$\,2.47 & -0.62\,$\pm$\,0.26 & -4.95\,$\pm$\,0.38 & 73.54\,$\pm$\,5.71 \\
+Oxford-IIIT Pets & Full FT & $10^{-5}$ & 3 & 87.72\,$\pm$\,0.20 & -1.23\,$\pm$\,0.26 & -6.97\,$\pm$\,0.48 & 44.17\,$\pm$\,8.87 \\
+Oxford-IIIT Pets & Full FT & $3\!\cdot\!10^{-5}$ & 3 & 88.26\,$\pm$\,0.26 & -1.90\,$\pm$\,0.22 & -10.30\,$\pm$\,0.62 & 21.83\,$\pm$\,3.98 \\
+Oxford-IIIT Pets & Full FT & $10^{-4}$ & 3 & 79.10\,$\pm$\,0.49 & -3.23\,$\pm$\,0.20 & -18.51\,$\pm$\,1.29 & 9.16\,$\pm$\,1.96 \\
+Oxford-IIIT Pets & LoRA r=8 & $3\!\cdot\!10^{-6}$ & 3 & 6.23\,$\pm$\,0.93 & -0.00\,$\pm$\,0.00 & -0.01\,$\pm$\,0.02 & 99.98\,$\pm$\,0.27 \\
+Oxford-IIIT Pets & LoRA r=8 & $10^{-5}$ & 3 & 26.56\,$\pm$\,1.50 & -0.00\,$\pm$\,0.01 & -0.08\,$\pm$\,0.10 & 100.11\,$\pm$\,0.62 \\
+Oxford-IIIT Pets & LoRA r=8 & $3\!\cdot\!10^{-5}$ & 3 & 71.75\,$\pm$\,1.42 & -0.11\,$\pm$\,0.06 & -2.03\,$\pm$\,0.47 & 100.82\,$\pm$\,1.77 \\
+Oxford-IIIT Pets & LoRA r=8 & $10^{-4}$ & 3 & 89.88\,$\pm$\,0.47 & -0.35\,$\pm$\,0.08 & -5.94\,$\pm$\,0.44 & 97.70\,$\pm$\,1.78 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{What Attention Drift Does and Does Not Predict}
+Which signal ranks candidate runs by the accuracy they will lose (Fig.~\ref{fig:predictors})? The upper bound is a signal that is \emph{not} label-free: a 1{,}000-image labelled subset of the evaluation set itself, read after one epoch, at $\rho=0.967$. Layerwise CKA comes closest without labels (0.960), then embedding drift (-0.919), then a group of $|\Delta$Gini$|$ (-0.844), relative weight change (-0.837) and $|\Delta H|$ (-0.836). Target-task accuracy, which needs labels, manages only -0.606, and the \emph{signed} entropy change --- the quantity our earlier work reported --- only 0.361.
+
+How much of that ordering is resolvable? Runs inside a cell share a configuration, so resampling runs would treat seeds as independent evidence and shrink every interval; resampling the 16 cell means instead, only the extremes separate. Of eleven paired comparisons, CKA's advantage excludes zero against signed $\Delta H$ (+0.601, 95\% CI [0.149, 0.948]) and $|\Delta H_{12}|$ (+0.226 [0.030, 0.573]) but \emph{not} against embedding drift, $|\Delta H|$ or the weight norm (+0.144 [-0.018, 0.424]). At this sample size the attention magnitude is no better than a weight norm that needs no images, and both trail the representation probes on point estimates only.
+
+The ordering reverses inside a single dataset and method, where only the learning rate varies --- and that is the shape of the whole result. There the \emph{signed} entropy change is the best signal in the study (mean $|\rho|$ 0.860 over the four groups), ahead of the weight norm (0.823), the log learning rate alone (0.810), CKA (0.787) and its own magnitude (0.656). Attention drift is a good \emph{dose} meter where its sign is constant and a poor \emph{damage} meter where it is not. A check on ViT-B/16 (EuroSAT, the same three rates) shows how little that sign travels. Inside each of the four backbone$\times$method groups the signed entropy change tracks retention strongly, but its \emph{sign} is positive only for ViT-B/32 full fine-tuning (+0.94) and negative for the other three (-0.95, -0.80, -1.00), where CKA is positive in all four (+0.89 to +1.00) and the weight norm negative in all four. Strength is portable; polarity is not, and it is not predictable from the method or the architecture alone.
+
+The cost shows up in a decision. Among the 8 EuroSAT runs within two points of the best \emph{validation} accuracy, spanning 17.1--58.1\% retention with 41.2\% for a random pick, embedding drift and the weight norm pick 56.9\%, CKA 50.1\%, and the smallest $|\Delta H|$ only 24.0\% --- worse than random, because the pool spans the rate at which drift crosses zero. On Pets the same rule makes $|\Delta H|$ the best choice (99.7\%). Across validation bands of one, two, three and five points --- eight (dataset, band) cases --- only CKA and embedding drift never fail, landing at or near the oracle in all eight (worst case 50.1\% against an oracle of 58.1\%). Each cheap alternative fails on one dataset: $|\Delta H|$ stays below a random pick in every EuroSAT band, and the weight norm never exceeds 38.8\% on Pets, where 99.7\% was available.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{figures/study2_predictor_bars.png}
+    \caption{Ranking runs by the CIFAR-100 accuracy they will lose: $|\rho|$ over all core runs, at the end of training (dark) and after one epoch (light). Bars are missing where a signal has no epoch-1 counterpart. $^{*}$not label-free: the labelled probe needs a slice of the benchmark, the learning rate is a setting rather than a measurement. Read across configurations like this, the attention statistics are mid-pack and the \emph{signed} entropy change is near-useless --- but see the text for the reversal within a fixed configuration.}
+    \label{fig:predictors}
+\end{figure}
+
+All of this survives being read early. Run on what is known after the first of six epochs, CKA reaches $\rho=0.959$ and the weight norm $-0.906$ against \emph{final} retention. Asked to separate the 6 configurations that end below 50\% retention from the 10 that do not --- counting configurations rather than runs, for the reason above --- embedding drift and CKA are already perfect (AUC 1.00), the weight norm nearly so (0.98), and signed drift close to chance (0.68); these are upper bounds, since each signal's direction is oriented using the outcome.
+
+\subsection{What Attention Drift Is Still Good For}
+Attention drift answers a different question: it says \emph{where} the adaptation happened. The $\Delta H_{12}$ column of Table~\ref{tab:grid} shows the change concentrating in the last block under Full FT and growing with the rate, -7.7\% on EuroSAT and -18.5\% on Pets against block averages of -2.3\% and -3.2\%, while the first four blocks stay within 1.8\% of pretrained. It is a good structural descriptor and method fingerprint, just not a damage meter.
+
+\subsection{The Trade-off Is a Frontier}
+The reference configurations turn the method comparison into a frontier. The linear probe is first a positive control --- a frozen encoder must show zero drift and full retention, and it does, at $\Delta H=+0.00\%$ and 100.0\% for 85.1\% accuracy. Ordering every configuration by accuracy and retention, six are non-dominated on EuroSAT and they span all four families, from Full FT at $10^{-5}$ (97.2/41.2) through LoRA at $10^{-4}$ (95.2/86.4) and last-block at $10^{-5}$ (88.6/97.1) to the linear probe. On Pets \emph{no} Full FT configuration is non-dominated, because LoRA at $10^{-4}$ beats all four on both axes at once (89.9/97.7 against at best 88.3/21.8), and on both datasets the underfitting LoRA cells are dominated by the linear probe: preserved structure only counts when the target task was learned.
+
+The frontier also explains why a weight-norm shortcut cannot generalise across families. Last-block fine-tuning at $10^{-4}$ moves \emph{more} encoder weight than Full FT at $3\!\cdot\!10^{-5}$ (0.0109 against 0.0083) yet retains 83.8\% against 22.3\%, because its update is confined to one block. How much the encoder moves matters less than where the movement lands, which the layer-resolved entropy profile captures and a scalar norm cannot.
+
+The frozen-projection ablation addresses a confound, and answers it in the opposite direction to our expectation. Both methods train the visual projection, and zero-shot transfer is computed through it, so part of LoRA's advantage might not involve the encoder at all. Freezing the projection and training only the adapters and the classifier makes \emph{both} axes worse: 76.6\% retention at 92.7\% accuracy, against 86.4\% and 95.2\% for the standard configuration at the same rate, with encoder weight drift rising from 0.0042 to 0.0063. The reason is visible at the small rate, where freezing the projection leaves encoder drift and retention untouched (0.0010 and 98.6\% against 0.0010 and 98.2\%) but drops accuracy from 78.8\% to 22.6\%: the projection is a cheap place for task-specific adaptation, and when it is unavailable the encoder pays. LoRA's advantage is therefore not an artifact of what it leaves alone.
+
+\section{Discussion and Limitations}
+Three conclusions survive the harder protocol. The dose-response is not an artifact of test-split selection: with validation carved out of training and the test split read once, optimization scale still orders both the structural change and the forgetting. The method comparison holds and is large: at matched rates LoRA changes the encoder far less and keeps far more zero-shot accuracy, and at each method's own best-validation point the retention gap dwarfs the target-accuracy gap. And, correcting the premise we started from, the attention statistic is a description rather than a prediction.
+
+The failure is specific, and that is what makes it useful. Entropy drift tracks the \emph{dose} of adaptation faithfully as long as the sign is fixed --- inside one dataset and method it is the best signal we measured --- but its sign is a property of how the update is parameterised, not of the damage: full fine-tuning broadens attention on EuroSAT while already losing half of its zero-shot accuracy, LoRA broadens it monotonically as its rate grows, and on Pets both contract. Any rule that must compare across those cases inherits the sign problem. What we would recommend instead is still cheap: push a few hundred unlabeled target images through the pretrained and the current encoder and watch the alignment between the two representations. It is informative after a single epoch, early enough to stop a run that is going to forget. The weight-norm shortcut is tempting because it needs no images at all, its polarity is as portable as CKA's, and inside a method family it is second only to the signed entropy change. What disqualifies it is the decision test: at a three-point band it chose a 54.4\% configuration on Pets where 99.7\% was available.
+
+\textbf{Limitations.} The measurements are correlational: drift signals rank runs by the accuracy they will lose, but we do not show that suppressing drift prevents it. The primary grid uses one backbone (ViT-B/32), two target datasets and two transfer benchmarks; the ViT-B/16 check is single-seed and EuroSAT-only, enough to show that the polarity moves but not to characterise it. Study~B trains on class-balanced subsets for six epochs so the grid fits on one laptop, so drift magnitudes compare only within a study. Attention entropy measures how spread out a distribution is, not whether the model attends to the right thing, and retention uses a single prompt template. Finally, CKA and embedding drift are closer to the predicted quantity than attention entropy is, since zero-shot accuracy is computed from the representations they measure; what is informative is that they hold across configurations and after one epoch, where the attention statistic does not.
+
+\section{Conclusion}
+We set out to validate attention drift as an early-warning signal for forgetting in fine-tuned CLIP, and found that it is the right instrument for a narrower job than we assumed. Across a leakage-free matched-learning-rate grid, learning rate is the first-order control on both attention structure and zero-shot forgetting, and LoRA is the milder method on both axes. Within a fixed dataset, method and backbone the signed entropy change ranks runs by the transfer they will lose better than any other signal we measured, though by only 0.860 against 0.810 for the log learning rate --- a hyperparameter that needs no measurement at all; its polarity, however, is a property of the configuration and not of the damage, so selecting across configurations by it can be worse than selecting at random. Layerwise CKA and embedding drift are the only signals that are both polarity-stable and safe in the decision test, from a few hundred unlabeled target images and after a single epoch --- though at 16 configurations we cannot separate them statistically from the cheaper signals they lead on point estimates. Attention drift keeps a narrower role: it says \emph{where} in the network the adaptation happened, and it is the clearest structural fingerprint separating full fine-tuning from low-rank adaptation.
+
+\FloatBarrier
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

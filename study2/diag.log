@@ -1,0 +1,10 @@
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_full_ft_lr3e-4_seed7_diag] epoch 1/2 loss=2.0289 val=0.3367 dH=-14.89% track=0.0090
+  [S2_eurosat_full_ft_lr3e-4_seed7_diag] epoch 2/2 loss=1.5893 val=0.4367 dH=-15.91% track=0.0060
+  [S2_eurosat_full_ft_lr3e-4_seed7_diag] test=0.4611 cifar100=0.0086 dH=-15.91% (6.1 min)
+progress: 1/2
+  [S2_eurosat_full_ft_lr1e-5_seed7_diag] epoch 1/2 loss=1.3020 val=0.9300 dH=+1.17% track=0.2910
+  [S2_eurosat_full_ft_lr1e-5_seed7_diag] epoch 2/2 loss=0.3268 val=0.9533 dH=+1.33% track=0.2920
+/Users/xiaruize/miniconda3/lib/python3.13/multiprocessing/resource_tracker.py:400: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/loky-57999-2r8tbh2e'}
+  warnings.warn(

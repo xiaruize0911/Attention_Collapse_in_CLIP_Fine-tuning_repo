@@ -1,0 +1,2210 @@
+{
+  "n_runs": 66,
+  "runs_by_cell": [
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 3e-06,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 3e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 0.0001,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "last_block",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "last_block",
+      "lr": 0.0001,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "linear_probe",
+      "lr": 0.001,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 3e-06,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 3e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 0.0001,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8_frozen_proj",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8_frozen_proj",
+      "lr": 0.0001,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 3e-06,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 3e-05,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 0.0001,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "linear_probe",
+      "lr": 0.001,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 3e-06,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 1e-05,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 3e-05,
+      "n": 3
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 0.0001,
+      "n": 3
+    }
+  ],
+  "cells": [
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 3e-06,
+      "n": 3,
+      "test_acc": 96.81481481481482,
+      "test_acc_sd": 0.0740740740740764,
+      "delta_entropy_pct": 1.5322660096846488,
+      "delta_entropy_sd": 0.2547852607576741,
+      "cifar100_retention": 55.03016468286321,
+      "cifar100_retention_sd": 4.330474919917837,
+      "cifar10_retention": 66.55225019069412,
+      "weight_drift_rel": 0.0021522378082000303,
+      "cka_mean": 0.844149029089345,
+      "corruption_mean_acc": 51.57142857142857,
+      "trainable_params": 87854347
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 97.18518518518519,
+      "test_acc_sd": 0.33333333333332993,
+      "delta_entropy_pct": 0.9910871194228689,
+      "delta_entropy_sd": 0.1721214144069336,
+      "cifar100_retention": 41.15441056579163,
+      "cifar100_retention_sd": 2.3077522925751377,
+      "cifar10_retention": 57.47520976353928,
+      "weight_drift_rel": 0.004179713310072784,
+      "cka_mean": 0.80222321053346,
+      "corruption_mean_acc": 53.504761904761914,
+      "trainable_params": 87854347
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 3e-05,
+      "n": 3,
+      "test_acc": 95.9753086419753,
+      "test_acc_sd": 1.3589783408033969,
+      "delta_entropy_pct": 0.05661998396846698,
+      "delta_entropy_sd": 0.20517368979793865,
+      "cifar100_retention": 22.272949616827002,
+      "cifar100_retention_sd": 4.523607936806282,
+      "cifar10_retention": 45.881006864988564,
+      "weight_drift_rel": 0.008304867982887208,
+      "cka_mean": 0.762027695775032,
+      "corruption_mean_acc": 55.54285714285715,
+      "trainable_params": 87854347
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 94.0246913580247,
+      "test_acc_sd": 0.4324513552626399,
+      "delta_entropy_pct": -2.3377389261110104,
+      "delta_entropy_sd": 0.40328810414606064,
+      "cifar100_retention": 3.6523724115441056,
+      "cifar100_retention_sd": 0.616372351913772,
+      "cifar10_retention": 15.655987795575896,
+      "weight_drift_rel": 0.022208785732741144,
+      "cka_mean": 0.7308967800603973,
+      "corruption_mean_acc": 58.77619047619048,
+      "trainable_params": 87854347
+    },
+    {
+      "dataset": "eurosat",
+      "method": "last_block",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 88.56790123456791,
+      "test_acc_sd": 0.5669611112693853,
+      "delta_entropy_pct": -0.05378288328471736,
+      "delta_entropy_sd": 0.008100327000971779,
+      "cifar100_retention": 97.12484374150769,
+      "cifar100_retention_sd": 0.34292714939610447,
+      "cifar10_retention": 96.37681159420292,
+      "weight_drift_rel": 0.003975935772314029,
+      "cka_mean": 0.9805066188176473,
+      "corruption_mean_acc": 41.51428571428572,
+      "trainable_params": 7487755
+    },
+    {
+      "dataset": "eurosat",
+      "method": "last_block",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 94.38271604938272,
+      "test_acc_sd": 0.4819560813813132,
+      "delta_entropy_pct": -0.392968592156127,
+      "delta_entropy_sd": 0.03622685062222653,
+      "cifar100_retention": 83.80346757975978,
+      "cifar100_retention_sd": 2.1651811823514437,
+      "cifar10_retention": 93.19221967963387,
+      "weight_drift_rel": 0.010909924609352377,
+      "cka_mean": 0.9518512801991568,
+      "corruption_mean_acc": 47.404761904761905,
+      "trainable_params": 7487755
+    },
+    {
+      "dataset": "eurosat",
+      "method": "linear_probe",
+      "lr": 0.001,
+      "n": 3,
+      "test_acc": 85.1111111111111,
+      "test_acc_sd": 0.22528750112215284,
+      "delta_entropy_pct": 0.0,
+      "delta_entropy_sd": 0.0,
+      "cifar100_retention": 100.0,
+      "cifar100_retention_sd": 0.0,
+      "cifar10_retention": 100.0,
+      "weight_drift_rel": 0.0,
+      "cka_mean": 1.0,
+      "corruption_mean_acc": 37.86190476190477,
+      "trainable_params": 5131
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 3e-06,
+      "n": 3,
+      "test_acc": 45.54320987654321,
+      "test_acc_sd": 0.7980887090811845,
+      "delta_entropy_pct": 0.00853829977392215,
+      "delta_entropy_sd": 0.016916284400810833,
+      "cifar100_retention": 99.646719930431,
+      "cifar100_retention_sd": 0.4170869078308536,
+      "cifar10_retention": 99.92372234935164,
+      "weight_drift_rel": 0.0002746216207020018,
+      "cka_mean": 0.9986715763807297,
+      "corruption_mean_acc": 23.685714285714287,
+      "trainable_params": 693258
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 78.82716049382715,
+      "test_acc_sd": 1.5437529908484535,
+      "delta_entropy_pct": 0.16486951286090604,
+      "delta_entropy_sd": 0.07443722194826062,
+      "cifar100_retention": 98.17924887222132,
+      "cifar100_retention_sd": 0.6872096796158931,
+      "cifar10_retention": 99.73302822273074,
+      "weight_drift_rel": 0.0009851577534206368,
+      "cka_mean": 0.9701287580860986,
+      "corruption_mean_acc": 35.333333333333336,
+      "trainable_params": 693258
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 3e-05,
+      "n": 3,
+      "test_acc": 91.72839506172838,
+      "test_acc_sd": 0.19005931257210468,
+      "delta_entropy_pct": 0.7133206896878539,
+      "delta_entropy_sd": 0.07983022454919428,
+      "cifar100_retention": 94.52144138268386,
+      "cifar100_retention_sd": 0.4073046142767597,
+      "cifar10_retention": 97.82608695652173,
+      "weight_drift_rel": 0.0024497446003028697,
+      "cka_mean": 0.9274031569560369,
+      "corruption_mean_acc": 47.709523809523816,
+      "trainable_params": 693258
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 95.1604938271605,
+      "test_acc_sd": 0.44186494242403096,
+      "delta_entropy_pct": 0.9793823467485341,
+      "delta_entropy_sd": 0.028067014409932835,
+      "cifar100_retention": 86.43948040654385,
+      "cifar100_retention_sd": 1.0924912361978105,
+      "cifar10_retention": 92.71548436308161,
+      "weight_drift_rel": 0.004182984520034739,
+      "cka_mean": 0.900470538271798,
+      "corruption_mean_acc": 54.919047619047625,
+      "trainable_params": 693258
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8_frozen_proj",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 22.62962962962963,
+      "test_acc_sd": 5.69419601987473,
+      "delta_entropy_pct": 0.05289213842118572,
+      "delta_entropy_sd": 0.09873322651374757,
+      "cifar100_retention": 98.55426925376378,
+      "cifar100_retention_sd": 0.4243539604531391,
+      "cifar10_retention": 99.61861174675819,
+      "weight_drift_rel": 0.000960298204481898,
+      "cka_mean": 0.9825442781051,
+      "corruption_mean_acc": 14.095238095238095,
+      "trainable_params": 300042
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8_frozen_proj",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 92.66666666666666,
+      "test_acc_sd": 0.16972502573910264,
+      "delta_entropy_pct": 1.3907938032047962,
+      "delta_entropy_sd": 0.29779067981308244,
+      "cifar100_retention": 76.58568400456546,
+      "cifar100_retention_sd": 2.596221329147032,
+      "cifar10_retention": 84.63005339435546,
+      "weight_drift_rel": 0.006333165452625602,
+      "cka_mean": 0.8852366324928073,
+      "corruption_mean_acc": 49.333333333333336,
+      "trainable_params": 300042
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 3e-06,
+      "n": 3,
+      "test_acc": 75.8153902062324,
+      "test_acc_sd": 2.4732414139861865,
+      "delta_entropy_pct": -0.6202010219734992,
+      "delta_entropy_sd": 0.25881442086991857,
+      "cifar100_retention": 73.53660525028535,
+      "cifar100_retention_sd": 5.711930824061933,
+      "cifar10_retention": 83.16170861937452,
+      "weight_drift_rel": 0.002006018408549184,
+      "cka_mean": 0.848482812444369,
+      "corruption_mean_acc": null,
+      "trainable_params": 87868198
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 87.71690742254928,
+      "test_acc_sd": 0.20090255644131919,
+      "delta_entropy_pct": -1.2301640810790608,
+      "delta_entropy_sd": 0.26158613125248464,
+      "cifar100_retention": 44.170878852111535,
+      "cifar100_retention_sd": 8.87120116510439,
+      "cifar10_retention": 59.82074752097636,
+      "weight_drift_rel": 0.004631135849515479,
+      "cka_mean": 0.7846030758486854,
+      "corruption_mean_acc": null,
+      "trainable_params": 87868198
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 3e-05,
+      "n": 3,
+      "test_acc": 88.2620150813119,
+      "test_acc_sd": 0.25904565148330033,
+      "delta_entropy_pct": -1.9040666648999018,
+      "delta_entropy_sd": 0.2193057201774474,
+      "cifar100_retention": 21.827273221370728,
+      "cifar100_retention_sd": 3.978287749907376,
+      "cifar10_retention": 37.62395118230359,
+      "weight_drift_rel": 0.009997840575929721,
+      "cka_mean": 0.6764336923758189,
+      "corruption_mean_acc": null,
+      "trainable_params": 87868198
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 79.09512128645409,
+      "test_acc_sd": 0.4913534035791729,
+      "delta_entropy_pct": -3.233394028320488,
+      "delta_entropy_sd": 0.20488018437344643,
+      "cifar100_retention": 9.16354149682048,
+      "cifar100_retention_sd": 1.9639517267130018,
+      "cifar10_retention": 22.29214340198322,
+      "weight_drift_rel": 0.025060840691686143,
+      "cka_mean": 0.560515852438079,
+      "corruption_mean_acc": null,
+      "trainable_params": 87868198
+    },
+    {
+      "dataset": "pets",
+      "method": "linear_probe",
+      "lr": 0.001,
+      "n": 3,
+      "test_acc": 80.5033160715908,
+      "test_acc_sd": 1.2505835782734458,
+      "delta_entropy_pct": 0.0,
+      "delta_entropy_sd": 0.0,
+      "cifar100_retention": 100.0,
+      "cifar100_retention_sd": 0.0,
+      "cifar10_retention": 100.0,
+      "weight_drift_rel": 0.0,
+      "cka_mean": 1.0,
+      "corruption_mean_acc": null,
+      "trainable_params": 18982
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 3e-06,
+      "n": 3,
+      "test_acc": 6.232397565185791,
+      "test_acc_sd": 0.927217285158396,
+      "delta_entropy_pct": -0.0008813851138448106,
+      "delta_entropy_sd": 0.0028621763099444027,
+      "cifar100_retention": 99.9836947660199,
+      "cifar100_retention_sd": 0.2742964917864212,
+      "cifar10_retention": 100.03813882532417,
+      "weight_drift_rel": 0.00012936611235996932,
+      "cka_mean": 0.999989120496644,
+      "corruption_mean_acc": null,
+      "trainable_params": 707109
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 1e-05,
+      "n": 3,
+      "test_acc": 26.56491323703098,
+      "test_acc_sd": 1.496400781386077,
+      "delta_entropy_pct": -0.001454849262407666,
+      "delta_entropy_sd": 0.014454740646646192,
+      "cifar100_retention": 100.11413663786077,
+      "cifar100_retention_sd": 0.6150769970278746,
+      "cifar10_retention": 100.32418001525554,
+      "weight_drift_rel": 0.0005212566010763951,
+      "cka_mean": 0.9996072004238764,
+      "corruption_mean_acc": null,
+      "trainable_params": 707109
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 3e-05,
+      "n": 3,
+      "test_acc": 71.74525302080494,
+      "test_acc_sd": 1.4228597765387052,
+      "delta_entropy_pct": -0.10970680174914282,
+      "delta_entropy_sd": 0.061129315362026836,
+      "cifar100_retention": 100.82069677699876,
+      "cifar100_retention_sd": 1.7698753795533728,
+      "cifar10_retention": 100.38138825324181,
+      "weight_drift_rel": 0.0020782944295342225,
+      "cka_mean": 0.9843620856602987,
+      "corruption_mean_acc": null,
+      "trainable_params": 707109
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "lr": 0.0001,
+      "n": 3,
+      "test_acc": 89.87916780230762,
+      "test_acc_sd": 0.46997427660134966,
+      "delta_entropy_pct": -0.34869566670683144,
+      "delta_entropy_sd": 0.08303099764745905,
+      "cifar100_retention": 97.70096200880484,
+      "cifar100_retention_sd": 1.7781678131301542,
+      "cifar10_retention": 96.41495041952707,
+      "weight_drift_rel": 0.0049163616338752875,
+      "cka_mean": 0.9347955485184988,
+      "corruption_mean_acc": null,
+      "trainable_params": 707109
+    }
+  ],
+  "paired_method_tests": [
+    {
+      "dataset": "eurosat",
+      "metric": "delta_entropy_pct",
+      "n_pairs": 12,
+      "full_ft_mean": 0.06055854674124356,
+      "lora_mean": 0.46652771226780404,
+      "mean_difference": -0.4059691655265604,
+      "cohens_dz": -0.20814653617546736,
+      "t_statistic": -0.7210407521507655,
+      "t_p_value": 0.48592687678402147,
+      "wilcoxon_p_value": 0.90966796875,
+      "t_p_holm": 0.48592687678402147
+    },
+    {
+      "dataset": "eurosat",
+      "metric": "cifar100_retention",
+      "n_pairs": 12,
+      "full_ft_mean": 30.52747431925648,
+      "lora_mean": 94.69672264797002,
+      "mean_difference": -64.16924832871352,
+      "cohens_dz": -4.136860251957992,
+      "t_statistic": -14.330504280406856,
+      "t_p_value": 1.841164001213411e-08,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 2.025280401334752e-07
+    },
+    {
+      "dataset": "eurosat",
+      "metric": "cifar10_retention",
+      "n_pairs": 12,
+      "full_ft_mean": 46.39111365369947,
+      "lora_mean": 97.54958047292143,
+      "mean_difference": -51.158466819221964,
+      "cohens_dz": -2.864254926182875,
+      "t_statistic": -9.92207011595637,
+      "t_p_value": 7.993706136215414e-07,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 7.194335522593872e-06
+    },
+    {
+      "dataset": "eurosat",
+      "metric": "test_acc",
+      "n_pairs": 12,
+      "full_ft_mean": 96.00000000000001,
+      "lora_mean": 77.81481481481482,
+      "mean_difference": 18.185185185185187,
+      "cohens_dz": 0.853016491344953,
+      "t_statistic": 2.9549358054071924,
+      "t_p_value": 0.013093318239080845,
+      "wilcoxon_p_value": 0.0068359375,
+      "t_p_holm": 0.02618663647816169
+    },
+    {
+      "dataset": "eurosat",
+      "metric": "weight_drift_rel",
+      "n_pairs": 12,
+      "full_ft_mean": 0.009211401208475292,
+      "lora_mean": 0.001973127123615062,
+      "mean_difference": 0.00723827408486023,
+      "cohens_dz": 1.0838733148628414,
+      "t_statistic": 3.754647300621081,
+      "t_p_value": 0.003184118049541283,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 0.012736472198165132
+    },
+    {
+      "dataset": "eurosat",
+      "metric": "cka_mean",
+      "n_pairs": 12,
+      "full_ft_mean": 0.7848241788645586,
+      "lora_mean": 0.9491685074236659,
+      "mean_difference": -0.16434432855910722,
+      "cohens_dz": -11.557854411801456,
+      "t_statistic": -40.03758213544845,
+      "t_p_value": 2.8630003196514946e-13,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 3.4356003835817935e-12
+    },
+    {
+      "dataset": "pets",
+      "metric": "delta_entropy_pct",
+      "n_pairs": 12,
+      "full_ft_mean": -1.7469564490682374,
+      "lora_mean": -0.11518467570805668,
+      "mean_difference": -1.6317717733601809,
+      "cohens_dz": -1.835459454553019,
+      "t_statistic": -6.3582180610369745,
+      "t_p_value": 5.383189310787323e-05,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 0.00032299135864723936
+    },
+    {
+      "dataset": "pets",
+      "metric": "cifar100_retention",
+      "n_pairs": 12,
+      "full_ft_mean": 37.17457470514702,
+      "lora_mean": 99.65487254742106,
+      "mean_difference": -62.48029784227404,
+      "cohens_dz": -2.4567413568309338,
+      "t_statistic": -8.510401702173755,
+      "t_p_value": 3.610860468024949e-06,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 2.8886883744199593e-05
+    },
+    {
+      "dataset": "pets",
+      "metric": "cifar10_retention",
+      "n_pairs": 12,
+      "full_ft_mean": 50.724637681159415,
+      "lora_mean": 99.28966437833714,
+      "mean_difference": -48.56502669717771,
+      "cohens_dz": -2.107942470075409,
+      "t_statistic": -7.302126915205691,
+      "t_p_value": 1.5387101130941837e-05,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 0.00010770970791659285
+    },
+    {
+      "dataset": "pets",
+      "metric": "test_acc",
+      "n_pairs": 12,
+      "full_ft_mean": 82.72235849913692,
+      "lora_mean": 48.60543290633233,
+      "mean_difference": 34.11692559280458,
+      "cohens_dz": 0.9932973360944465,
+      "t_statistic": 3.4408829062768014,
+      "t_p_value": 0.005516070094584223,
+      "wilcoxon_p_value": 0.0068359375,
+      "t_p_holm": 0.016548210283752668
+    },
+    {
+      "dataset": "pets",
+      "metric": "weight_drift_rel",
+      "n_pairs": 12,
+      "full_ft_mean": 0.01042395888142013,
+      "lora_mean": 0.0019113196942114686,
+      "mean_difference": 0.008512639187208662,
+      "cohens_dz": 1.155237257653128,
+      "t_statistic": 4.001859250103512,
+      "t_p_value": 0.0020795732770236414,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 0.010397866385118207
+    },
+    {
+      "dataset": "pets",
+      "metric": "cka_mean",
+      "n_pairs": 12,
+      "full_ft_mean": 0.7175088582767382,
+      "lora_mean": 0.9796884887748295,
+      "mean_difference": -0.2621796304980914,
+      "cohens_dz": -2.8953999917806184,
+      "t_statistic": -10.029959787997083,
+      "t_p_value": 7.175206038097091e-07,
+      "wilcoxon_p_value": 0.00048828125,
+      "t_p_holm": 7.175206038097091e-06
+    }
+  ],
+  "dose_response": [
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "metric": "delta_entropy_pct",
+      "n_runs": 12,
+      "spearman_rho": -0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "metric": "cifar100_retention",
+      "n_runs": 12,
+      "spearman_rho": -0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "eurosat",
+      "method": "full_ft",
+      "metric": "test_acc",
+      "n_runs": 12,
+      "spearman_rho": -0.7258635782792111,
+      "p_value": 0.007527291960283424
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "metric": "delta_entropy_pct",
+      "n_runs": 12,
+      "spearman_rho": 0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "metric": "cifar100_retention",
+      "n_runs": 12,
+      "spearman_rho": -0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "eurosat",
+      "method": "lora_r8",
+      "metric": "test_acc",
+      "n_runs": 12,
+      "spearman_rho": 0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "metric": "delta_entropy_pct",
+      "n_runs": 12,
+      "spearman_rho": -0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "metric": "cifar100_retention",
+      "n_runs": 12,
+      "spearman_rho": -0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    },
+    {
+      "dataset": "pets",
+      "method": "full_ft",
+      "metric": "test_acc",
+      "n_runs": 12,
+      "spearman_rho": 0.32387513781564786,
+      "p_value": 0.30442836548383917
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "metric": "delta_entropy_pct",
+      "n_runs": 12,
+      "spearman_rho": -0.8852587100294375,
+      "p_value": 0.00012880556897956015
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "metric": "cifar100_retention",
+      "n_runs": 12,
+      "spearman_rho": -0.32387513781564786,
+      "p_value": 0.30442836548383917
+    },
+    {
+      "dataset": "pets",
+      "method": "lora_r8",
+      "metric": "test_acc",
+      "n_runs": 12,
+      "spearman_rho": 0.9716254134469436,
+      "p_value": 1.3811738967574605e-07
+    }
+  ],
+  "predictor_ranking_final": [
+    {
+      "predictor": "epoch1_transfer_retention_pct",
+      "label": "1k labelled probe$^{*}$",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.9669432106819092,
+      "p_overall": 6.058712025165647e-29,
+      "abs_spearman_overall": 0.9669432106819092,
+      "spearman_within_mean": 0.8044573693780799,
+      "abs_spearman_within_mean": 0.8044573693780799,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9517865905019463,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "cka_mean",
+      "label": "CKA to pretrained (mean)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.9596178897090751,
+      "p_overall": 5.592652251058592e-27,
+      "abs_spearman_overall": 0.9596178897090751,
+      "spearman_within_mean": 0.7867132867132869,
+      "abs_spearman_within_mean": 0.7867132867132869,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9469565217391303,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "embedding_drift",
+      "label": "Embedding drift",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.918801563178463,
+      "p_overall": 3.408884777946439e-20,
+      "abs_spearman_overall": 0.918801563178463,
+      "spearman_within_mean": -0.7517482517482519,
+      "abs_spearman_within_mean": 0.7517482517482519,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9226086956521738,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "cka_last",
+      "label": "CKA to pretrained (block 12)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.877008250108554,
+      "p_overall": 3.0157179858879406e-16,
+      "abs_spearman_overall": 0.877008250108554,
+      "spearman_within_mean": 0.604895104895105,
+      "abs_spearman_within_mean": 0.604895104895105,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9017391304347824,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_gini_pct",
+      "label": "$|\\Delta$Gini$|$",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.84433347807208,
+      "p_overall": 4.708806607272771e-14,
+      "abs_spearman_overall": 0.84433347807208,
+      "spearman_within_mean": -0.4930069930069931,
+      "abs_spearman_within_mean": 0.6923076923076925,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.7913043478260869,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "weight_drift_rel",
+      "label": "Relative weight change",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.8365175857577073,
+      "p_overall": 1.3293656050680474e-13,
+      "abs_spearman_overall": 0.8365175857577073,
+      "spearman_within_mean": -0.8234265734265734,
+      "abs_spearman_within_mean": 0.8234265734265734,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8299999999999998,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_entropy_pct",
+      "label": "$|\\Delta H|$ (attention entropy)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.8358662613981763,
+      "p_overall": 1.4458959769385035e-13,
+      "abs_spearman_overall": 0.8358662613981763,
+      "spearman_within_mean": -0.6555944055944056,
+      "abs_spearman_within_mean": 0.6555944055944056,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.7921739130434782,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "train_loss_final",
+      "label": "Final training loss",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.8244680851063829,
+      "p_overall": 5.945442588427329e-13,
+      "abs_spearman_overall": 0.8244680851063829,
+      "spearman_within_mean": 0.6153846153846154,
+      "abs_spearman_within_mean": 0.6153846153846154,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8521739130434782,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_erf95_pct",
+      "label": "$|\\Delta$ERF@0.95$|$",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.7957012592270951,
+      "p_overall": 1.3990920557326573e-11,
+      "abs_spearman_overall": 0.7957012592270951,
+      "spearman_within_mean": -0.6590909090909093,
+      "abs_spearman_within_mean": 0.6590909090909093,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8156521739130433,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_entropy_last_layer_pct",
+      "label": "$|\\Delta H_{12}|$ (last block)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.7388189318280504,
+      "p_overall": 2.0320440952665677e-09,
+      "abs_spearman_overall": 0.7388189318280504,
+      "spearman_within_mean": -0.6625874125874127,
+      "abs_spearman_within_mean": 0.6625874125874127,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8330434782608694,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "test_acc",
+      "label": "Target-task accuracy",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.6059816542607792,
+      "p_overall": 5.014372023947207e-06,
+      "abs_spearman_overall": 0.6059816542607792,
+      "spearman_within_mean": -0.17852906992676473,
+      "abs_spearman_within_mean": 0.5592331678354732,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.6055771249748136,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "delta_entropy_last_layer_pct",
+      "label": "$\\Delta H_{12}$ (signed)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.4305254016500217,
+      "p_overall": 0.0022545927048501124,
+      "abs_spearman_overall": 0.4305254016500217,
+      "spearman_within_mean": 0.40734265734265734,
+      "abs_spearman_within_mean": 0.7884615384615385,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.6052173913043477,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "log10_lr",
+      "label": "$\\log_{10}$ learning rate$^{*}$",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": -0.38200209984274547,
+      "p_overall": 0.007378230099745491,
+      "abs_spearman_overall": 0.38200209984274547,
+      "spearman_within_mean": -0.8096878445391197,
+      "abs_spearman_within_mean": 0.8096878445391197,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.40378642654362407,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "delta_entropy_pct",
+      "label": "$\\Delta H$ (signed)",
+      "stage": "final",
+      "n": 48,
+      "spearman_overall": 0.3611593573599653,
+      "p_overall": 0.011669301906494865,
+      "abs_spearman_overall": 0.3611593573599653,
+      "spearman_within_mean": 0.3846153846153847,
+      "abs_spearman_within_mean": 0.8601398601398603,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.5052173913043477,
+      "n_datasets": 2
+    }
+  ],
+  "predictor_ranking_epoch1": [
+    {
+      "predictor": "epoch1_transfer_retention_pct",
+      "label": "1k labelled probe$^{*}$",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": 0.9669432106819092,
+      "p_overall": 6.058712025165647e-29,
+      "abs_spearman_overall": 0.9669432106819092,
+      "spearman_within_mean": 0.8044573693780799,
+      "abs_spearman_within_mean": 0.8044573693780799,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9517865905019463,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "cka_mean",
+      "label": "CKA to pretrained (mean)",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": 0.9587494572297004,
+      "p_overall": 9.038592810290212e-27,
+      "abs_spearman_overall": 0.9587494572297004,
+      "spearman_within_mean": 0.8129370629370631,
+      "abs_spearman_within_mean": 0.8129370629370631,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9534782608695651,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "embedding_drift",
+      "label": "Embedding drift",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.9405123751628311,
+      "p_overall": 3.369406247821166e-23,
+      "abs_spearman_overall": 0.9405123751628311,
+      "spearman_within_mean": -0.8269230769230771,
+      "abs_spearman_within_mean": 0.8269230769230771,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9413043478260867,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "weight_drift_rel",
+      "label": "Relative weight change",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.9059921841076857,
+      "p_overall": 8.603581484770055e-19,
+      "abs_spearman_overall": 0.9059921841076857,
+      "spearman_within_mean": -0.8391608391608393,
+      "abs_spearman_within_mean": 0.8391608391608393,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.9326086956521739,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_entropy_pct",
+      "label": "$|\\Delta H|$ (attention entropy)",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.8651758575770734,
+      "p_overall": 2.1843262325294892e-15,
+      "abs_spearman_overall": 0.8651758575770734,
+      "spearman_within_mean": -0.5576923076923077,
+      "abs_spearman_within_mean": 0.6625874125874127,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.846086956521739,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_entropy_last_layer_pct",
+      "label": "$|\\Delta H_{12}|$ (last block)",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.8518237082066868,
+      "p_overall": 1.6488990803484947e-14,
+      "abs_spearman_overall": 0.8518237082066868,
+      "spearman_within_mean": -0.6293706293706295,
+      "abs_spearman_within_mean": 0.6433566433566436,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8252173913043477,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_gini_pct",
+      "label": "$|\\Delta$Gini$|$",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.844224924012158,
+      "p_overall": 4.779020124707632e-14,
+      "abs_spearman_overall": 0.844224924012158,
+      "spearman_within_mean": -0.5087412587412588,
+      "abs_spearman_within_mean": 0.722027972027972,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8291304347826086,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "abs_delta_erf95_pct",
+      "label": "$|\\Delta$ERF@0.95$|$",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.8300043421623968,
+      "p_overall": 3.0310391550378414e-13,
+      "abs_spearman_overall": 0.8300043421623968,
+      "spearman_within_mean": -0.5157342657342658,
+      "abs_spearman_within_mean": 0.7604895104895106,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8034782608695652,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "train_loss_final",
+      "label": "Final training loss",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": 0.5701259227095093,
+      "p_overall": 2.3357096253644537e-05,
+      "abs_spearman_overall": 0.5701259227095093,
+      "spearman_within_mean": 0.7342657342657345,
+      "abs_spearman_within_mean": 0.7342657342657345,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.8630434782608695,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "log10_lr",
+      "label": "$\\log_{10}$ learning rate$^{*}$",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": -0.38200209984274547,
+      "p_overall": 0.007378230099745491,
+      "abs_spearman_overall": 0.38200209984274547,
+      "spearman_within_mean": -0.8096878445391197,
+      "abs_spearman_within_mean": 0.8096878445391197,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.40378642654362407,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "delta_entropy_last_layer_pct",
+      "label": "$\\Delta H_{12}$ (signed)",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": 0.38167607468519327,
+      "p_overall": 0.007432995831107241,
+      "abs_spearman_overall": 0.38167607468519327,
+      "spearman_within_mean": 0.44405594405594406,
+      "abs_spearman_within_mean": 0.8181818181818183,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.4795652173913043,
+      "n_datasets": 2
+    },
+    {
+      "predictor": "delta_entropy_pct",
+      "label": "$\\Delta H$ (signed)",
+      "stage": "epoch1",
+      "n": 48,
+      "spearman_overall": 0.23719062092922275,
+      "p_overall": 0.1045368360462821,
+      "abs_spearman_overall": 0.23719062092922275,
+      "spearman_within_mean": 0.39860139860139865,
+      "abs_spearman_within_mean": 0.7972027972027974,
+      "n_groups": 4,
+      "abs_spearman_within_dataset_mean": 0.5639130434782609,
+      "n_datasets": 2
+    }
+  ],
+  "bootstrap_predictor_gap": [
+    {
+      "predictor": "cka_mean",
+      "label": "CKA to pretrained (mean)",
+      "abs_rho": 0.9676470588235294,
+      "ci_low": 0.8351147486513052,
+      "ci_high": 1.0,
+      "gap_vs_reference_mean": 0.0,
+      "gap_ci_low": 0.0,
+      "gap_ci_high": 0.0,
+      "reference_wins_fraction": 0.0,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "epoch1_transfer_retention_pct",
+      "label": "1k labelled probe$^{*}$",
+      "abs_rho": 0.9352941176470588,
+      "ci_low": 0.7007296406198482,
+      "ci_high": 0.9999999999999998,
+      "gap_vs_reference_mean": 0.03518277857967962,
+      "gap_ci_low": -0.0711163942545815,
+      "gap_ci_high": 0.20445202769535115,
+      "reference_wins_fraction": 0.67975,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "embedding_drift",
+      "label": "Embedding drift",
+      "abs_rho": 0.9294117647058824,
+      "ci_low": 0.7503385144475538,
+      "ci_high": 0.9820902195431191,
+      "gap_vs_reference_mean": 0.04864739092387362,
+      "gap_ci_low": -0.03576751117734722,
+      "gap_ci_high": 0.16692128033454182,
+      "reference_wins_fraction": 0.861,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "abs_delta_entropy_pct",
+      "label": "$|\\Delta H|$ (attention entropy)",
+      "abs_rho": 0.8735294117647058,
+      "ci_low": 0.5737704918032787,
+      "ci_high": 0.9790112802879997,
+      "gap_vs_reference_mean": 0.10529535523651896,
+      "gap_ci_low": -0.02971878758933005,
+      "gap_ci_high": 0.4077395454058685,
+      "reference_wins_fraction": 0.88575,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "abs_delta_gini_pct",
+      "label": "$|\\Delta$Gini$|$",
+      "abs_rho": 0.8647058823529412,
+      "ci_low": 0.5869088525083139,
+      "ci_high": 0.9665220355792477,
+      "gap_vs_reference_mean": 0.11480835658942665,
+      "gap_ci_low": -0.01775279616525905,
+      "gap_ci_high": 0.38999939942344697,
+      "reference_wins_fraction": 0.93525,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "train_loss_final",
+      "label": "Final training loss",
+      "abs_rho": 0.8441176470588234,
+      "ci_low": 0.580479542434887,
+      "ci_high": 0.9450547476771097,
+      "gap_vs_reference_mean": 0.13995361993135516,
+      "gap_ci_low": -0.03598335967151542,
+      "gap_ci_high": 0.39395536692223443,
+      "reference_wins_fraction": 0.93525,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "weight_drift_rel",
+      "label": "Relative weight change",
+      "abs_rho": 0.8352941176470589,
+      "ci_low": 0.5398091555725897,
+      "ci_high": 0.9642857142857144,
+      "gap_vs_reference_mean": 0.14376909479769914,
+      "gap_ci_low": -0.01821010004104945,
+      "gap_ci_high": 0.4237243186582811,
+      "reference_wins_fraction": 0.95225,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "abs_delta_entropy_last_layer_pct",
+      "label": "$|\\Delta H_{12}|$ (last block)",
+      "abs_rho": 0.7558823529411764,
+      "ci_low": 0.38506314580941453,
+      "ci_high": 0.9257112982224424,
+      "gap_vs_reference_mean": 0.22552747805595777,
+      "gap_ci_low": 0.029985007496251874,
+      "gap_ci_high": 0.5727139839171326,
+      "reference_wins_fraction": 0.9985,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "test_acc",
+      "label": "Target-task accuracy",
+      "abs_rho": 0.6411764705882352,
+      "ci_low": 0.17188554663743966,
+      "ci_high": 0.8584443630377366,
+      "gap_vs_reference_mean": 0.3398656818231942,
+      "gap_ci_low": 0.06546650464919684,
+      "gap_ci_high": 0.7958117478548385,
+      "reference_wins_fraction": 0.99725,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "log10_lr",
+      "label": "$\\log_{10}$ learning rate$^{*}$",
+      "abs_rho": 0.3759302188063161,
+      "ci_low": 0.028180507064116428,
+      "ci_high": 0.777094745627731,
+      "gap_vs_reference_mean": 0.5671154637043937,
+      "gap_ci_low": 0.15414034241513022,
+      "gap_ci_high": 0.9439999136053687,
+      "reference_wins_fraction": 0.99575,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    },
+    {
+      "predictor": "delta_entropy_pct",
+      "label": "$\\Delta H$ (signed)",
+      "abs_rho": 0.31176470588235294,
+      "ci_low": 0.019490254872563718,
+      "ci_high": 0.7649030727155729,
+      "gap_vs_reference_mean": 0.601436317960185,
+      "gap_ci_low": 0.14870161155964207,
+      "gap_ci_high": 0.9478429214562993,
+      "reference_wins_fraction": 0.99675,
+      "resampling_unit": "cell means",
+      "n_units": 16
+    }
+  ],
+  "backbone_check": {
+    "openai/clip-vit-base-patch16": {
+      "n_runs": 12,
+      "cells": [
+        {
+          "dataset": "eurosat",
+          "method": "full_ft",
+          "lr": 1e-05,
+          "n": 2,
+          "test_acc": 0.9687037037037036,
+          "delta_entropy_pct": -1.2755058920559024,
+          "cifar100_retention": 50.294561933534744,
+          "cka_mean": 0.8077475974957149,
+          "weight_drift_rel": 0.004241744878560411
+        },
+        {
+          "dataset": "eurosat",
+          "method": "full_ft",
+          "lr": 3e-05,
+          "n": 2,
+          "test_acc": 0.9740740740740741,
+          "delta_entropy_pct": 2.2614148158850043,
+          "cifar100_retention": 27.832326283987918,
+          "cka_mean": 0.772289012869199,
+          "weight_drift_rel": 0.00853763411677813
+        },
+        {
+          "dataset": "eurosat",
+          "method": "full_ft",
+          "lr": 0.0001,
+          "n": 2,
+          "test_acc": 0.9568518518518518,
+          "delta_entropy_pct": 2.9999408390068845,
+          "cifar100_retention": 2.0845921450151055,
+          "cka_mean": 0.7378405978282293,
+          "weight_drift_rel": 0.02198778444702386
+        },
+        {
+          "dataset": "eurosat",
+          "method": "lora_r8",
+          "lr": 1e-05,
+          "n": 2,
+          "test_acc": 0.7948148148148149,
+          "delta_entropy_pct": 0.5326386717242478,
+          "cifar100_retention": 100.18882175226585,
+          "cka_mean": 0.9752991075317066,
+          "weight_drift_rel": 0.0010576891793698062
+        },
+        {
+          "dataset": "eurosat",
+          "method": "lora_r8",
+          "lr": 3e-05,
+          "n": 2,
+          "test_acc": 0.9299999999999999,
+          "delta_entropy_pct": 0.7470121722553282,
+          "cifar100_retention": 98.38368580060424,
+          "cka_mean": 0.9313983395695686,
+          "weight_drift_rel": 0.002641617644742733
+        },
+        {
+          "dataset": "eurosat",
+          "method": "lora_r8",
+          "lr": 0.0001,
+          "n": 2,
+          "test_acc": 0.9538888888888889,
+          "delta_entropy_pct": 0.8837861551851678,
+          "cifar100_retention": 91.94864048338368,
+          "cka_mean": 0.9055747215946515,
+          "weight_drift_rel": 0.0040856224999035635
+        }
+      ],
+      "predictors": {
+        "cka_mean": {
+          "spearman_rho": 0.9930069930069931,
+          "p_value": 1.3016730560634403e-10,
+          "n": 12
+        },
+        "embedding_drift": {
+          "spearman_rho": -0.9790209790209792,
+          "p_value": 3.0898013985487064e-08,
+          "n": 12
+        },
+        "weight_drift_rel": {
+          "spearman_rho": -0.965034965034965,
+          "p_value": 3.88098529962746e-07,
+          "n": 12
+        },
+        "abs_delta_entropy_pct": {
+          "spearman_rho": -0.7552447552447553,
+          "p_value": 0.004508435484294224,
+          "n": 12
+        },
+        "delta_entropy_pct": {
+          "spearman_rho": -0.4545454545454546,
+          "p_value": 0.13765791634772945,
+          "n": 12
+        }
+      }
+    }
+  },
+  "polarity_by_group": [
+    {
+      "model": "openai/clip-vit-base-patch16",
+      "method": "full_ft",
+      "n": 6,
+      "n_rates": 3,
+      "delta_entropy_pct": {
+        "rho": -0.7714285714285715,
+        "p_value": 0.07239650145772594
+      },
+      "cka_mean": {
+        "rho": 0.942857142857143,
+        "p_value": 0.004804664723032055
+      },
+      "weight_drift_rel": {
+        "rho": -0.8857142857142858,
+        "p_value": 0.01884548104956266
+      },
+      "embedding_drift": {
+        "rho": -0.8285714285714287,
+        "p_value": 0.04156268221574334
+      }
+    },
+    {
+      "model": "openai/clip-vit-base-patch16",
+      "method": "lora_r8",
+      "n": 6,
+      "n_rates": 3,
+      "delta_entropy_pct": {
+        "rho": -0.14285714285714288,
+        "p_value": 0.7871720116618075
+      },
+      "cka_mean": {
+        "rho": 1.0,
+        "p_value": 0.0
+      },
+      "weight_drift_rel": {
+        "rho": -1.0,
+        "p_value": 0.0
+      },
+      "embedding_drift": {
+        "rho": -1.0,
+        "p_value": 0.0
+      }
+    },
+    {
+      "model": "openai/clip-vit-base-patch32",
+      "method": "full_ft",
+      "n": 12,
+      "n_rates": 4,
+      "delta_entropy_pct": {
+        "rho": 0.9440559440559443,
+        "p_value": 3.927261080965951e-06
+      },
+      "cka_mean": {
+        "rho": 0.9440559440559443,
+        "p_value": 3.927261080965951e-06
+      },
+      "weight_drift_rel": {
+        "rho": -0.9510489510489512,
+        "p_value": 2.0384246324655757e-06
+      },
+      "embedding_drift": {
+        "rho": -0.7972027972027973,
+        "p_value": 0.0019003677255282686
+      }
+    },
+    {
+      "model": "openai/clip-vit-base-patch32",
+      "method": "lora_r8",
+      "n": 12,
+      "n_rates": 4,
+      "delta_entropy_pct": {
+        "rho": -0.9510489510489512,
+        "p_value": 2.0384246324655757e-06
+      },
+      "cka_mean": {
+        "rho": 0.8881118881118882,
+        "p_value": 0.00011413359814618011
+      },
+      "weight_drift_rel": {
+        "rho": -0.9230769230769231,
+        "p_value": 1.8621951098680987e-05
+      },
+      "embedding_drift": {
+        "rho": -0.9230769230769231,
+        "p_value": 1.8621951098680987e-05
+      }
+    }
+  ],
+  "iso_accuracy": [
+    {
+      "dataset": "eurosat",
+      "selection": "best validation accuracy",
+      "full_ft_lr": 1e-05,
+      "full_ft_val_acc": 96.55555555555554,
+      "full_ft_test_acc": 97.18518518518519,
+      "full_ft_test_acc_sd": 0.33333333333332993,
+      "full_ft_cifar100_retention": 41.15441056579163,
+      "full_ft_cifar100_retention_sd": 2.3077522925751377,
+      "full_ft_delta_entropy_pct": 0.9910871194228689,
+      "full_ft_n": 3,
+      "lora_r8_lr": 0.0001,
+      "lora_r8_val_acc": 93.77777777777779,
+      "lora_r8_test_acc": 95.1604938271605,
+      "lora_r8_test_acc_sd": 0.44186494242403096,
+      "lora_r8_cifar100_retention": 86.43948040654385,
+      "lora_r8_cifar100_retention_sd": 1.0924912361978105,
+      "lora_r8_delta_entropy_pct": 0.9793823467485341,
+      "lora_r8_n": 3
+    },
+    {
+      "dataset": "pets",
+      "selection": "best validation accuracy",
+      "full_ft_lr": 3e-05,
+      "full_ft_val_acc": 91.08108108108107,
+      "full_ft_test_acc": 88.2620150813119,
+      "full_ft_test_acc_sd": 0.25904565148330033,
+      "full_ft_cifar100_retention": 21.827273221370728,
+      "full_ft_cifar100_retention_sd": 3.978287749907376,
+      "full_ft_delta_entropy_pct": -1.9040666648999018,
+      "full_ft_n": 3,
+      "lora_r8_lr": 0.0001,
+      "lora_r8_val_acc": 91.08108108108107,
+      "lora_r8_test_acc": 89.87916780230762,
+      "lora_r8_test_acc_sd": 0.46997427660134966,
+      "lora_r8_cifar100_retention": 97.70096200880484,
+      "lora_r8_cifar100_retention_sd": 1.7781678131301542,
+      "lora_r8_delta_entropy_pct": -0.34869566670683144,
+      "lora_r8_n": 3
+    }
+  ],
+  "selection_utility": [
+    {
+      "dataset": "eurosat",
+      "margin_points": 2.0,
+      "n_candidates": 8,
+      "accuracy_cutoff": 95.0,
+      "cutoff_basis": "validation accuracy",
+      "oracle_retention": 58.07924343714333,
+      "worst_retention": 17.136800913093104,
+      "random_choice_retention": 41.21351703896951,
+      "signals": {
+        "abs_delta_entropy_pct": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+          "retention": 24.017609652698514,
+          "test_acc": 96.81481481481482,
+          "regret": 34.06163378444482,
+          "fraction_of_range": 0.16806053365193138
+        },
+        "abs_delta_entropy_last_layer_pct": {
+          "chosen_run": "S2_eurosat_full_ft_lr1e-5_seed19",
+          "retention": 43.63280613076798,
+          "test_acc": 97.51851851851852,
+          "regret": 14.446437306375351,
+          "fraction_of_range": 0.6471525288729589
+        },
+        "abs_delta_erf95_pct": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+          "retention": 24.017609652698514,
+          "test_acc": 96.81481481481482,
+          "regret": 34.06163378444482,
+          "fraction_of_range": 0.16806053365193138
+        },
+        "abs_delta_gini_pct": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+          "retention": 17.136800913093104,
+          "test_acc": 96.70370370370371,
+          "regret": 40.94244252405023,
+          "fraction_of_range": 0.0
+        },
+        "embedding_drift": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+          "retention": 56.93787705853579,
+          "test_acc": 96.81481481481482,
+          "regret": 1.1413663786075432,
+          "fraction_of_range": 0.9721226602947031
+        },
+        "weight_drift_rel": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+          "retention": 56.93787705853579,
+          "test_acc": 96.81481481481482,
+          "regret": 1.1413663786075432,
+          "fraction_of_range": 0.9721226602947031
+        },
+        "cka_mean": {
+          "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed11",
+          "retention": 50.07337355291048,
+          "test_acc": 96.74074074074073,
+          "regret": 8.005869884232851,
+          "fraction_of_range": 0.8044603743528472
+        }
+      }
+    },
+    {
+      "dataset": "pets",
+      "margin_points": 2.0,
+      "n_candidates": 6,
+      "accuracy_cutoff": 90.16216216216216,
+      "cutoff_basis": "validation accuracy",
+      "oracle_retention": 99.72281102233819,
+      "worst_retention": 19.321702266427522,
+      "random_choice_retention": 50.168487417794445,
+      "signals": {
+        "abs_delta_entropy_pct": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+          "retention": 99.72281102233819,
+          "test_acc": 90.29708367402563,
+          "regret": 0.0,
+          "fraction_of_range": 1.0
+        },
+        "abs_delta_entropy_last_layer_pct": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+          "retention": 99.72281102233819,
+          "test_acc": 90.29708367402563,
+          "regret": 0.0,
+          "fraction_of_range": 1.0
+        },
+        "abs_delta_erf95_pct": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+          "retention": 99.72281102233819,
+          "test_acc": 90.29708367402563,
+          "regret": 0.0,
+          "fraction_of_range": 1.0
+        },
+        "abs_delta_gini_pct": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+          "retention": 99.72281102233819,
+          "test_acc": 90.29708367402563,
+          "regret": 0.0,
+          "fraction_of_range": 1.0
+        },
+        "embedding_drift": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+          "retention": 96.9998369476602,
+          "test_acc": 89.97001907876806,
+          "regret": 2.7229740746779925,
+          "fraction_of_range": 0.9661326302981137
+        },
+        "weight_drift_rel": {
+          "chosen_run": "S2_pets_full_ft_lr1e-5_seed7",
+          "retention": 38.80645687265613,
+          "test_acc": 87.78958844371763,
+          "regret": 60.916354149682064,
+          "fraction_of_range": 0.24234435205840602
+        },
+        "cka_mean": {
+          "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+          "retention": 96.9998369476602,
+          "test_acc": 89.97001907876806,
+          "regret": 2.7229740746779925,
+          "fraction_of_range": 0.9661326302981137
+        }
+      }
+    }
+  ],
+  "selection_utility_margins": {
+    "1": [
+      {
+        "dataset": "eurosat",
+        "margin_points": 1.0,
+        "n_candidates": 5,
+        "accuracy_cutoff": 96.0,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 58.07924343714333,
+        "worst_retention": 17.136800913093104,
+        "random_choice_retention": 39.73585520952226,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 40.94244252405023,
+            "fraction_of_range": 0.0
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr1e-5_seed19",
+            "retention": 43.63280613076798,
+            "test_acc": 97.51851851851852,
+            "regret": 14.446437306375351,
+            "fraction_of_range": 0.6471525288729589
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 40.94244252405023,
+            "fraction_of_range": 0.0
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 40.94244252405023,
+            "fraction_of_range": 0.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed7",
+            "retention": 58.07924343714333,
+            "test_acc": 96.88888888888889,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed7",
+            "retention": 58.07924343714333,
+            "test_acc": 96.88888888888889,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "cka_mean": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed7",
+            "retention": 58.07924343714333,
+            "test_acc": 96.88888888888889,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          }
+        }
+      },
+      {
+        "dataset": "pets",
+        "margin_points": 1.0,
+        "n_candidates": 4,
+        "accuracy_cutoff": 91.16216216216216,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 99.72281102233819,
+        "worst_retention": 26.414479047774336,
+        "random_choice_retention": 65.48589597260721,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+            "retention": 96.9998369476602,
+            "test_acc": 89.97001907876806,
+            "regret": 2.7229740746779925,
+            "fraction_of_range": 0.9628558718861208
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_pets_full_ft_lr1e-5_seed7",
+            "retention": 38.80645687265613,
+            "test_acc": 87.78958844371763,
+            "regret": 60.916354149682064,
+            "fraction_of_range": 0.16903914590747332
+          },
+          "cka_mean": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+            "retention": 96.9998369476602,
+            "test_acc": 89.97001907876806,
+            "regret": 2.7229740746779925,
+            "fraction_of_range": 0.9628558718861208
+          }
+        }
+      }
+    ],
+    "2": [
+      {
+        "dataset": "eurosat",
+        "margin_points": 2.0,
+        "n_candidates": 8,
+        "accuracy_cutoff": 95.0,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 58.07924343714333,
+        "worst_retention": 17.136800913093104,
+        "random_choice_retention": 41.21351703896951,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+            "retention": 24.017609652698514,
+            "test_acc": 96.81481481481482,
+            "regret": 34.06163378444482,
+            "fraction_of_range": 0.16806053365193138
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr1e-5_seed19",
+            "retention": 43.63280613076798,
+            "test_acc": 97.51851851851852,
+            "regret": 14.446437306375351,
+            "fraction_of_range": 0.6471525288729589
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+            "retention": 24.017609652698514,
+            "test_acc": 96.81481481481482,
+            "regret": 34.06163378444482,
+            "fraction_of_range": 0.16806053365193138
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 40.94244252405023,
+            "fraction_of_range": 0.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+            "retention": 56.93787705853579,
+            "test_acc": 96.81481481481482,
+            "regret": 1.1413663786075432,
+            "fraction_of_range": 0.9721226602947031
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+            "retention": 56.93787705853579,
+            "test_acc": 96.81481481481482,
+            "regret": 1.1413663786075432,
+            "fraction_of_range": 0.9721226602947031
+          },
+          "cka_mean": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed11",
+            "retention": 50.07337355291048,
+            "test_acc": 96.74074074074073,
+            "regret": 8.005869884232851,
+            "fraction_of_range": 0.8044603743528472
+          }
+        }
+      },
+      {
+        "dataset": "pets",
+        "margin_points": 2.0,
+        "n_candidates": 6,
+        "accuracy_cutoff": 90.16216216216216,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 99.72281102233819,
+        "worst_retention": 19.321702266427522,
+        "random_choice_retention": 50.168487417794445,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+            "retention": 96.9998369476602,
+            "test_acc": 89.97001907876806,
+            "regret": 2.7229740746779925,
+            "fraction_of_range": 0.9661326302981137
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_pets_full_ft_lr1e-5_seed7",
+            "retention": 38.80645687265613,
+            "test_acc": 87.78958844371763,
+            "regret": 60.916354149682064,
+            "fraction_of_range": 0.24234435205840602
+          },
+          "cka_mean": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed7",
+            "retention": 96.9998369476602,
+            "test_acc": 89.97001907876806,
+            "regret": 2.7229740746779925,
+            "fraction_of_range": 0.9661326302981137
+          }
+        }
+      }
+    ],
+    "3": [
+      {
+        "dataset": "eurosat",
+        "margin_points": 3.0,
+        "n_candidates": 11,
+        "accuracy_cutoff": 94.0,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 87.62432740909833,
+        "worst_retention": 4.353497472688734,
+        "random_choice_retention": 40.66821813438478,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+            "retention": 24.017609652698514,
+            "test_acc": 96.81481481481482,
+            "regret": 63.60671775639982,
+            "fraction_of_range": 0.23614646563540234
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr1e-5_seed19",
+            "retention": 43.63280613076798,
+            "test_acc": 97.51851851851852,
+            "regret": 43.991521278330346,
+            "fraction_of_range": 0.4717055022518112
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed11",
+            "retention": 25.66443828468939,
+            "test_acc": 94.4074074074074,
+            "regret": 61.95988912440894,
+            "fraction_of_range": 0.25592324260818483
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 70.48752649600522,
+            "fraction_of_range": 0.15351478363031132
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_eurosat_lora_r8_lr1e-4_seed7",
+            "retention": 87.62432740909833,
+            "test_acc": 95.51851851851852,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+            "retention": 56.93787705853579,
+            "test_acc": 96.81481481481482,
+            "regret": 30.686450350562538,
+            "fraction_of_range": 0.6314861954180535
+          },
+          "cka_mean": {
+            "chosen_run": "S2_eurosat_lora_r8_lr1e-4_seed7",
+            "retention": 87.62432740909833,
+            "test_acc": 95.51851851851852,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          }
+        }
+      },
+      {
+        "dataset": "pets",
+        "margin_points": 3.0,
+        "n_candidates": 9,
+        "accuracy_cutoff": 89.16216216216216,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 99.72281102233819,
+        "worst_retention": 19.321702266427522,
+        "random_choice_retention": 54.56637136076236,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed11",
+            "retention": 96.38023805641612,
+            "test_acc": 89.37040065412918,
+            "regret": 3.3425729659220735,
+            "fraction_of_range": 0.9584262827012775
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_pets_full_ft_lr1e-5_seed19",
+            "retention": 54.41056579161911,
+            "test_acc": 87.4897792313982,
+            "regret": 45.31224523071908,
+            "fraction_of_range": 0.4364226323261001
+          },
+          "cka_mean": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed11",
+            "retention": 96.38023805641612,
+            "test_acc": 89.37040065412918,
+            "regret": 3.3425729659220735,
+            "fraction_of_range": 0.9584262827012775
+          }
+        }
+      }
+    ],
+    "5": [
+      {
+        "dataset": "eurosat",
+        "margin_points": 5.0,
+        "n_candidates": 15,
+        "accuracy_cutoff": 92.0,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 87.62432740909833,
+        "worst_retention": 3.1958258601010927,
+        "random_choice_retention": 41.70987553671395,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed19",
+            "retention": 24.017609652698514,
+            "test_acc": 96.81481481481482,
+            "regret": 63.60671775639982,
+            "fraction_of_range": 0.24662031672460408
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr1e-5_seed19",
+            "retention": 43.63280613076798,
+            "test_acc": 97.51851851851852,
+            "regret": 43.991521278330346,
+            "fraction_of_range": 0.47894940131324837
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed11",
+            "retention": 25.66443828468939,
+            "test_acc": 94.4074074074074,
+            "regret": 61.95988912440894,
+            "fraction_of_range": 0.2661259173426034
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-5_seed7",
+            "retention": 17.136800913093104,
+            "test_acc": 96.70370370370371,
+            "regret": 70.48752649600522,
+            "fraction_of_range": 0.16512166859791427
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_eurosat_lora_r8_lr1e-4_seed19",
+            "retention": 86.22207728680908,
+            "test_acc": 94.66666666666667,
+            "regret": 1.4022501222892458,
+            "fraction_of_range": 0.9833912707609117
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_eurosat_full_ft_lr3e-6_seed19",
+            "retention": 56.93787705853579,
+            "test_acc": 96.81481481481482,
+            "regret": 30.686450350562538,
+            "fraction_of_range": 0.6365392043259945
+          },
+          "cka_mean": {
+            "chosen_run": "S2_eurosat_lora_r8_lr1e-4_seed11",
+            "retention": 85.47203652372413,
+            "test_acc": 95.2962962962963,
+            "regret": 2.1522908853741995,
+            "fraction_of_range": 0.9745075318655853
+          }
+        }
+      },
+      {
+        "dataset": "pets",
+        "margin_points": 5.0,
+        "n_candidates": 9,
+        "accuracy_cutoff": 87.16216216216216,
+        "cutoff_basis": "validation accuracy",
+        "oracle_retention": 99.72281102233819,
+        "worst_retention": 19.321702266427522,
+        "random_choice_retention": 54.56637136076236,
+        "signals": {
+          "abs_delta_entropy_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_entropy_last_layer_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_erf95_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "abs_delta_gini_pct": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed19",
+            "retention": 99.72281102233819,
+            "test_acc": 90.29708367402563,
+            "regret": 0.0,
+            "fraction_of_range": 1.0
+          },
+          "embedding_drift": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed11",
+            "retention": 96.38023805641612,
+            "test_acc": 89.37040065412918,
+            "regret": 3.3425729659220735,
+            "fraction_of_range": 0.9584262827012775
+          },
+          "weight_drift_rel": {
+            "chosen_run": "S2_pets_full_ft_lr1e-5_seed19",
+            "retention": 54.41056579161911,
+            "test_acc": 87.4897792313982,
+            "regret": 45.31224523071908,
+            "fraction_of_range": 0.4364226323261001
+          },
+          "cka_mean": {
+            "chosen_run": "S2_pets_lora_r8_lr1e-4_seed11",
+            "retention": 96.38023805641612,
+            "test_acc": 89.37040065412918,
+            "regret": 3.3425729659220735,
+            "fraction_of_range": 0.9584262827012775
+          }
+        }
+      }
+    ]
+  },
+  "temporal_ordering": {
+    "n_runs": 48,
+    "epoch1_delta_entropy_pct_vs_final": {
+      "spearman_rho": 0.23719062092922275,
+      "p_value": 0.1045368360462821
+    },
+    "epoch1_weight_drift_rel_vs_final": {
+      "spearman_rho": -0.9059921841076857,
+      "p_value": 8.603581484770055e-19
+    },
+    "epoch1_cka_mean_vs_final": {
+      "spearman_rho": 0.9587494572297004,
+      "p_value": 9.038592810290212e-27
+    },
+    "cell_level": {
+      "n_damaged": 6,
+      "n_healthy": 10,
+      "delta_entropy_pct": {
+        "auc_oriented": 0.6833333333333333
+      },
+      "abs_delta_entropy_pct": {
+        "auc_oriented": 0.95
+      },
+      "weight_drift_rel": {
+        "auc_oriented": 0.9833333333333333
+      },
+      "embedding_drift": {
+        "auc_oriented": 1.0
+      },
+      "cka_mean": {
+        "auc_oriented": 1.0
+      }
+    },
+    "epoch1_delta_entropy_pct_auc_for_damage": {
+      "auc_oriented": 0.6584440227703985,
+      "damaged_scores_lower": true,
+      "n_damaged": 17,
+      "n_healthy": 31,
+      "damaged_mean": -0.6593176779502543,
+      "healthy_mean": 0.1384178936410597
+    },
+    "epoch1_abs_delta_entropy_pct_auc_for_damage": {
+      "auc_oriented": 0.9392789373814042,
+      "damaged_scores_lower": false,
+      "n_damaged": 17,
+      "n_healthy": 31,
+      "damaged_mean": 1.4208404087390811,
+      "healthy_mean": 0.17705688283964793
+    },
+    "epoch1_weight_drift_rel_auc_for_damage": {
+      "auc_oriented": 0.9886148007590133,
+      "damaged_scores_lower": false,
+      "n_damaged": 17,
+      "n_healthy": 31,
+      "damaged_mean": 0.007842816214273516,
+      "healthy_mean": 0.0007770473998162503
+    },
+    "epoch1_embedding_drift_auc_for_damage": {
+      "auc_oriented": 1.0,
+      "damaged_scores_lower": false,
+      "n_damaged": 17,
+      "n_healthy": 31,
+      "damaged_mean": 0.6050789286108578,
+      "healthy_mean": 0.10645413014196581
+    },
+    "epoch1_cka_mean_auc_for_damage": {
+      "auc_oriented": 0.9886148007590133,
+      "damaged_scores_lower": true,
+      "n_damaged": 17,
+      "n_healthy": 31,
+      "damaged_mean": 0.7034392313045614,
+      "healthy_mean": 0.960774018399177
+    }
+  }
+}

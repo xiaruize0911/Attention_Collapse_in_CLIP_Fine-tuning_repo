@@ -1,0 +1,776 @@
+=== 03:19:37 STAGE 1 eurosat core ===
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 1/6 loss=1.8722 val=0.8333 dH=+0.69% track=0.4890
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 2/6 loss=0.8816 val=0.9100 dH=+1.23% track=0.4100
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 3/6 loss=0.4292 val=0.9500 dH=+1.30% track=0.3740
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 4/6 loss=0.2594 val=0.9500 dH=+1.31% track=0.3810
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 5/6 loss=0.1912 val=0.9567 dH=+1.35% track=0.3690
+  [S2_eurosat_full_ft_lr3e-6_seed7] epoch 6/6 loss=0.1644 val=0.9600 dH=+1.35% track=0.3730
+  [S2_eurosat_full_ft_lr3e-6_seed7] test=0.9689 cifar100=0.3562 dH=+1.35% (15.0 min)
+progress: 1/24
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 1/6 loss=2.3087 val=0.1400 dH=-0.00% track=0.6180
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 2/6 loss=2.2224 val=0.2033 dH=-0.01% track=0.6170
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 3/6 loss=2.1566 val=0.3533 dH=-0.01% track=0.6140
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 4/6 loss=2.1139 val=0.4433 dH=-0.01% track=0.6120
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 5/6 loss=2.0917 val=0.4633 dH=-0.01% track=0.6120
+  [S2_eurosat_lora_r8_lr3e-6_seed7] epoch 6/6 loss=2.0837 val=0.4667 dH=-0.01% track=0.6120
+  [S2_eurosat_lora_r8_lr3e-6_seed7] test=0.4493 cifar100=0.6082 dH=-0.01% (10.6 min)
+progress: 2/24
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 1/6 loss=1.4121 val=0.9233 dH=+1.20% track=0.3270
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 2/6 loss=0.3292 val=0.9400 dH=+0.85% track=0.3300
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 3/6 loss=0.1579 val=0.9567 dH=+1.05% track=0.2550
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 4/6 loss=0.0968 val=0.9533 dH=+0.82% track=0.2950
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 5/6 loss=0.0380 val=0.9667 dH=+0.84% track=0.2540
+  [S2_eurosat_full_ft_lr1e-5_seed7] epoch 6/6 loss=0.0235 val=0.9700 dH=+0.83% track=0.2520
+  [S2_eurosat_full_ft_lr1e-5_seed7] test=0.9719 cifar100=0.2500 dH=+0.83% (11.5 min)
+progress: 3/24
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 1/6 loss=2.2427 val=0.4700 dH=-0.01% track=0.6120
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 2/6 loss=1.9865 val=0.6633 dH=-0.01% track=0.6040
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 3/6 loss=1.7790 val=0.7567 dH=+0.03% track=0.6020
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 4/6 loss=1.6344 val=0.7700 dH=+0.06% track=0.5960
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 5/6 loss=1.5551 val=0.7833 dH=+0.08% track=0.5950
+  [S2_eurosat_lora_r8_lr1e-5_seed7] epoch 6/6 loss=1.5308 val=0.7867 dH=+0.08% track=0.5960
+  [S2_eurosat_lora_r8_lr1e-5_seed7] test=0.7915 cifar100=0.6006 dH=+0.08% (9.6 min)
+progress: 4/24
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 1/6 loss=1.1277 val=0.9033 dH=+0.43% track=0.1010
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 2/6 loss=0.3358 val=0.9233 dH=+0.44% track=0.0740
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 3/6 loss=0.2552 val=0.8967 dH=+0.32% track=0.0670
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 4/6 loss=0.1191 val=0.9400 dH=+0.16% track=0.1040
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 5/6 loss=0.0411 val=0.9500 dH=-0.11% track=0.0990
+  [S2_eurosat_full_ft_lr3e-5_seed7] epoch 6/6 loss=0.0203 val=0.9633 dH=-0.17% track=0.0940
+  [S2_eurosat_full_ft_lr3e-5_seed7] test=0.9670 cifar100=0.1051 dH=-0.17% (11.2 min)
+progress: 5/24
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 1/6 loss=2.0759 val=0.6967 dH=+0.00% track=0.6050
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 2/6 loss=1.3639 val=0.8500 dH=+0.30% track=0.5920
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 3/6 loss=0.8264 val=0.9067 dH=+0.50% track=0.5840
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 4/6 loss=0.5729 val=0.9100 dH=+0.60% track=0.5770
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 5/6 loss=0.4728 val=0.9167 dH=+0.63% track=0.5760
+  [S2_eurosat_lora_r8_lr3e-5_seed7] epoch 6/6 loss=0.4467 val=0.9133 dH=+0.63% track=0.5770
+  [S2_eurosat_lora_r8_lr3e-5_seed7] test=0.9189 cifar100=0.5817 dH=+0.63% (8.2 min)
+progress: 6/24
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 1/6 loss=1.4297 val=0.5433 dH=-0.82% track=0.0110
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 2/6 loss=0.9249 val=0.8000 dH=-1.62% track=0.0250
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 3/6 loss=0.5923 val=0.7800 dH=-1.71% track=0.0270
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 4/6 loss=0.3303 val=0.8267 dH=-2.41% track=0.0220
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 5/6 loss=0.1621 val=0.9133 dH=-2.51% track=0.0280
+  [S2_eurosat_full_ft_lr1e-4_seed7] epoch 6/6 loss=0.0665 val=0.9200 dH=-2.61% track=0.0310
+  [S2_eurosat_full_ft_lr1e-4_seed7] test=0.9356 cifar100=0.0196 dH=-2.61% (10.4 min)
+progress: 7/24
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 1/6 loss=1.5960 val=0.8800 dH=+0.42% track=0.5790
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 2/6 loss=0.3617 val=0.9200 dH=+0.82% track=0.5500
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 3/6 loss=0.1630 val=0.9333 dH=+0.96% track=0.5300
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 4/6 loss=0.1115 val=0.9467 dH=+0.95% track=0.5260
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 5/6 loss=0.0911 val=0.9367 dH=+0.95% track=0.5230
+  [S2_eurosat_lora_r8_lr1e-4_seed7] epoch 6/6 loss=0.0801 val=0.9367 dH=+0.95% track=0.5230
+  [S2_eurosat_lora_r8_lr1e-4_seed7] test=0.9552 cifar100=0.5374 dH=+0.95% (8.3 min)
+progress: 8/24
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 1/6 loss=1.8205 val=0.8800 dH=+1.49% track=0.4880
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 2/6 loss=0.8117 val=0.9233 dH=+1.70% track=0.4210
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 3/6 loss=0.4066 val=0.9467 dH=+1.73% track=0.3580
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 4/6 loss=0.2495 val=0.9467 dH=+1.78% track=0.3260
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 5/6 loss=0.1865 val=0.9567 dH=+1.82% track=0.2930
+  [S2_eurosat_full_ft_lr3e-6_seed11] epoch 6/6 loss=0.1614 val=0.9533 dH=+1.82% track=0.2940
+  [S2_eurosat_full_ft_lr3e-6_seed11] test=0.9674 cifar100=0.3071 dH=+1.82% (10.3 min)
+progress: 9/24
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 1/6 loss=2.2965 val=0.1033 dH=+0.00% track=0.6180
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 2/6 loss=2.2132 val=0.2733 dH=+0.01% track=0.6190
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 3/6 loss=2.1465 val=0.3733 dH=+0.01% track=0.6210
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 4/6 loss=2.1015 val=0.4267 dH=+0.01% track=0.6190
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 5/6 loss=2.0779 val=0.4500 dH=+0.02% track=0.6180
+  [S2_eurosat_lora_r8_lr3e-6_seed11] epoch 6/6 loss=2.0701 val=0.4533 dH=+0.02% track=0.6190
+  [S2_eurosat_lora_r8_lr3e-6_seed11] test=0.4644 cifar100=0.6129 dH=+0.02% (8.3 min)
+progress: 10/24
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 1/6 loss=1.3354 val=0.9100 dH=+1.61% track=0.2410
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 2/6 loss=0.3178 val=0.9167 dH=+1.33% track=0.3160
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 3/6 loss=0.1429 val=0.9300 dH=+1.18% track=0.3200
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 4/6 loss=0.0809 val=0.9567 dH=+1.31% track=0.1860
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 5/6 loss=0.0496 val=0.9600 dH=+1.18% track=0.2310
+  [S2_eurosat_full_ft_lr1e-5_seed11] epoch 6/6 loss=0.0263 val=0.9533 dH=+1.16% track=0.2250
+  [S2_eurosat_full_ft_lr1e-5_seed11] test=0.9685 cifar100=0.2396 dH=+1.18% (10.3 min)
+progress: 11/24
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 1/6 loss=2.2316 val=0.4200 dH=+0.01% track=0.6160
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 2/6 loss=1.9720 val=0.6633 dH=+0.06% track=0.6070
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 3/6 loss=1.7515 val=0.7400 dH=+0.14% track=0.6080
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 4/6 loss=1.5956 val=0.7733 dH=+0.20% track=0.6050
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 5/6 loss=1.5154 val=0.7767 dH=+0.22% track=0.6060
+  [S2_eurosat_lora_r8_lr1e-5_seed11] epoch 6/6 loss=1.4906 val=0.7733 dH=+0.23% track=0.6060
+  [S2_eurosat_lora_r8_lr1e-5_seed11] test=0.8019 cifar100=0.6069 dH=+0.22% (8.3 min)
+progress: 12/24
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 1/6 loss=1.0778 val=0.8900 dH=+1.17% track=0.1590
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 2/6 loss=0.3684 val=0.8900 dH=+0.78% track=0.1120
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 3/6 loss=0.2567 val=0.9167 dH=+0.18% track=0.1770
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 4/6 loss=0.1310 val=0.9133 dH=+0.48% track=0.1800
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 5/6 loss=0.0828 val=0.9433 dH=+0.23% track=0.1610
+  [S2_eurosat_full_ft_lr3e-5_seed11] epoch 6/6 loss=0.0371 val=0.9400 dH=+0.25% track=0.1790
+  [S2_eurosat_full_ft_lr3e-5_seed11] test=0.9441 cifar100=0.1574 dH=+0.23% (10.0 min)
+progress: 13/24
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 1/6 loss=2.0599 val=0.7000 dH=+0.11% track=0.6110
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 2/6 loss=1.3233 val=0.8333 dH=+0.50% track=0.6060
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 3/6 loss=0.7921 val=0.8833 dH=+0.65% track=0.5880
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 4/6 loss=0.5486 val=0.8900 dH=+0.76% track=0.5780
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 5/6 loss=0.4587 val=0.9033 dH=+0.78% track=0.5710
+  [S2_eurosat_lora_r8_lr3e-5_seed11] epoch 6/6 loss=0.4353 val=0.9000 dH=+0.79% track=0.5710
+  [S2_eurosat_lora_r8_lr3e-5_seed11] test=0.9152 cifar100=0.5805 dH=+0.78% (8.0 min)
+progress: 14/24
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 1/6 loss=1.3472 val=0.5000 dH=-1.54% track=0.0190
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 2/6 loss=0.8801 val=0.8000 dH=-1.17% track=0.0270
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 3/6 loss=0.5670 val=0.8567 dH=-1.71% track=0.0270
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 4/6 loss=0.3215 val=0.8700 dH=-2.24% track=0.0240
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 5/6 loss=0.1687 val=0.8967 dH=-2.66% track=0.0180
+  [S2_eurosat_full_ft_lr1e-4_seed11] epoch 6/6 loss=0.0656 val=0.9467 dH=-2.53% track=0.0190
+  [S2_eurosat_full_ft_lr1e-4_seed11] test=0.9441 cifar100=0.0267 dH=-2.53% (10.0 min)
+progress: 15/24
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 1/6 loss=1.5558 val=0.8533 dH=+0.66% track=0.5730
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 2/6 loss=0.3676 val=0.9167 dH=+0.97% track=0.5320
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 3/6 loss=0.1542 val=0.9200 dH=+1.01% track=0.5100
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 4/6 loss=0.1074 val=0.9267 dH=+0.97% track=0.5170
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 5/6 loss=0.0893 val=0.9333 dH=+1.01% track=0.5090
+  [S2_eurosat_lora_r8_lr1e-4_seed11] epoch 6/6 loss=0.0791 val=0.9333 dH=+1.01% track=0.5090
+  [S2_eurosat_lora_r8_lr1e-4_seed11] test=0.9530 cifar100=0.5242 dH=+1.01% (8.0 min)
+progress: 16/24
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 1/6 loss=1.8818 val=0.7667 dH=+0.81% track=0.5200
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 2/6 loss=0.9468 val=0.9000 dH=+1.38% track=0.4330
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 3/6 loss=0.4851 val=0.9267 dH=+1.47% track=0.3450
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 4/6 loss=0.2939 val=0.9367 dH=+1.41% track=0.3610
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 5/6 loss=0.2146 val=0.9400 dH=+1.42% track=0.3530
+  [S2_eurosat_full_ft_lr3e-6_seed19] epoch 6/6 loss=0.1881 val=0.9500 dH=+1.42% track=0.3490
+  [S2_eurosat_full_ft_lr3e-6_seed19] test=0.9681 cifar100=0.3492 dH=+1.42% (9.6 min)
+progress: 17/24
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 1/6 loss=2.3041 val=0.1767 dH=+0.00% track=0.6180
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 2/6 loss=2.2153 val=0.2400 dH=+0.01% track=0.6170
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 3/6 loss=2.1486 val=0.3667 dH=+0.01% track=0.6180
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 4/6 loss=2.1050 val=0.4233 dH=+0.02% track=0.6200
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 5/6 loss=2.0804 val=0.4400 dH=+0.02% track=0.6200
+  [S2_eurosat_lora_r8_lr3e-6_seed19] epoch 6/6 loss=2.0743 val=0.4433 dH=+0.02% track=0.6200
+  [S2_eurosat_lora_r8_lr3e-6_seed19] test=0.4526 cifar100=0.6123 dH=+0.02% (7.9 min)
+progress: 18/24
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 1/6 loss=1.4339 val=0.8167 dH=+1.52% track=0.3190
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 2/6 loss=0.4140 val=0.9367 dH=+1.37% track=0.3280
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 3/6 loss=0.1725 val=0.9300 dH=+1.08% track=0.2680
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 4/6 loss=0.0896 val=0.9567 dH=+0.98% track=0.2800
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 5/6 loss=0.0491 val=0.9600 dH=+0.97% track=0.2600
+  [S2_eurosat_full_ft_lr1e-5_seed19] epoch 6/6 loss=0.0291 val=0.9667 dH=+0.96% track=0.2550
+  [S2_eurosat_full_ft_lr1e-5_seed19] test=0.9752 cifar100=0.2676 dH=+0.96% (9.8 min)
+progress: 19/24
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 1/6 loss=2.2358 val=0.4433 dH=+0.02% track=0.6170
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 2/6 loss=1.9762 val=0.6467 dH=+0.06% track=0.6120
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 3/6 loss=1.7685 val=0.6933 dH=+0.13% track=0.6030
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 4/6 loss=1.6267 val=0.7167 dH=+0.17% track=0.6020
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 5/6 loss=1.5452 val=0.7267 dH=+0.19% track=0.6020
+  [S2_eurosat_lora_r8_lr1e-5_seed19] epoch 6/6 loss=1.5240 val=0.7333 dH=+0.19% track=0.6000
+  [S2_eurosat_lora_r8_lr1e-5_seed19] test=0.7715 cifar100=0.5989 dH=+0.19% (8.1 min)
+progress: 20/24
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 1/6 loss=1.1622 val=0.8700 dH=+0.55% track=0.1810
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 2/6 loss=0.3678 val=0.8733 dH=+0.54% track=0.0900
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 3/6 loss=0.2975 val=0.9100 dH=+0.12% track=0.1590
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 4/6 loss=0.1366 val=0.9200 dH=+0.01% track=0.1370
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 5/6 loss=0.0933 val=0.9533 dH=+0.11% track=0.1450
+  [S2_eurosat_full_ft_lr3e-5_seed19] epoch 6/6 loss=0.0290 val=0.9533 dH=+0.07% track=0.1480
+  [S2_eurosat_full_ft_lr3e-5_seed19] test=0.9681 cifar100=0.1473 dH=+0.11% (10.3 min)
+progress: 21/24
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 1/6 loss=2.0670 val=0.6667 dH=+0.10% track=0.6080
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 2/6 loss=1.3670 val=0.8033 dH=+0.40% track=0.5910
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 3/6 loss=0.8634 val=0.8667 dH=+0.60% track=0.5730
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 4/6 loss=0.6134 val=0.8833 dH=+0.70% track=0.5810
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 5/6 loss=0.5093 val=0.8967 dH=+0.73% track=0.5780
+  [S2_eurosat_lora_r8_lr3e-5_seed19] epoch 6/6 loss=0.4818 val=0.8967 dH=+0.73% track=0.5770
+  [S2_eurosat_lora_r8_lr3e-5_seed19] test=0.9178 cifar100=0.5769 dH=+0.73% (8.1 min)
+progress: 22/24
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 1/6 loss=1.3860 val=0.6667 dH=-0.02% track=0.0170
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 2/6 loss=0.8104 val=0.6733 dH=-0.82% track=0.0170
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 3/6 loss=0.5068 val=0.8300 dH=-1.51% track=0.0170
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 4/6 loss=0.3016 val=0.9100 dH=-2.01% track=0.0250
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 5/6 loss=0.1290 val=0.9067 dH=-1.83% track=0.0200
+  [S2_eurosat_full_ft_lr1e-4_seed19] epoch 6/6 loss=0.0489 val=0.9367 dH=-1.87% track=0.0190
+  [S2_eurosat_full_ft_lr1e-4_seed19] test=0.9411 cifar100=0.0209 dH=-1.87% (10.1 min)
+progress: 23/24
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 1/6 loss=1.5952 val=0.8167 dH=+0.53% track=0.5730
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 2/6 loss=0.3927 val=0.9000 dH=+0.92% track=0.5560
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 3/6 loss=0.1715 val=0.9333 dH=+0.98% track=0.5230
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 4/6 loss=0.1174 val=0.9333 dH=+1.01% track=0.5130
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 5/6 loss=0.0927 val=0.9300 dH=+0.99% track=0.5140
+  [S2_eurosat_lora_r8_lr1e-4_seed19] epoch 6/6 loss=0.0835 val=0.9333 dH=+1.00% track=0.5110
+  [S2_eurosat_lora_r8_lr1e-4_seed19] test=0.9467 cifar100=0.5288 dH=+0.98% (7.9 min)
+progress: 24/24
+=== 07:09:51 STAGE 2 pets core ===
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 1/6 loss=3.5617 val=0.2459 dH=-0.07% track=0.5560
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 2/6 loss=3.1043 val=0.5865 dH=-0.32% track=0.5360
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 3/6 loss=2.6201 val=0.7865 dH=-0.65% track=0.4970
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 4/6 loss=2.2694 val=0.8351 dH=-0.76% track=0.4700
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 5/6 loss=2.0813 val=0.8405 dH=-0.79% track=0.4450
+  [S2_pets_full_ft_lr3e-6_seed7] epoch 6/6 loss=2.0194 val=0.8432 dH=-0.81% track=0.4450
+  [S2_pets_full_ft_lr3e-6_seed7] test=0.7860 cifar100=0.4388 dH=-0.81% (8.8 min)
+progress: 1/24
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 1/6 loss=3.6646 val=0.0270 dH=-0.00% track=0.6200
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 2/6 loss=3.6297 val=0.0351 dH=-0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 3/6 loss=3.5960 val=0.0432 dH=-0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 4/6 loss=3.5744 val=0.0486 dH=-0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 5/6 loss=3.5661 val=0.0486 dH=-0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed7] epoch 6/6 loss=3.5596 val=0.0486 dH=-0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed7] test=0.0518 cifar100=0.6138 dH=-0.00% (7.2 min)
+progress: 2/24
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 1/6 loss=3.3044 val=0.6459 dH=-0.96% track=0.4130
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 2/6 loss=2.0333 val=0.8730 dH=-1.10% track=0.3900
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 3/6 loss=1.1791 val=0.9027 dH=-1.27% track=0.3230
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 4/6 loss=0.7549 val=0.9162 dH=-1.49% track=0.2350
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 5/6 loss=0.5516 val=0.9135 dH=-1.45% track=0.2220
+  [S2_pets_full_ft_lr1e-5_seed7] epoch 6/6 loss=0.4875 val=0.9081 dH=-1.47% track=0.2130
+  [S2_pets_full_ft_lr1e-5_seed7] test=0.8779 cifar100=0.2380 dH=-1.49% (8.9 min)
+progress: 3/24
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 1/6 loss=3.6362 val=0.0514 dH=-0.00% track=0.6180
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 2/6 loss=3.5168 val=0.1514 dH=-0.00% track=0.6180
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 3/6 loss=3.4138 val=0.2297 dH=-0.00% track=0.6150
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 4/6 loss=3.3419 val=0.2946 dH=-0.00% track=0.6160
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 5/6 loss=3.3054 val=0.3054 dH=-0.00% track=0.6160
+  [S2_pets_lora_r8_lr1e-5_seed7] epoch 6/6 loss=3.2904 val=0.3081 dH=-0.00% track=0.6160
+  [S2_pets_lora_r8_lr1e-5_seed7] test=0.2636 cifar100=0.6151 dH=-0.00% (7.3 min)
+progress: 4/24
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 1/6 loss=2.8964 val=0.6730 dH=-1.92% track=0.1830
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 2/6 loss=1.1749 val=0.8243 dH=-1.75% track=0.1810
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 3/6 loss=0.4628 val=0.8622 dH=-1.94% track=0.1650
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 4/6 loss=0.2195 val=0.8973 dH=-1.91% track=0.1510
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 5/6 loss=0.1017 val=0.9000 dH=-1.93% track=0.1410
+  [S2_pets_full_ft_lr3e-5_seed7] epoch 6/6 loss=0.0747 val=0.9054 dH=-1.93% track=0.1240
+  [S2_pets_full_ft_lr3e-5_seed7] test=0.8825 cifar100=0.1185 dH=-1.93% (9.2 min)
+progress: 5/24
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 1/6 loss=3.5577 val=0.2514 dH=-0.00% track=0.6170
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 2/6 loss=3.1889 val=0.5757 dH=-0.01% track=0.6200
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 3/6 loss=2.8085 val=0.6946 dH=-0.07% track=0.6230
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 4/6 loss=2.5041 val=0.7459 dH=-0.12% track=0.6180
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 5/6 loss=2.3432 val=0.7730 dH=-0.14% track=0.6210
+  [S2_pets_lora_r8_lr3e-5_seed7] epoch 6/6 loss=2.2912 val=0.7730 dH=-0.14% track=0.6230
+  [S2_pets_lora_r8_lr3e-5_seed7] test=0.7324 cifar100=0.6247 dH=-0.14% (9.1 min)
+progress: 6/24
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 1/6 loss=2.7662 val=0.4270 dH=-2.99% track=0.0450
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 2/6 loss=1.4729 val=0.6189 dH=-2.82% track=0.0370
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 3/6 loss=0.8574 val=0.5838 dH=-3.05% track=0.0390
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 4/6 loss=0.4726 val=0.7459 dH=-3.16% track=0.0470
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 5/6 loss=0.1876 val=0.7892 dH=-3.39% track=0.0450
+  [S2_pets_full_ft_lr1e-4_seed7] epoch 6/6 loss=0.0824 val=0.8081 dH=-3.37% track=0.0380
+  [S2_pets_full_ft_lr1e-4_seed7] test=0.7950 cifar100=0.0424 dH=-3.37% (10.8 min)
+progress: 7/24
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 1/6 loss=3.2738 val=0.6973 dH=-0.05% track=0.6190
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 2/6 loss=1.8727 val=0.8541 dH=-0.30% track=0.6050
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 3/6 loss=0.9631 val=0.8919 dH=-0.37% track=0.5890
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 4/6 loss=0.6348 val=0.9189 dH=-0.41% track=0.5820
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 5/6 loss=0.5216 val=0.9162 dH=-0.42% track=0.5770
+  [S2_pets_lora_r8_lr1e-4_seed7] epoch 6/6 loss=0.4851 val=0.9189 dH=-0.43% track=0.5770
+  [S2_pets_lora_r8_lr1e-4_seed7] test=0.8997 cifar100=0.5949 dH=-0.41% (7.7 min)
+progress: 8/24
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 1/6 loss=3.5217 val=0.2216 dH=-0.10% track=0.5720
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 2/6 loss=3.0379 val=0.5649 dH=-0.39% track=0.4940
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 3/6 loss=2.5683 val=0.7108 dH=-0.60% track=0.4590
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 4/6 loss=2.2357 val=0.7811 dH=-0.69% track=0.4380
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 5/6 loss=2.0498 val=0.7892 dH=-0.72% track=0.4310
+  [S2_pets_full_ft_lr3e-6_seed11] epoch 6/6 loss=1.9920 val=0.7946 dH=-0.73% track=0.4280
+  [S2_pets_full_ft_lr3e-6_seed11] test=0.7495 cifar100=0.4237 dH=-0.73% (9.2 min)
+progress: 9/24
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 1/6 loss=3.6369 val=0.0486 dH=-0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 2/6 loss=3.5976 val=0.0568 dH=-0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 3/6 loss=3.5661 val=0.0622 dH=-0.00% track=0.6170
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 4/6 loss=3.5455 val=0.0676 dH=-0.00% track=0.6170
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 5/6 loss=3.5310 val=0.0703 dH=-0.00% track=0.6160
+  [S2_pets_lora_r8_lr3e-6_seed11] epoch 6/6 loss=3.5281 val=0.0703 dH=-0.00% track=0.6160
+  [S2_pets_lora_r8_lr3e-6_seed11] test=0.0692 cifar100=0.6113 dH=-0.00% (8.4 min)
+progress: 10/24
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 1/6 loss=3.2663 val=0.5622 dH=-0.62% track=0.4690
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 2/6 loss=2.0187 val=0.8459 dH=-0.98% track=0.3870
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 3/6 loss=1.1944 val=0.8919 dH=-1.16% track=0.3320
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 4/6 loss=0.7704 val=0.8892 dH=-1.21% track=0.2640
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 5/6 loss=0.5613 val=0.8946 dH=-1.24% track=0.2230
+  [S2_pets_full_ft_lr1e-5_seed11] epoch 6/6 loss=0.4933 val=0.8919 dH=-1.25% track=0.2250
+  [S2_pets_full_ft_lr1e-5_seed11] test=0.8787 cifar100=0.2410 dH=-1.24% (10.6 min)
+progress: 11/24
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 1/6 loss=3.6074 val=0.0676 dH=-0.00% track=0.6170
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 2/6 loss=3.4821 val=0.1135 dH=-0.01% track=0.6140
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 3/6 loss=3.3802 val=0.1730 dH=-0.01% track=0.6140
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 4/6 loss=3.3071 val=0.2162 dH=-0.01% track=0.6150
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 5/6 loss=3.2648 val=0.2432 dH=-0.02% track=0.6160
+  [S2_pets_lora_r8_lr1e-5_seed11] epoch 6/6 loss=3.2530 val=0.2486 dH=-0.02% track=0.6160
+  [S2_pets_lora_r8_lr1e-5_seed11] test=0.2518 cifar100=0.6098 dH=-0.02% (7.9 min)
+progress: 12/24
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 1/6 loss=2.8471 val=0.6730 dH=-2.05% track=0.2310
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 2/6 loss=1.1845 val=0.8351 dH=-1.82% track=0.1700
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 3/6 loss=0.5255 val=0.8622 dH=-2.13% track=0.1920
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 4/6 loss=0.2390 val=0.8838 dH=-1.99% track=0.1650
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 5/6 loss=0.1236 val=0.8973 dH=-2.11% track=0.1290
+  [S2_pets_full_ft_lr3e-5_seed11] epoch 6/6 loss=0.0844 val=0.9054 dH=-2.11% track=0.1320
+  [S2_pets_full_ft_lr3e-5_seed11] test=0.8801 cifar100=0.1211 dH=-2.11% (9.9 min)
+progress: 13/24
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 1/6 loss=3.5275 val=0.1892 dH=-0.01% track=0.6130
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 2/6 loss=3.1477 val=0.5054 dH=-0.03% track=0.6130
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 3/6 loss=2.7599 val=0.6892 dH=-0.09% track=0.6180
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 4/6 loss=2.4508 val=0.7432 dH=-0.13% track=0.6190
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 5/6 loss=2.2831 val=0.7595 dH=-0.15% track=0.6170
+  [S2_pets_lora_r8_lr3e-5_seed11] epoch 6/6 loss=2.2366 val=0.7676 dH=-0.15% track=0.6170
+  [S2_pets_lora_r8_lr3e-5_seed11] test=0.7160 cifar100=0.6058 dH=-0.15% (8.6 min)
+progress: 14/24
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 1/6 loss=2.7572 val=0.3757 dH=-3.18% track=0.0360
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 2/6 loss=1.4236 val=0.5000 dH=-2.29% track=0.0300
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 3/6 loss=0.9765 val=0.5946 dH=-3.58% track=0.0570
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 4/6 loss=0.5094 val=0.7243 dH=-2.79% track=0.0600
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 5/6 loss=0.2378 val=0.7892 dH=-3.41% track=0.0640
+  [S2_pets_full_ft_lr1e-4_seed11] epoch 6/6 loss=0.0985 val=0.8054 dH=-3.33% track=0.0570
+  [S2_pets_full_ft_lr1e-4_seed11] test=0.7855 cifar100=0.0616 dH=-3.33% (11.4 min)
+progress: 15/24
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 1/6 loss=3.2423 val=0.6811 dH=-0.06% track=0.6100
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 2/6 loss=1.8133 val=0.8730 dH=-0.31% track=0.6100
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 3/6 loss=0.9429 val=0.8892 dH=-0.36% track=0.6010
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 4/6 loss=0.6402 val=0.8919 dH=-0.39% track=0.5960
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 5/6 loss=0.5193 val=0.8946 dH=-0.38% track=0.5980
+  [S2_pets_lora_r8_lr1e-4_seed11] epoch 6/6 loss=0.4898 val=0.9000 dH=-0.38% track=0.5980
+  [S2_pets_lora_r8_lr1e-4_seed11] test=0.8937 cifar100=0.5911 dH=-0.38% (17.6 min)
+progress: 16/24
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 1/6 loss=3.5429 val=0.2351 dH=+0.02% track=0.5890
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 2/6 loss=3.1127 val=0.5324 dH=+0.03% track=0.5620
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 3/6 loss=2.6505 val=0.7351 dH=-0.19% track=0.5180
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 4/6 loss=2.3133 val=0.7811 dH=-0.30% track=0.5010
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 5/6 loss=2.1275 val=0.8000 dH=-0.31% track=0.4920
+  [S2_pets_full_ft_lr3e-6_seed19] epoch 6/6 loss=2.0621 val=0.8216 dH=-0.33% track=0.4890
+  [S2_pets_full_ft_lr3e-6_seed19] test=0.7389 cifar100=0.4905 dH=-0.33% (19.4 min)
+progress: 17/24
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 1/6 loss=3.6419 val=0.0135 dH=+0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 2/6 loss=3.6060 val=0.0297 dH=+0.00% track=0.6180
+/Users/xiaruize/miniconda3/lib/python3.13/multiprocessing/resource_tracker.py:400: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/loky-20370-y2wn1v3n'}
+  warnings.warn(
+=== 18:10:38 STAGE 1 eurosat core ===
+device=mps torch=2.7.1
+skip (done): S2_eurosat_full_ft_lr3e-6_seed7
+progress: 1/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed7
+progress: 2/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed7
+progress: 3/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed7
+progress: 4/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed7
+progress: 5/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed7
+progress: 6/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed7
+progress: 7/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed7
+progress: 8/24
+skip (done): S2_eurosat_full_ft_lr3e-6_seed11
+progress: 9/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed11
+progress: 10/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed11
+progress: 11/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed11
+progress: 12/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed11
+progress: 13/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed11
+progress: 14/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed11
+progress: 15/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed11
+progress: 16/24
+skip (done): S2_eurosat_full_ft_lr3e-6_seed19
+progress: 17/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed19
+progress: 18/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed19
+progress: 19/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed19
+progress: 20/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed19
+progress: 21/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed19
+progress: 22/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed19
+progress: 23/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed19
+progress: 24/24
+=== 18:10:46 STAGE 2 pets core ===
+device=mps torch=2.7.1
+skip (done): S2_pets_full_ft_lr3e-6_seed7
+progress: 1/24
+skip (done): S2_pets_lora_r8_lr3e-6_seed7
+progress: 2/24
+skip (done): S2_pets_full_ft_lr1e-5_seed7
+progress: 3/24
+skip (done): S2_pets_lora_r8_lr1e-5_seed7
+progress: 4/24
+skip (done): S2_pets_full_ft_lr3e-5_seed7
+progress: 5/24
+skip (done): S2_pets_lora_r8_lr3e-5_seed7
+progress: 6/24
+skip (done): S2_pets_full_ft_lr1e-4_seed7
+progress: 7/24
+skip (done): S2_pets_lora_r8_lr1e-4_seed7
+progress: 8/24
+skip (done): S2_pets_full_ft_lr3e-6_seed11
+progress: 9/24
+skip (done): S2_pets_lora_r8_lr3e-6_seed11
+progress: 10/24
+skip (done): S2_pets_full_ft_lr1e-5_seed11
+progress: 11/24
+skip (done): S2_pets_lora_r8_lr1e-5_seed11
+progress: 12/24
+skip (done): S2_pets_full_ft_lr3e-5_seed11
+progress: 13/24
+skip (done): S2_pets_lora_r8_lr3e-5_seed11
+progress: 14/24
+skip (done): S2_pets_full_ft_lr1e-4_seed11
+progress: 15/24
+skip (done): S2_pets_lora_r8_lr1e-4_seed11
+progress: 16/24
+skip (done): S2_pets_full_ft_lr3e-6_seed19
+progress: 17/24
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 1/6 loss=3.6419 val=0.0135 dH=+0.00% track=0.6190
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 2/6 loss=3.6060 val=0.0297 dH=+0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 3/6 loss=3.5725 val=0.0459 dH=+0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 4/6 loss=3.5534 val=0.0541 dH=+0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 5/6 loss=3.5409 val=0.0541 dH=+0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed19] epoch 6/6 loss=3.5379 val=0.0568 dH=+0.00% track=0.6180
+  [S2_pets_lora_r8_lr3e-6_seed19] test=0.0660 cifar100=0.6145 dH=+0.00% (15.6 min)
+progress: 18/24
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 1/6 loss=3.2864 val=0.5108 dH=-0.29% track=0.4880
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 2/6 loss=2.0802 val=0.8081 dH=-0.67% track=0.4480
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 3/6 loss=1.2443 val=0.8757 dH=-0.83% track=0.3850
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 4/6 loss=0.8108 val=0.8973 dH=-0.96% track=0.3490
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 5/6 loss=0.5931 val=0.8946 dH=-0.96% track=0.3220
+  [S2_pets_full_ft_lr1e-5_seed19] epoch 6/6 loss=0.5196 val=0.8946 dH=-0.99% track=0.3140
+  [S2_pets_full_ft_lr1e-5_seed19] test=0.8749 cifar100=0.3337 dH=-0.96% (17.1 min)
+progress: 19/24
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 1/6 loss=3.6133 val=0.0541 dH=+0.00% track=0.6170
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 2/6 loss=3.4923 val=0.1622 dH=+0.00% track=0.6200
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 3/6 loss=3.3877 val=0.2486 dH=+0.01% track=0.6220
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 4/6 loss=3.3163 val=0.2838 dH=+0.01% track=0.6210
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 5/6 loss=3.2746 val=0.2919 dH=+0.01% track=0.6230
+  [S2_pets_lora_r8_lr1e-5_seed19] epoch 6/6 loss=3.2620 val=0.2973 dH=+0.01% track=0.6230
+  [S2_pets_lora_r8_lr1e-5_seed19] test=0.2815 cifar100=0.6171 dH=+0.01% (13.4 min)
+progress: 20/24
+Using the latest cached version of the dataset since timm/oxford-iiit-pet couldn't be found on the Hugging Face Hub
+Found the latest cached dataset configuration 'default' at data/timm___oxford-iiit-pet/default/0.0.0/089695c834a7deb60505b7cc506672db1c31a6aa (last modified on Sun Aug 16 04:17:19 2026).
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 1/6 loss=2.9002 val=0.6946 dH=-1.25% track=0.3560
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 2/6 loss=1.1862 val=0.8216 dH=-1.61% track=0.2440
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 3/6 loss=0.5391 val=0.8784 dH=-1.74% track=0.1800
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 4/6 loss=0.2275 val=0.8838 dH=-1.81% track=0.1830
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 5/6 loss=0.1175 val=0.9162 dH=-1.63% track=0.1730
+  [S2_pets_full_ft_lr3e-5_seed19] epoch 6/6 loss=0.0796 val=0.9216 dH=-1.67% track=0.1640
+  [S2_pets_full_ft_lr3e-5_seed19] test=0.8853 cifar100=0.1620 dH=-1.67% (16.3 min)
+progress: 21/24
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 1/6 loss=3.5339 val=0.2459 dH=+0.01% track=0.6210
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 2/6 loss=3.1589 val=0.4676 dH=+0.03% track=0.6320
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 3/6 loss=2.7673 val=0.6135 dH=+0.00% track=0.6280
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 4/6 loss=2.4685 val=0.6676 dH=-0.03% track=0.6240
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 5/6 loss=2.3038 val=0.7000 dH=-0.04% track=0.6200
+  [S2_pets_lora_r8_lr3e-5_seed19] epoch 6/6 loss=2.2545 val=0.7081 dH=-0.04% track=0.6200
+  [S2_pets_lora_r8_lr3e-5_seed19] test=0.7040 cifar100=0.6245 dH=-0.04% (12.2 min)
+progress: 22/24
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 1/6 loss=2.8174 val=0.5135 dH=-2.33% track=0.0790
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 2/6 loss=1.4698 val=0.6027 dH=-2.62% track=0.0570
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 3/6 loss=0.9277 val=0.6243 dH=-2.82% track=0.0580
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 4/6 loss=0.5038 val=0.7270 dH=-3.19% track=0.0520
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 5/6 loss=0.2093 val=0.8000 dH=-2.80% track=0.0590
+  [S2_pets_full_ft_lr1e-4_seed19] epoch 6/6 loss=0.0909 val=0.8270 dH=-3.00% track=0.0570
+  [S2_pets_full_ft_lr1e-4_seed19] test=0.7923 cifar100=0.0646 dH=-3.00% (13.5 min)
+progress: 23/24
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 1/6 loss=3.2440 val=0.6027 dH=+0.02% track=0.6270
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 2/6 loss=1.8421 val=0.8622 dH=-0.18% track=0.6120
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 3/6 loss=0.9500 val=0.8892 dH=-0.23% track=0.6080
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 4/6 loss=0.6353 val=0.9054 dH=-0.24% track=0.5980
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 5/6 loss=0.5211 val=0.9135 dH=-0.25% track=0.5970
+  [S2_pets_lora_r8_lr1e-4_seed19] epoch 6/6 loss=0.4840 val=0.9135 dH=-0.26% track=0.5950
+  [S2_pets_lora_r8_lr1e-4_seed19] test=0.9030 cifar100=0.6116 dH=-0.25% (8.6 min)
+progress: 24/24
+=== 19:47:30 STAGE 3 reference points ===
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 1/6 loss=1.9274 val=0.7400 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 2/6 loss=1.2015 val=0.8100 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 3/6 loss=0.9150 val=0.8000 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 4/6 loss=0.7808 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 5/6 loss=0.7289 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] epoch 6/6 loss=0.7114 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed7] test=0.8485 cifar100=0.6133 dH=+0.00% (5.9 min)
+progress: 1/6
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 1/6 loss=1.9190 val=0.7533 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 2/6 loss=1.2039 val=0.7833 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 3/6 loss=0.9074 val=0.8000 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 4/6 loss=0.7783 val=0.8133 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 5/6 loss=0.7232 val=0.8133 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] epoch 6/6 loss=0.7051 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed11] test=0.8526 cifar100=0.6133 dH=+0.00% (6.3 min)
+progress: 2/6
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 1/6 loss=1.9238 val=0.6800 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 2/6 loss=1.2082 val=0.7667 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 3/6 loss=0.9168 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 4/6 loss=0.7835 val=0.8167 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 5/6 loss=0.7246 val=0.8200 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] epoch 6/6 loss=0.7118 val=0.8233 dH=+0.00% track=0.6220
+  [S2_eurosat_linear_probe_lr1e-3_seed19] test=0.8522 cifar100=0.6133 dH=+0.00% (6.3 min)
+progress: 3/6
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 1/6 loss=3.2712 val=0.6027 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 2/6 loss=2.3318 val=0.8243 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 3/6 loss=1.7763 val=0.8378 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 4/6 loss=1.4821 val=0.8649 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 5/6 loss=1.3503 val=0.8622 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] epoch 6/6 loss=1.3050 val=0.8676 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed7] test=0.8108 cifar100=0.6133 dH=+0.00% (5.9 min)
+progress: 4/6
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 1/6 loss=3.2550 val=0.6622 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 2/6 loss=2.3157 val=0.8189 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 3/6 loss=1.7667 val=0.8703 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 4/6 loss=1.4745 val=0.8649 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 5/6 loss=1.3362 val=0.8703 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] epoch 6/6 loss=1.2982 val=0.8703 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed11] test=0.7907 cifar100=0.6133 dH=+0.00% (7.0 min)
+progress: 5/6
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 1/6 loss=3.2609 val=0.5757 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 2/6 loss=2.3312 val=0.7757 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 3/6 loss=1.7727 val=0.8514 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 4/6 loss=1.4790 val=0.8622 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 5/6 loss=1.3376 val=0.8676 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] epoch 6/6 loss=1.2951 val=0.8649 dH=+0.00% track=0.6220
+  [S2_pets_linear_probe_lr1e-3_seed19] test=0.8136 cifar100=0.6133 dH=+0.00% (8.7 min)
+progress: 6/6
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 1/6 loss=2.0725 val=0.6867 dH=-0.02% track=0.6050
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 2/6 loss=1.2846 val=0.8033 dH=-0.03% track=0.5890
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 3/6 loss=0.7480 val=0.8433 dH=-0.04% track=0.5890
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 4/6 loss=0.5443 val=0.8567 dH=-0.04% track=0.5840
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 5/6 loss=0.4743 val=0.8533 dH=-0.05% track=0.5820
+  [S2_eurosat_last_block_lr1e-5_seed7] epoch 6/6 loss=0.4554 val=0.8600 dH=-0.05% track=0.5820
+  [S2_eurosat_last_block_lr1e-5_seed7] test=0.8922 cifar100=0.5935 dH=-0.05% (9.3 min)
+progress: 1/6
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 1/6 loss=1.0821 val=0.8967 dH=-0.16% track=0.5320
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 2/6 loss=0.2226 val=0.9133 dH=-0.19% track=0.5270
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 3/6 loss=0.1085 val=0.8967 dH=-0.32% track=0.5250
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 4/6 loss=0.0549 val=0.9300 dH=-0.39% track=0.5250
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 5/6 loss=0.0246 val=0.9233 dH=-0.41% track=0.5050
+  [S2_eurosat_last_block_lr1e-4_seed7] epoch 6/6 loss=0.0152 val=0.9133 dH=-0.41% track=0.5120
+  [S2_eurosat_last_block_lr1e-4_seed7] test=0.9389 cifar100=0.5293 dH=-0.39% (8.6 min)
+progress: 2/6
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 1/6 loss=2.0484 val=0.6933 dH=+0.01% track=0.6110
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 2/6 loss=1.2493 val=0.7800 dH=-0.02% track=0.6060
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 3/6 loss=0.7340 val=0.8233 dH=-0.05% track=0.5980
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 4/6 loss=0.5427 val=0.8467 dH=-0.05% track=0.5990
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 5/6 loss=0.4741 val=0.8467 dH=-0.06% track=0.5950
+  [S2_eurosat_last_block_lr1e-5_seed11] epoch 6/6 loss=0.4559 val=0.8467 dH=-0.06% track=0.5960
+  [S2_eurosat_last_block_lr1e-5_seed11] test=0.8826 cifar100=0.5977 dH=-0.05% (7.7 min)
+progress: 3/6
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 1/6 loss=1.0323 val=0.8833 dH=-0.18% track=0.5410
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 2/6 loss=0.2263 val=0.8933 dH=-0.26% track=0.5360
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 3/6 loss=0.1162 val=0.8967 dH=-0.39% track=0.5030
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 4/6 loss=0.0475 val=0.9133 dH=-0.41% track=0.5090
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 5/6 loss=0.0264 val=0.9167 dH=-0.43% track=0.4960
+  [S2_eurosat_last_block_lr1e-4_seed11] epoch 6/6 loss=0.0139 val=0.9067 dH=-0.43% track=0.5000
+  [S2_eurosat_last_block_lr1e-4_seed11] test=0.9441 cifar100=0.5063 dH=-0.43% (8.4 min)
+progress: 4/6
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 1/6 loss=2.0474 val=0.6100 dH=-0.02% track=0.6170
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 2/6 loss=1.2559 val=0.7800 dH=-0.04% track=0.6030
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 3/6 loss=0.7500 val=0.8267 dH=-0.06% track=0.5930
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 4/6 loss=0.5512 val=0.8467 dH=-0.06% track=0.5840
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 5/6 loss=0.4777 val=0.8433 dH=-0.06% track=0.5870
+  [S2_eurosat_last_block_lr1e-5_seed19] epoch 6/6 loss=0.4640 val=0.8433 dH=-0.06% track=0.5880
+  [S2_eurosat_last_block_lr1e-5_seed19] test=0.8822 cifar100=0.5958 dH=-0.06% (8.7 min)
+progress: 5/6
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 1/6 loss=1.0596 val=0.8667 dH=-0.15% track=0.5330
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 2/6 loss=0.2337 val=0.8733 dH=-0.25% track=0.5180
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 3/6 loss=0.1289 val=0.9100 dH=-0.31% track=0.5230
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 4/6 loss=0.0602 val=0.9200 dH=-0.34% track=0.5030
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 5/6 loss=0.0239 val=0.9233 dH=-0.36% track=0.5050
+  [S2_eurosat_last_block_lr1e-4_seed19] epoch 6/6 loss=0.0173 val=0.9167 dH=-0.36% track=0.5060
+  [S2_eurosat_last_block_lr1e-4_seed19] test=0.9485 cifar100=0.5063 dH=-0.36% (7.9 min)
+progress: 6/6
+=== 21:18:15 STAGE 4 frozen-projection ablation ===
+device=mps torch=2.7.1
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 1/6 loss=2.3269 val=0.1300 dH=-0.01% track=0.6190
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 2/6 loss=2.2820 val=0.1400 dH=-0.03% track=0.6180
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 3/6 loss=2.2370 val=0.1633 dH=-0.05% track=0.6140
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 4/6 loss=2.2035 val=0.1767 dH=-0.06% track=0.6100
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 5/6 loss=2.1856 val=0.1900 dH=-0.06% track=0.6080
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] epoch 6/6 loss=2.1789 val=0.1900 dH=-0.06% track=0.6080
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7] test=0.1622 cifar100=0.6043 dH=-0.06% (9.2 min)
+progress: 1/6
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 1/6 loss=2.1795 val=0.6733 dH=+0.01% track=0.5830
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 2/6 loss=1.5689 val=0.8133 dH=+0.68% track=0.5100
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 3/6 loss=1.0775 val=0.8833 dH=+0.98% track=0.4890
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 4/6 loss=0.8287 val=0.9100 dH=+1.09% track=0.4670
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 5/6 loss=0.7161 val=0.9100 dH=+1.10% track=0.4550
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 6/6 loss=0.6801 val=0.9167 dH=+1.11% track=0.4550
+/Users/xiaruize/miniconda3/lib/python3.13/multiprocessing/resource_tracker.py:400: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/loky-4736-lxswgl6p'}
+  warnings.warn(
+=== 02:29:11 STAGE 1 eurosat core ===
+device=mps torch=2.7.1
+skip (done): S2_eurosat_full_ft_lr3e-6_seed7
+progress: 1/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed7
+progress: 2/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed7
+progress: 3/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed7
+progress: 4/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed7
+progress: 5/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed7
+progress: 6/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed7
+progress: 7/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed7
+progress: 8/24
+skip (done): S2_eurosat_full_ft_lr3e-6_seed11
+progress: 9/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed11
+progress: 10/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed11
+progress: 11/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed11
+progress: 12/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed11
+progress: 13/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed11
+progress: 14/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed11
+progress: 15/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed11
+progress: 16/24
+skip (done): S2_eurosat_full_ft_lr3e-6_seed19
+progress: 17/24
+skip (done): S2_eurosat_lora_r8_lr3e-6_seed19
+progress: 18/24
+skip (done): S2_eurosat_full_ft_lr1e-5_seed19
+progress: 19/24
+skip (done): S2_eurosat_lora_r8_lr1e-5_seed19
+progress: 20/24
+skip (done): S2_eurosat_full_ft_lr3e-5_seed19
+progress: 21/24
+skip (done): S2_eurosat_lora_r8_lr3e-5_seed19
+progress: 22/24
+skip (done): S2_eurosat_full_ft_lr1e-4_seed19
+progress: 23/24
+skip (done): S2_eurosat_lora_r8_lr1e-4_seed19
+progress: 24/24
+=== 02:29:15 STAGE 2 pets core ===
+device=mps torch=2.7.1
+skip (done): S2_pets_full_ft_lr3e-6_seed7
+progress: 1/24
+skip (done): S2_pets_lora_r8_lr3e-6_seed7
+progress: 2/24
+skip (done): S2_pets_full_ft_lr1e-5_seed7
+progress: 3/24
+skip (done): S2_pets_lora_r8_lr1e-5_seed7
+progress: 4/24
+skip (done): S2_pets_full_ft_lr3e-5_seed7
+progress: 5/24
+skip (done): S2_pets_lora_r8_lr3e-5_seed7
+progress: 6/24
+skip (done): S2_pets_full_ft_lr1e-4_seed7
+progress: 7/24
+skip (done): S2_pets_lora_r8_lr1e-4_seed7
+progress: 8/24
+skip (done): S2_pets_full_ft_lr3e-6_seed11
+progress: 9/24
+skip (done): S2_pets_lora_r8_lr3e-6_seed11
+progress: 10/24
+skip (done): S2_pets_full_ft_lr1e-5_seed11
+progress: 11/24
+skip (done): S2_pets_lora_r8_lr1e-5_seed11
+progress: 12/24
+skip (done): S2_pets_full_ft_lr3e-5_seed11
+progress: 13/24
+skip (done): S2_pets_lora_r8_lr3e-5_seed11
+progress: 14/24
+skip (done): S2_pets_full_ft_lr1e-4_seed11
+progress: 15/24
+skip (done): S2_pets_lora_r8_lr1e-4_seed11
+progress: 16/24
+skip (done): S2_pets_full_ft_lr3e-6_seed19
+progress: 17/24
+skip (done): S2_pets_lora_r8_lr3e-6_seed19
+progress: 18/24
+skip (done): S2_pets_full_ft_lr1e-5_seed19
+progress: 19/24
+skip (done): S2_pets_lora_r8_lr1e-5_seed19
+progress: 20/24
+skip (done): S2_pets_full_ft_lr3e-5_seed19
+progress: 21/24
+skip (done): S2_pets_lora_r8_lr3e-5_seed19
+progress: 22/24
+skip (done): S2_pets_full_ft_lr1e-4_seed19
+progress: 23/24
+skip (done): S2_pets_lora_r8_lr1e-4_seed19
+progress: 24/24
+=== 02:29:18 STAGE 3 reference points ===
+device=mps torch=2.7.1
+skip (done): S2_eurosat_linear_probe_lr1e-3_seed7
+progress: 1/6
+skip (done): S2_eurosat_linear_probe_lr1e-3_seed11
+progress: 2/6
+skip (done): S2_eurosat_linear_probe_lr1e-3_seed19
+progress: 3/6
+skip (done): S2_pets_linear_probe_lr1e-3_seed7
+progress: 4/6
+skip (done): S2_pets_linear_probe_lr1e-3_seed11
+progress: 5/6
+skip (done): S2_pets_linear_probe_lr1e-3_seed19
+progress: 6/6
+device=mps torch=2.7.1
+skip (done): S2_eurosat_last_block_lr1e-5_seed7
+progress: 1/6
+skip (done): S2_eurosat_last_block_lr1e-4_seed7
+progress: 2/6
+skip (done): S2_eurosat_last_block_lr1e-5_seed11
+progress: 3/6
+skip (done): S2_eurosat_last_block_lr1e-4_seed11
+progress: 4/6
+skip (done): S2_eurosat_last_block_lr1e-5_seed19
+progress: 5/6
+skip (done): S2_eurosat_last_block_lr1e-4_seed19
+progress: 6/6
+=== 02:29:23 STAGE 4 frozen-projection ablation ===
+device=mps torch=2.7.1
+skip (done): S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed7
+progress: 1/6
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 1/6 loss=2.1795 val=0.6733 dH=+0.01% track=0.5830
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 2/6 loss=1.5689 val=0.8133 dH=+0.68% track=0.5100
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 3/6 loss=1.0775 val=0.8833 dH=+0.98% track=0.4890
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 4/6 loss=0.8287 val=0.9100 dH=+1.09% track=0.4670
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 5/6 loss=0.7161 val=0.9100 dH=+1.10% track=0.4550
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] epoch 6/6 loss=0.6801 val=0.9167 dH=+1.11% track=0.4550
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed7] test=0.9270 cifar100=0.4553 dH=+1.11% (6.2 min)
+progress: 2/6
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 1/6 loss=2.3136 val=0.0900 dH=+0.01% track=0.6250
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 2/6 loss=2.2682 val=0.1033 dH=+0.03% track=0.6110
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 3/6 loss=2.2164 val=0.1467 dH=+0.06% track=0.6060
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 4/6 loss=2.1765 val=0.2267 dH=+0.09% track=0.6040
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 5/6 loss=2.1548 val=0.2700 dH=+0.10% track=0.6060
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] epoch 6/6 loss=2.1482 val=0.2767 dH=+0.11% track=0.6060
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed11] test=0.2711 cifar100=0.6071 dH=+0.11% (6.6 min)
+progress: 3/6
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 1/6 loss=2.1469 val=0.6767 dH=+0.66% track=0.5800
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 2/6 loss=1.4582 val=0.8467 dH=+1.40% track=0.5460
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 3/6 loss=0.9686 val=0.9033 dH=+1.62% track=0.4980
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 4/6 loss=0.7235 val=0.9167 dH=+1.70% track=0.4850
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 5/6 loss=0.6230 val=0.9167 dH=+1.73% track=0.4770
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] epoch 6/6 loss=0.5902 val=0.9167 dH=+1.73% track=0.4760
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed11] test=0.9281 cifar100=0.4868 dH=+1.70% (7.6 min)
+progress: 4/6
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 1/6 loss=2.3225 val=0.0967 dH=+0.02% track=0.6210
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 2/6 loss=2.2753 val=0.1700 dH=+0.05% track=0.6140
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 3/6 loss=2.2290 val=0.2000 dH=+0.08% track=0.6050
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 4/6 loss=2.1936 val=0.2333 dH=+0.10% track=0.5970
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 5/6 loss=2.1740 val=0.2400 dH=+0.11% track=0.5970
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] epoch 6/6 loss=2.1686 val=0.2400 dH=+0.11% track=0.5990
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-5_seed19] test=0.2456 cifar100=0.6019 dH=+0.11% (8.7 min)
+progress: 5/6
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 1/6 loss=2.1659 val=0.6167 dH=+0.38% track=0.5760
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 2/6 loss=1.5511 val=0.8167 dH=+0.99% track=0.5440
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 3/6 loss=1.0792 val=0.8800 dH=+1.27% track=0.4940
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 4/6 loss=0.8387 val=0.8933 dH=+1.34% track=0.4580
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 5/6 loss=0.7231 val=0.9000 dH=+1.36% track=0.4570
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] epoch 6/6 loss=0.6875 val=0.9033 dH=+1.36% track=0.4510
+  [S2_eurosat_lora_r8_frozen_proj_lr1e-4_seed19] test=0.9248 cifar100=0.4670 dH=+1.36% (10.9 min)
+progress: 6/6
+=== 03:09:33 STAGE campaign complete ===

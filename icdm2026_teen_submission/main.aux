@@ -1,0 +1,64 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{radford2021learning}
+\citation{kumar2022finetuning}
+\citation{kumar2022finetuning}
+\citation{wortsman2022robust}
+\citation{ilharco2023editing}
+\citation{goyal2023finetune}
+\citation{hu2022lora}
+\citation{dosovitskiy2021image}
+\citation{jain2019attention}
+\citation{wiegreffe2019attention}
+\citation{zhai2023stabilizing}
+\citation{xiao2024efficient}
+\citation{darcet2024vision}
+\citation{kornblith2019similarity}
+\citation{yu2022predicting}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{1}{section.2}\protected@file@percent }
+\citation{kornblith2019similarity}
+\citation{helber2019eurosat}
+\citation{parkhi2012cats}
+\citation{krizhevsky2009learning}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Method}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Label-Free Drift Signals}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Study A: Large Matched-Learning-Rate Grid}{2}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Study B: Protocol-Hardened Grid}{2}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}What the Signals Must Predict}{2}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Results}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Optimization Scale Dominates Method Identity}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}What Attention Drift Does and Does Not Predict}{3}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}What Attention Drift Is Still Good For}{3}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}The Trade-off Is a Frontier}{3}{subsection.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Study~B dose-response; means over three seeds, bands one SD, dotted line the linear-probe reference. Full fine-tuning crosses from attention broadening to contraction (centre) while LoRA's entropy \emph  {rises} with the learning rate, yet retention (right) falls monotonically for both --- so equal forgetting corresponds to opposite-signed entropy changes.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:dose}{{1}{4}{Study~B dose-response; means over three seeds, bands one SD, dotted line the linear-probe reference. Full fine-tuning crosses from attention broadening to contraction (centre) while LoRA's entropy \emph {rises} with the learning rate, yet retention (right) falls monotonically for both --- so equal forgetting corresponds to opposite-signed entropy changes}{figure.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Study~B matched-learning-rate grid: mean $\pm $ across-seed SD over $n$ seeds. $\Delta H$ is the block-averaged entropy change from pretrained CLIP, $\Delta H_{12}$ the last-block change; retention is the surviving percentage of pretrained zero-shot accuracy (61.33\% on CIFAR-100; CIFAR-10 tracks it closely, 87.40\% pretrained). Test accuracy is read once, at the validation-selected epoch.}}{4}{table.1}\protected@file@percent }
+\newlabel{tab:grid}{{I}{4}{Study~B matched-learning-rate grid: mean $\pm $ across-seed SD over $n$ seeds. $\Delta H$ is the block-averaged entropy change from pretrained CLIP, $\Delta H_{12}$ the last-block change; retention is the surviving percentage of pretrained zero-shot accuracy (61.33\% on CIFAR-100; CIFAR-10 tracks it closely, 87.40\% pretrained). Test accuracy is read once, at the validation-selected epoch}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Discussion and Limitations}{4}{section.5}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{radford2021learning}{1}
+\bibcite{kumar2022finetuning}{2}
+\bibcite{wortsman2022robust}{3}
+\bibcite{ilharco2023editing}{4}
+\bibcite{goyal2023finetune}{5}
+\bibcite{hu2022lora}{6}
+\bibcite{dosovitskiy2021image}{7}
+\bibcite{jain2019attention}{8}
+\bibcite{wiegreffe2019attention}{9}
+\bibcite{zhai2023stabilizing}{10}
+\bibcite{xiao2024efficient}{11}
+\bibcite{darcet2024vision}{12}
+\bibcite{kornblith2019similarity}{13}
+\bibcite{yu2022predicting}{14}
+\bibcite{helber2019eurosat}{15}
+\bibcite{parkhi2012cats}{16}
+\bibcite{krizhevsky2009learning}{17}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Ranking runs by the CIFAR-100 accuracy they will lose: $|\rho |$ over all core runs, at the end of training (dark) and after one epoch (light). Bars are missing where a signal has no epoch-1 counterpart. $^{*}$not label-free: the labelled probe needs a slice of the benchmark, the learning rate is a setting rather than a measurement. Read across configurations like this, the attention statistics are mid-pack and the \emph  {signed} entropy change is near-useless --- but see the text for the reversal within a fixed configuration.}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:predictors}{{2}{5}{Ranking runs by the CIFAR-100 accuracy they will lose: $|\rho |$ over all core runs, at the end of training (dark) and after one epoch (light). Bars are missing where a signal has no epoch-1 counterpart. $^{*}$not label-free: the labelled probe needs a slice of the benchmark, the learning rate is a setting rather than a measurement. Read across configurations like this, the attention statistics are mid-pack and the \emph {signed} entropy change is near-useless --- but see the text for the reversal within a fixed configuration}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{5}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{5}{section*.1}\protected@file@percent }
+\gdef \@abspage@last{5}

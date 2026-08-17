@@ -1,0 +1,17 @@
+dataset,method,learning_rate,n,target_accuracy_pct,delta_entropy_pct,cifar100_zero_shot_pct
+EuroSAT,Full FT,1e-6,5,98.82,1.83,15.90
+EuroSAT,Full FT,5e-6,5,99.11,0.41,17.52
+EuroSAT,Full FT,1e-5,5,99.13,-0.12,10.01
+EuroSAT,Full FT,5e-5,5,98.79,-3.99,1.68
+EuroSAT,LoRA r=8,1e-6,5,92.07,0.68,56.26
+EuroSAT,LoRA r=8,5e-6,5,97.35,1.38,44.64
+EuroSAT,LoRA r=8,1e-5,5,98.13,1.50,41.69
+EuroSAT,LoRA r=8,5e-5,5,98.83,1.18,37.93
+Oxford-IIIT Pets,Full FT,1e-6,5,88.40,-1.57,18.96
+Oxford-IIIT Pets,Full FT,5e-6,5,90.40,-1.86,6.38
+Oxford-IIIT Pets,Full FT,1e-5,5,91.20,-2.21,5.01
+Oxford-IIIT Pets,Full FT,5e-5,5,85.75,-3.63,3.83
+Oxford-IIIT Pets,LoRA r=8,1e-6,5,19.13,0.01,60.24
+Oxford-IIIT Pets,LoRA r=8,5e-6,5,82.08,-0.20,60.57
+Oxford-IIIT Pets,LoRA r=8,1e-5,5,89.93,-0.38,59.34
+Oxford-IIIT Pets,LoRA r=8,5e-5,5,91.91,-0.75,51.91

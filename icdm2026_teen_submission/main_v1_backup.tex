@@ -1,0 +1,218 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{balance}
+\usepackage{placeins}
+
+\hypersetup{
+    pdftitle={Attention Drift in Fine-Tuned CLIP: A Matched-Learning-Rate Study of Full Fine-Tuning and LoRA},
+    pdfauthor={Ruize Xia},
+    pdfkeywords={CLIP, attention, fine-tuning, LoRA, transfer learning, vision transformers}
+}
+
+\title{Attention Drift in Fine-Tuned CLIP:\\
+A Matched-Learning-Rate Study of Full Fine-Tuning and LoRA}
+
+\author{\IEEEauthorblockN{Ruize Xia}
+\IEEEauthorblockA{\textit{High School Student, Nanjing Foreign Language School}\\
+Nanjing, Jiangsu, China\\
+xiaruize0911@gmail.com}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Fine-tuning a vision--language model can improve its target-task accuracy while damaging capabilities learned during pretraining. We investigate whether this trade-off is accompanied by measurable changes in the visual transformer's attention patterns. Our controlled study compares full fine-tuning (Full FT) with low-rank adaptation (LoRA) for CLIP ViT-B/32. We match four learning rates across both methods, use EuroSAT and Oxford-IIIT Pets as target tasks, and repeat every setting with five seeds, producing 80 runs. We measure CLS-to-patch attention entropy and effective receptive field, target-task accuracy, and adapter-aware CIFAR-100 zero-shot accuracy. Learning rate strongly controls attention drift. On EuroSAT, Full FT changes from attention broadening at $10^{-6}$ ($+1.83\%$ entropy) to contraction at $5\times10^{-5}$ ($-3.99\%$), whereas LoRA remains entropy-positive throughout the grid. On Pets, LoRA is also less contractive, but very small learning rates cause severe underfitting. Across matched settings, LoRA retains much more CIFAR-100 performance than Full FT. The results support attention drift as a useful descriptive indicator of how aggressively fine-tuning changes CLIP, while showing that method claims must be conditioned on learning rate and task.
+\end{abstract}
+
+\begin{IEEEkeywords}
+CLIP, attention, fine-tuning, LoRA, transfer learning, vision transformers
+\end{IEEEkeywords}
+
+\section{Introduction}
+CLIP learns transferable visual features by contrasting images with natural-language descriptions \cite{radford2021learning}. These features support strong zero-shot classification, but downstream adaptation creates a tension: optimizing a new task may distort pretrained features and reduce performance under distribution shift \cite{kumar2022finetuning,wortsman2022robust}. Parameter-efficient methods such as low-rank adaptation (LoRA) constrain the update and may preserve more of the pretrained model \cite{hu2022lora}.
+
+We study one internal signal of this change: the spatial attention produced by CLIP's Vision Transformer (ViT) \cite{dosovitskiy2021image}. Attention weights are not, by themselves, causal explanations of predictions \cite{jain2019attention,wiegreffe2019attention}. Nevertheless, their distribution can describe how broadly or narrowly the model routes information across image patches. We call the change from the pretrained pattern \emph{attention drift} rather than ``attention collapse,'' because the direction and size of the change need not be universal.
+
+A common comparison uses a small learning rate for Full FT and a larger one for LoRA. This confounds the adaptation method with optimization scale. We instead fully cross two methods, two datasets, four identical learning rates, and five random seeds. The resulting 80-run design addresses three questions:
+
+\begin{enumerate}
+    \item How does learning rate change attention structure under each method?
+    \item Does LoRA preserve pretrained attention and zero-shot transfer better than Full FT at matched learning rates?
+    \item When does structural preservation reflect useful adaptation rather than simple underfitting?
+\end{enumerate}
+
+Our main finding is an interaction, not an unconditional ranking. LoRA is generally more structurally conservative and preserves much more CIFAR-100 transfer, but too small a LoRA learning rate can fail to learn the target task. Full FT obtains strong in-domain accuracy across a broader range, yet high learning rates produce pronounced late-layer contraction and severe transfer loss.
+
+\section{Related Work}
+CLIP established natural-language supervision as a scalable route to transferable image recognition \cite{radford2021learning}. Later work showed that ordinary fine-tuning can distort pretrained features \cite{kumar2022finetuning}, while weight interpolation can improve robustness of adapted zero-shot models \cite{wortsman2022robust}. LoRA restricts weight updates to learned low-rank matrices, reducing the trainable parameter count \cite{hu2022lora}. Our question is complementary: how do full and low-rank updates alter attention at matched optimization scales?
+
+ViTs expose attention over spatial tokens \cite{dosovitskiy2021image}. Attention rollout aggregates information flow across layers \cite{abnar2020quantifying}, but attention visualization must be interpreted cautiously \cite{jain2019attention,wiegreffe2019attention}. We therefore use attention as a measured structural property, not as proof that a particular patch caused a prediction.
+
+\section{Method}
+\subsection{Controlled Matrix}
+All runs use \texttt{openai/clip-vit-base-patch32}. We adapt the model to EuroSAT (10 land-use classes) \cite{helber2019eurosat} and Oxford-IIIT Pets (37 breeds) \cite{parkhi2012cats}. CIFAR-100 is held out as the transfer task \cite{krizhevsky2009learning}. The design is
+\begin{equation}
+2\ \text{datasets}\times2\ \text{methods}\times4\ \text{LRs}\times5\ \text{seeds}=80\ \text{runs}.
+\end{equation}
+The learning-rate grid is $\{10^{-6},5\times10^{-6},10^{-5},5\times10^{-5}\}$ and the seeds are $\{7,11,19,42,123\}$. EuroSAT runs train for 20 epochs and Pets runs for 30. We use AdamW, weight decay 0.01, batch size 64, 5\% linear warmup, and cosine decay. Images are resized and center-cropped to $224\times224$ with random horizontal flips during training.
+
+Full FT updates the visual encoder, visual projection, and linear classifier; CLIP's text encoder stays frozen. LoRA freezes the base network and inserts rank-8 updates into every visual attention query and value projection ($\alpha=16$, dropout 0.05); the visual projection and classifier are also trained. Thus the methods share the data, schedule, learning rate, and seed within every matched cell.
+
+\subsection{Attention Measurements}
+For every layer $\ell$, head $h$, and image, let $a_{\ell h}\in\mathbb{R}^{49}$ be CLS attention to the $7\times7$ patch tokens, renormalized after removing CLS self-attention. We compute entropy in nats,
+\begin{equation}
+H(a_{\ell h})=-\sum_{j=1}^{49}a_{\ell hj}\log a_{\ell hj},
+\end{equation}
+and average over images, heads, and layers. Lower entropy indicates narrower support. ERF@0.95 is the fraction of the 49 patches required, in descending attention order, to accumulate 95\% of the mass. For a metric $M$, drift is
+\begin{equation}
+\Delta M=100\frac{M_{\mathrm{adapted}}-M_{\mathrm{pretrained}}}{M_{\mathrm{pretrained}}}.
+\end{equation}
+Metrics use a fixed, class-balanced 200-image subset (selection seed 42), keeping evaluation images identical across training seeds.
+
+\subsection{Predictive Evaluation}
+We report the best target-task test-split accuracy observed during training. For transfer, we evaluate the best-validation checkpoint on all 10,000 CIFAR-100 test images using prompts of the form ``a photo of a \{class\}.'' The image path explicitly loads active LoRA adapters; otherwise LoRA transfer can be incorrectly measured using the unchanged base encoder. Figure bands and table entries summarize five runs per cell using their mean and across-seed standard deviation.
+
+\section{Results}
+\subsection{Learning Rate Controls Structural Drift}
+Figure~\ref{fig:controlled} shows the main interaction. EuroSAT Full FT broadens attention at $10^{-6}$ ($+1.83\%$ entropy), is nearly neutral at $10^{-5}$ ($-0.12\%$), and contracts sharply at $5\times10^{-5}$ ($-3.99\%$). LoRA stays positive from $+0.68\%$ to $+1.50\%$. Thus ``Full FT contracts attention'' is incomplete: the same method changes direction as optimization scale increases.
+
+Pets is consistently more contractive. Full FT moves from $-1.57\%$ to $-3.63\%$ entropy over the grid, while LoRA ranges from $+0.01\%$ to $-0.75\%$. LoRA is structurally milder, but the leftmost Pets point exposes a key failure mode: $19.13\%$ target accuracy at $10^{-6}$ means that near-zero drift can simply indicate that the model barely adapted.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.72\textwidth]{figures/controlled_lr_panels.png}
+    \caption{Matched-learning-rate results. Lines are means over five seeds; shaded regions show one across-seed standard deviation. Structural preservation and target-task learning must be read together: low-rate Pets LoRA preserves CLIP partly because it underfits.}
+    \label{fig:controlled}
+\end{figure*}
+
+\begin{table*}[t]
+\caption{Controlled results (mean over five seeds). Accuracy columns are percentages; $\Delta H$ is entropy change from pretrained CLIP. CIFAR-100 zero-shot baseline is 60.22\%.}
+\label{tab:results}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.8pt}
+\begin{tabular}{llrrrr|llrrrr}
+\toprule
+Dataset & Method & LR & Target & $\Delta H$ & C100 & Dataset & Method & LR & Target & $\Delta H$ & C100 \\
+\midrule
+EuroSAT & Full FT & $10^{-6}$ & 98.82 & +1.83 & 15.90 & Pets & Full FT & $10^{-6}$ & 88.40 & -1.57 & 18.96 \\
+EuroSAT & Full FT & $5\cdot10^{-6}$ & 99.11 & +0.41 & 17.52 & Pets & Full FT & $5\cdot10^{-6}$ & 90.40 & -1.86 & 6.38 \\
+EuroSAT & Full FT & $10^{-5}$ & 99.13 & -0.12 & 10.01 & Pets & Full FT & $10^{-5}$ & 91.20 & -2.21 & 5.01 \\
+EuroSAT & Full FT & $5\cdot10^{-5}$ & 98.79 & -3.99 & 1.68 & Pets & Full FT & $5\cdot10^{-5}$ & 85.75 & -3.63 & 3.83 \\
+\addlinespace
+EuroSAT & LoRA & $10^{-6}$ & 92.07 & +0.68 & 56.26 & Pets & LoRA & $10^{-6}$ & 19.13 & +0.01 & 60.24 \\
+EuroSAT & LoRA & $5\cdot10^{-6}$ & 97.35 & +1.38 & 44.64 & Pets & LoRA & $5\cdot10^{-6}$ & 82.08 & -0.20 & 60.57 \\
+EuroSAT & LoRA & $10^{-5}$ & 98.13 & +1.50 & 41.69 & Pets & LoRA & $10^{-5}$ & 89.93 & -0.38 & 59.34 \\
+EuroSAT & LoRA & $5\cdot10^{-5}$ & 98.83 & +1.18 & 37.93 & Pets & LoRA & $5\cdot10^{-5}$ & 91.91 & -0.75 & 51.91 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{LoRA Preserves More Zero-Shot Transfer}
+The pretrained CIFAR-100 accuracy is 60.22\%. Full FT loses most of it in every cell, despite high target accuracy. Averaged across EuroSAT learning rates, Full FT retains 11.28\% CIFAR accuracy versus 45.13\% for LoRA. The Pets averages are 8.54\% and 58.01\%, respectively. At the strongest matched Pets setting, LoRA reaches 91.91\% target accuracy and 51.91\% CIFAR accuracy; the best target-accuracy Full FT setting reaches 91.20\% and 5.01\%. LoRA therefore achieves a much better in-domain/transfer trade-off once its learning rate is large enough to avoid underfitting.
+
+This comparison does not prove that broader attention causes transfer retention. Both may result from smaller changes to pretrained features. It does show that attention drift is a useful warning signal: the most contractive Full FT regimes also have the weakest transfer.
+
+\subsection{Contraction Concentrates in Late Layers}
+Figure~\ref{fig:layers} localizes the effect. High-rate Full FT produces the strongest negative entropy shifts in later layers. On Pets at $5\times10^{-5}$, layer 12 changes by $-20.29\%$ for Full FT versus $-11.53\%$ for LoRA. Earlier layers remain closer to their pretrained distributions. LoRA does not eliminate drift, but it reduces both its average magnitude and its late-layer severity.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.55\textwidth]{figures/per_layer_entropy_heatmaps.png}
+    \caption{Mean entropy drift by layer and learning rate. Blue denotes contraction and red denotes broadening. Aggressive Full FT causes the clearest late-layer contraction, especially on Pets.}
+    \label{fig:layers}
+\end{figure*}
+
+\section{Auxiliary Evidence from Earlier Experiments}
+The matched-rate matrix is the paper's primary evidence because it controls method, learning rate, dataset, and seed simultaneously. Before constructing that matrix, we ran a broader exploratory suite containing LoRA-rank ablations, alternative attention summaries, structural regularizers, and a second CLIP backbone. Those experiments use different learning-rate conventions or fewer seeds, so we analyze them here as auxiliary checks rather than pooling them with Table~\ref{tab:results}.
+
+\subsection{Rank Ablation and Adapter-Aware Transfer}
+Panel A of Table~\ref{tab:auxiliary} compares three LoRA ranks on EuroSAT. All three configurations reach at least 98.67\% target accuracy and produce positive entropy drift, whereas the corresponding Full FT run is slightly contractive. LoRA r=8 gives the strongest adapter-aware CIFAR-100 result, 47.28\%, compared with 9.43\% for Full FT. Rank 4 broadens attention the most ($+0.98\%$) but transfers less well than rank 8 (40.51\%). Rank 16 also transfers less well (39.35\%). Thus the smallest structural change is not automatically the best outcome, and rank is a real design variable rather than a parameter-count detail.
+
+The adapter-aware qualifier matters. An earlier evaluation path copied only ordinary vision weights into a fresh CLIP model, silently leaving LoRA adapters inactive and returning the 60.22\% pretrained score. Re-evaluating through each checkpoint's active image encoder yields the lower, credible values in Table~\ref{tab:auxiliary}. This correction is why the paper claims that LoRA \emph{reduces} transfer loss, not that it perfectly preserves zero-shot behavior.
+
+\begin{table*}[!t]
+\caption{Auxiliary experiments from the earlier suite. Panel A is a single-configuration EuroSAT comparison using adapter-aware CIFAR-100 evaluation. Panel B triangulates CLS entropy with attention rollout, patch-to-patch entropy, representation similarity, and subset sensitivity. These settings are supportive, not part of the matched-rate matrix.}
+\label{tab:auxiliary}
+\centering
+\scriptsize
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+\textbf{A. LoRA-rank ablation}\\[2pt]
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Method & Target & $\Delta H$ & $\Delta$ERF & $\Delta$Gini & C100 \\
+\midrule
+Full FT & 99.30 & -0.14 & -1.73 & -3.54 & 9.43 \\
+LoRA r=4 & 98.67 & +0.98 & +1.09 & -9.94 & 40.51 \\
+LoRA r=8 & 98.96 & +0.58 & +0.37 & -6.48 & 47.28 \\
+LoRA r=16 & 98.93 & +0.44 & +0.03 & -5.43 & 39.35 \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+\textbf{B. Structural triangulation}\\[2pt]
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Roll-$H$ & Roll-ERF & Roll-G & Patch-$H$ & CKA & CV \\
+\midrule
+Full FT & 5.593 & .944 & .090 & 4.721 & .694 & .0006 \\
+LoRA r=8 & 5.605 & .952 & .064 & 4.794 & .815 & .0005 \\
+\bottomrule
+\end{tabular}\\[3pt]
+\raggedright Roll-$H$ and Patch-$H$ are in bits; CKA is mean layerwise centered kernel alignment to pretrained CLIP \cite{kornblith2019similarity}; CV is entropy variation across five balanced evaluation subsets.
+\end{minipage}
+\end{table*}
+
+\subsection{Triangulating the Attention Measurement}
+CLS-to-patch entropy is compact, but relying on a single statistic could mistake one mathematical property for a general structural change. Panel B adds three checks. First, attention rollout \cite{abnar2020quantifying} combines routing across layers; LoRA has higher rollout entropy and ERF and lower rollout Gini than Full FT. Second, mean patch-to-patch entropy is also higher for LoRA (4.794 versus 4.721 bits), so the result is not restricted to the CLS row. Third, LoRA has higher mean layerwise CKA to pretrained CLIP (0.815 versus 0.694), connecting milder attention drift with greater representational similarity. Across five alternative balanced evaluation subsets, entropy CV stays below 0.001 for both methods. This does not establish causality, but it makes a subset artifact or metric-specific explanation less plausible.
+
+\subsection{Extreme Learning Rate, Regularization, and Backbone}
+The older Full FT sweep includes an additional $10^{-4}$ point outside the controlled grid. At that rate, EuroSAT entropy falls by 10.40\%, ERF falls by 18.02\%, Gini rises by 56.94\%, target accuracy falls to 97.85\%, and CIFAR-100 falls to 1.86\%. Across its five learning rates, the entropy trend is monotonic (exact Spearman $\rho=-1.0$, $p=0.0167$; exact Pearson $r=-0.893$, $p=0.0333$). These single-seed statistics are less definitive than the controlled matrix, but they extend the observed dose--response pattern into a more aggressive regime.
+
+Two exploratory regularizers partially reverse the drift. Attention-preservation regularization (APR, $\lambda=0.01$) changes Full FT entropy from $-0.14\%$ to $+0.86\%$ while changing target accuracy from 99.30\% to 99.26\%. An entropy floor ($\lambda=0.1$) yields $+0.79\%$ entropy and 99.07\% accuracy. However, no regularizer survives Holm--Bonferroni correction across the tested family, so these are candidates for future multi-seed evaluation rather than established solutions.
+
+Finally, the backbone check warns against universal claims. On EuroSAT, ViT-B/16 Full FT increases entropy by 3.57\% while ViT-B/32 Full FT changes it by $-0.14\%$. For LoRA r=8, the signs reverse: $-0.59\%$ on B/16 and $+0.58\%$ on B/32. Attention drift therefore depends on pretrained architecture as well as task, method, and optimization scale.
+
+\section{Discussion and Limitations}
+The controlled matrix changes the interpretation of this project in three ways. First, adaptation method cannot be separated from learning rate: Full FT on EuroSAT ranges from broadening to contraction. Second, structural preservation is only desirable when paired with successful target learning; the smallest Pets LoRA rate preserves the base model because it underfits. Third, at competitive target accuracy, LoRA offers a substantially better transfer trade-off than Full FT. The earlier experiments strengthen this interpretation without replacing the controlled evidence: different LoRA ranks show the same broad pattern, rollout and patch attention point in the same direction, and CKA connects structural preservation with smaller representation drift.
+
+Together, the results suggest a practical diagnostic. A useful fine-tuning report should place target accuracy, transfer accuracy, and structural drift side by side. High target accuracy with strong contraction and poor transfer indicates aggressive specialization; near-zero drift with low target accuracy indicates underfitting. The desirable region has competitive target performance, retained transfer, and moderate internal change. In our experiments, adequately optimized LoRA occupies that region more often than Full FT.
+
+The controlled study is limited to CLIP ViT-B/32, two target datasets, one transfer dataset, and one LoRA design. The target ``validation'' numbers use each dataset's provided test split during model selection, so they should not be interpreted as estimates from an untouched final test set. The 200-image attention subset is fixed for comparability but may miss rare image-dependent behavior. The auxiliary experiments are heterogeneous and mostly single-configuration, which is why they are kept separate from the 80-run matrix. Finally, entropy measures distributional spread, not semantic correctness or causal importance. Future work should add more backbones and transfer tasks, create separate validation/test splits, and replicate the promising regularizers under the same matched, multi-seed design.
+
+\section{Practical and Reproducibility Notes}
+\subsection{Using Drift as a Diagnostic}
+The results suggest a simple procedure for selecting an adaptation configuration. First, discard settings that underfit the target task. The Pets LoRA run at $10^{-6}$ demonstrates why: its near-zero entropy change looks ideal in isolation, but its 19.13\% target accuracy shows that little useful learning occurred. Second, compare transfer retention among the configurations that reach a competitive target score. At the upper end of the Pets grid, LoRA and Full FT have similar target accuracy, yet their CIFAR-100 results differ by more than 46 percentage points. Third, inspect the layerwise profile rather than only its average. A moderate mean can conceal a large last-layer shift, as seen under high-rate Pets Full FT.
+
+This procedure treats drift as an alarm, not an optimization target. Maximizing entropy would be poorly motivated: a uniform attention distribution can be broad but uninformative, and the rank ablation shows that the configuration with the largest entropy increase is not the one with the best transfer. Likewise, minimizing parameter change alone can produce underfitting. The useful question is whether a model reaches the target-task requirement while retaining both transfer behavior and a reasonable fraction of its pretrained internal structure.
+
+\subsection{Separation of Evidence}
+We keep two evidence tiers to avoid overstating precision. The primary tier contains the 80 fully crossed runs. Each cell uses the same five seeds, matched learning rates, identical training schedules, and one fixed attention-evaluation subset. Means and standard deviations therefore compare like with like. The auxiliary tier tests breadth: ranks 4/8/16, a $10^{-4}$ stress point, rollout, patch attention, CKA, regularizers, and ViT-B/16. These results answer whether the main interpretation survives alternative measurements and configurations, but they are not merged into primary averages because their designs differ.
+
+Reproducible adapter evaluation is especially important. A LoRA checkpoint contains a mostly unchanged base network plus learned adapter weights; evaluating only the base branch can make a damaged adapted model appear identical to pretrained CLIP. Our transfer path reconstructs the saved classifier and executes its active visual encoder before applying the visual projection. Attention measurements similarly request eager per-head attention and renormalize only the 49 patch entries after removing CLS self-attention. Run identifiers encode method, dataset, learning rate, seed, and epoch count, allowing incomplete matrices or accidentally mismatched settings to be detected before aggregation.
+
+\subsection{Effect Size and Validation Roadmap}
+The most reliable patterns recur across datasets and are large relative to the seed bands. On EuroSAT, increasing the Full FT rate from $10^{-6}$ to $5\times10^{-5}$ reduces CIFAR-100 accuracy from 15.90\% to 1.68\%; on Pets it falls from 18.96\% to 3.83\%. Matched LoRA configurations retain 37.93--60.57\%. Thus, the transfer conclusion is stronger than a claim about the exact best LoRA rate. Entropy needs more caution: its scale and sign vary with target and backbone. The controlled Full FT grids still share an ordered transition toward contraction, while rollout, ERF, Gini, patch attention, and CKA provide converging but non-equivalent evidence.
+
+A decisive follow-up should retain the factorial design while expanding one axis at a time. It should create untouched target test splits, repeat the four-rate, five-seed grid on ViT-B/16 and a larger backbone, and add transfer datasets from different domains. APR and the entropy-floor penalty should be tuned without final-test access and evaluated under a predeclared multiplicity correction. Success requires a better structure--transfer trade-off without reduced target accuracy; increasing entropy alone is insufficient. Per-layer trajectories during training would also test temporal ordering: contraction that precedes transfer loss may be an early warning, whereas contraction appearing afterward is better treated as a summary of specialization.
+
+\section{Conclusion}
+In 80 matched runs, learning rate acts as a first-order control on CLIP attention drift. Full FT becomes increasingly contractive and loses most CIFAR-100 transfer as learning rate rises. LoRA generally changes attention less and retains far more transfer, but overly conservative settings can underfit. Earlier rank, rollout, CKA, regularization, and backbone experiments support a qualified conclusion: attention drift is a reproducible descriptive signal, but its magnitude and sign depend on optimization, architecture, and task. It is most useful as one axis of a three-part evaluation---structure, target accuracy, and transfer---rather than as a universal explanation or a stand-alone objective.
+
+\FloatBarrier
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
