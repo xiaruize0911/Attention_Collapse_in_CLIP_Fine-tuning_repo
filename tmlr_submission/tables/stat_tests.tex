@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Corrected inferential statistics derived from \texttt{outputs/metrics/followup\_analysis.json}. Exact permutation tests are used for the five-point learning-rate analysis, and Holm--Bonferroni correction is applied across the regularizer family.}
+\label{tab:stats}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrl}
+\toprule
+Comparison & Test & Statistic & $p$-value & Note \\
+\midrule
+LR vs. $\Delta$Entropy & Exact permutation Pearson $r$ & -0.893 & 0.0333 & $n=5$ learning rates \\ 
+LR vs. $\Delta$Entropy & Exact permutation Spearman $\rho$ & -1.000 & 0.0167 & Small-$n$ exact test \\ 
+APR $\lambda=0.01$ vs. baseline & Paired per-layer t-test & 2.132 & 0.2194 & Holm--Bonferroni adjusted \\ 
+Entropy floor $\lambda=0.1$ vs. baseline & Paired per-layer t-test & 2.638 & 0.1154 & No regularizer survives Holm correction \\ 
+\bottomrule
+\end{tabular}%
+}
+\end{table}

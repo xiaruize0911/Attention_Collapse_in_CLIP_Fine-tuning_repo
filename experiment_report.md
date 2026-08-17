@@ -1,5 +1,8 @@
 # Attention Collapse in CLIP Fine-tuning: LoRA vs Full Adaptation
 
+> Superseded for paper-facing claims by `controlled_heatmap_drift_report.md`.
+> This older report mixes pre-controlled experiments and stale zero-shot interpretations, so the completed matched-LR manuscript path should use the controlled-study artifacts in `outputs/controlled_heatmap_drift/` instead.
+
 ## 实验报告 / Experiment Report
 
 ---

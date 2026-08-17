@@ -1,0 +1,109 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{radford2021learning}
+\citation{kumar2022finetuning,wortsman2022robust}
+\citation{dosovitskiy2021image}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{jain2019attention,wiegreffe2019attention}
+\citation{radford2021learning}
+\citation{dosovitskiy2021image}
+\citation{hu2022lora}
+\citation{abnar2020quantifying}
+\citation{kumar2022finetuning,wortsman2022robust}
+\citation{jain2019attention}
+\citation{wiegreffe2019attention}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Formulation}{2}{subsection.3.1}\protected@file@percent }
+\citation{abnar2020quantifying}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Structural Metrics}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Attention entropy.}{3}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{ERF@0.95.}{3}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Gini concentration.}{3}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Head diversity.}{3}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Additional Validation Metrics}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Regularization Objective}{3}{subsection.3.4}\protected@file@percent }
+\citation{helber2019eurosat}
+\citation{parkhi2012cats}
+\citation{krizhevsky2009learning}
+\citation{nilsback2008automated}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Hypotheses}{4}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{4}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Overall Comparison of Adaptation Regimes}{4}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Main experiment results. Positive $\Delta $Entropy and $\Delta $ERF indicate broader attention support relative to the corresponding pretrained baseline; positive $\Delta $Gini indicates more concentrated attention.}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:main-results}{{1}{5}{Main experiment results. Positive $\Delta $Entropy and $\Delta $ERF indicate broader attention support relative to the corresponding pretrained baseline; positive $\Delta $Gini indicates more concentrated attention}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Baseline attention structure of pretrained CLIP ViT-B/32 across layers. The model is already depth-heterogeneous before any downstream adaptation.}}{5}{figure.1}\protected@file@percent }
+\newlabel{fig:baseline-structure}{{1}{5}{Baseline attention structure of pretrained CLIP ViT-B/32 across layers. The model is already depth-heterogeneous before any downstream adaptation}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Statistical Evidence and Layerwise Patterns}{5}{subsection.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces EuroSAT Full FT versus LoRA. LoRA increases entropy and ERF relative to baseline in the stored EuroSAT runs, while Full FT remains near-neutral to mildly contractive.}}{6}{figure.2}\protected@file@percent }
+\newlabel{fig:ft-vs-lora}{{2}{6}{EuroSAT Full FT versus LoRA. LoRA increases entropy and ERF relative to baseline in the stored EuroSAT runs, while Full FT remains near-neutral to mildly contractive}{figure.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Corrected inferential statistics derived from \texttt  {outputs/metrics/followup\_analysis.json}. Exact permutation tests are used for the five-point learning-rate analysis, and Holm--Bonferroni correction is applied across the regularizer family.}}{6}{table.2}\protected@file@percent }
+\newlabel{tab:stats}{{2}{6}{Corrected inferential statistics derived from \texttt {outputs/metrics/followup\_analysis.json}. Exact permutation tests are used for the five-point learning-rate analysis, and Holm--Bonferroni correction is applied across the regularizer family}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Completed Multi-seed Replications}{6}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Run-level multi-seed comparisons on mean $\Delta $entropy. Values are reported as percentage change relative to the corresponding pretrained baseline, aggregated across completed seed runs.}}{7}{table.3}\protected@file@percent }
+\newlabel{tab:multiseed}{{3}{7}{Run-level multi-seed comparisons on mean $\Delta $entropy. Values are reported as percentage change relative to the corresponding pretrained baseline, aggregated across completed seed runs}{table.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Per-layer entropy change across selected experiments. The sign and magnitude of change depend on training regime and dataset.}}{7}{figure.3}\protected@file@percent }
+\newlabel{fig:layer-heatmap}{{3}{7}{Per-layer entropy change across selected experiments. The sign and magnitude of change depend on training regime and dataset}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Learning Rate as the Dominant Control Knob}{7}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Regularization and Training Dynamics}{7}{subsection.5.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Summary of exploratory per-layer comparisons and corrected statistical analyses, including the learning-rate trend and layer-group summaries.}}{8}{figure.4}\protected@file@percent }
+\newlabel{fig:stats-summary}{{4}{8}{Summary of exploratory per-layer comparisons and corrected statistical analyses, including the learning-rate trend and layer-group summaries}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Learning-rate sweep for EuroSAT full fine-tuning. Entropy decreases monotonically as the learning rate increases across the tested range.}}{8}{table.4}\protected@file@percent }
+\newlabel{tab:lr-sweep}{{4}{8}{Learning-rate sweep for EuroSAT full fine-tuning. Entropy decreases monotonically as the learning rate increases across the tested range}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Auxiliary Structural Validation}{8}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Backbone Validation and CKA--Entropy Coupling}{8}{subsection.5.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Learning-rate sweep for EuroSAT Full FT. Larger learning rates produce stronger entropy decreases and stronger ERF contraction.}}{9}{figure.5}\protected@file@percent }
+\newlabel{fig:lr-sweep}{{5}{9}{Learning-rate sweep for EuroSAT Full FT. Larger learning rates produce stronger entropy decreases and stronger ERF contraction}{figure.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Regularization study on EuroSAT full fine-tuning. Among individually tested regularizers, entropy floor with $\lambda =0.1$ is the only setting with a paired per-layer entropy difference reaching $p<0.05$ in the current analysis.}}{9}{table.5}\protected@file@percent }
+\newlabel{tab:regularization}{{5}{9}{Regularization study on EuroSAT full fine-tuning. Among individually tested regularizers, entropy floor with $\lambda =0.1$ is the only setting with a paired per-layer entropy difference reaching $p<0.05$ in the current analysis}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8}Zero-Shot Transfer: Evidence and Caveats}{9}{subsection.5.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Regularization results. Both APR and entropy floor preserve broader attention structure than the no-regularizer baseline in descriptive terms, but none of the tested settings survives Holm--Bonferroni correction across the regularizer family.}}{10}{figure.6}\protected@file@percent }
+\newlabel{fig:regularization}{{6}{10}{Regularization results. Both APR and entropy floor preserve broader attention structure than the no-regularizer baseline in descriptive terms, but none of the tested settings survives Holm--Bonferroni correction across the regularizer family}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Auxiliary validation analyses beyond CLS-to-patch entropy. Rollout and patch-to-patch metrics indicate broader attention support for LoRA than for Full FT on EuroSAT, while layerwise CKA shows higher representational similarity to the pretrained encoder. The subset-sensitivity coefficient of variation (CV) is low for both methods, indicating that the reported metrics are stable across five balanced evaluation subsets.}}{10}{table.6}\protected@file@percent }
+\newlabel{tab:auxiliary-validation}{{6}{10}{Auxiliary validation analyses beyond CLS-to-patch entropy. Rollout and patch-to-patch metrics indicate broader attention support for LoRA than for Full FT on EuroSAT, while layerwise CKA shows higher representational similarity to the pretrained encoder. The subset-sensitivity coefficient of variation (CV) is low for both methods, indicating that the reported metrics are stable across five balanced evaluation subsets}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Backbone comparison between CLIP ViT-B/32 and ViT-B/16 on EuroSAT. Metric cells show B/32 / B/16 values.}}{10}{table.7}\protected@file@percent }
+\newlabel{tab:backbone-comparison}{{7}{10}{Backbone comparison between CLIP ViT-B/32 and ViT-B/16 on EuroSAT. Metric cells show B/32 / B/16 values}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Correlation between representational fidelity (CKA to the pretrained model) and structural change ($\Delta $entropy).}}{10}{table.8}\protected@file@percent }
+\newlabel{tab:cka-entropy}{{8}{10}{Correlation between representational fidelity (CKA to the pretrained model) and structural change ($\Delta $entropy)}{table.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Training dynamics and collapse-onset analysis. High-learning-rate Full FT exhibits the earliest and strongest entropy decrease.}}{11}{figure.7}\protected@file@percent }
+\newlabel{fig:dynamics}{{7}{11}{Training dynamics and collapse-onset analysis. High-learning-rate Full FT exhibits the earliest and strongest entropy decrease}{figure.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Zero-shot results using an adapter-aware image-encoding path for LoRA checkpoints. The pretrained baseline is retained from the original CLIP evaluation path, while adapted checkpoints are re-evaluated with their own image branch active.}}{11}{table.9}\protected@file@percent }
+\newlabel{tab:zeroshot}{{9}{11}{Zero-shot results using an adapter-aware image-encoding path for LoRA checkpoints. The pretrained baseline is retained from the original CLIP evaluation path, while adapted checkpoints are re-evaluated with their own image branch active}{table.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Extended zero-shot evaluation under the repository's current protocol. CIFAR-100 is the more interpretable benchmark here; the Flowers102 values are uniformly too low to support strong conclusions.}}{12}{figure.8}\protected@file@percent }
+\newlabel{fig:zeroshot}{{8}{12}{Extended zero-shot evaluation under the repository's current protocol. CIFAR-100 is the more interpretable benchmark here; the Flowers102 values are uniformly too low to support strong conclusions}{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{13}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{13}{Discussion}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Limitations}{13}{subsection.6.1}\protected@file@percent }
+\bibstyle{tmlr}
+\bibdata{references}
+\bibcite{abnar2020quantifying}{{1}{2020}{{Abnar \& Zuidema}}{{Abnar and Zuidema}}}
+\bibcite{dosovitskiy2021image}{{2}{2021}{{Dosovitskiy et~al.}}{{Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and Houlsby}}}
+\bibcite{helber2019eurosat}{{3}{2019}{{Helber et~al.}}{{Helber, Bischke, Dengel, and Borth}}}
+\bibcite{hu2022lora}{{4}{2022}{{Hu et~al.}}{{Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and Chen}}}
+\bibcite{jain2019attention}{{5}{2019}{{Jain \& Wallace}}{{Jain and Wallace}}}
+\bibcite{krizhevsky2009learning}{{6}{2009}{{Krizhevsky}}{{}}}
+\bibcite{kumar2022finetuning}{{7}{2022}{{Kumar et~al.}}{{Kumar, Raghunathan, Jones, Ma, and Liang}}}
+\bibcite{nilsback2008automated}{{8}{2008}{{Nilsback \& Zisserman}}{{Nilsback and Zisserman}}}
+\bibcite{parkhi2012cats}{{9}{2012}{{Parkhi et~al.}}{{Parkhi, Vedaldi, Zisserman, and Jawahar}}}
+\bibcite{radford2021learning}{{10}{2021}{{Radford et~al.}}{{Radford, Kim, Hallacy, Ramesh, Goh, Agarwal, Sastry, Askell, Mishkin, Clark, Krueger, and Sutskever}}}
+\bibcite{wiegreffe2019attention}{{11}{2019}{{Wiegreffe \& Pinter}}{{Wiegreffe and Pinter}}}
+\bibcite{wortsman2022robust}{{12}{2022}{{Wortsman et~al.}}{{Wortsman, Ilharco, Kim, Li, Kornblith, Roelofs, Lopes, Hajishirzi, Farhadi, Namkoong, and Schmidt}}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{14}{section.7}\protected@file@percent }
+\gdef \@abspage@last{14}

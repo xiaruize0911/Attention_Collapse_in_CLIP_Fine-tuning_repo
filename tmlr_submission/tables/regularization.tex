@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\caption{Regularization study on EuroSAT full fine-tuning. Among individually tested regularizers, entropy floor with $\lambda=0.1$ is the only setting with a paired per-layer entropy difference reaching $p<0.05$ in the current analysis.}
+\label{tab:regularization}
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Setting & Task Acc. (\%) & $\Delta$Entropy (\%) & $\Delta$ERF (\%) & $\Delta$Gini (\%) \\
+\midrule
+No regularizer & 99.30 & -0.14 & -1.73 & -3.54 \\
+APR $\lambda=0.01$ & 99.26 & +0.86 & +1.50 & -8.83 \\
+APR $\lambda=0.1$ & 99.19 & +0.56 & +1.03 & -5.36 \\
+APR $\lambda=1.0$ & 98.96 & +0.09 & +0.16 & -0.75 \\
+Entropy floor $\lambda=0.01$ & 99.11 & +0.58 & -0.09 & -6.41 \\
+Entropy floor $\lambda=0.1$ & 99.07 & +0.79 & +0.30 & -8.22 \\
+Weight decay 0.0 & 99.19 & -0.18 & -1.81 & -3.16 \\
+Weight decay 0.1 & 99.15 & -0.25 & -1.90 & -2.38 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

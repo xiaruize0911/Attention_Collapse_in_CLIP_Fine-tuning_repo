@@ -1,6 +1,8 @@
 """
 model.py - CLIP Classifier and model utilities
 """
+from pathlib import Path
+
 import torch
 import torch.nn as nn
 from transformers import CLIPModel, CLIPProcessor
@@ -11,7 +13,9 @@ class CLIPClassifier(nn.Module):
     def __init__(self, model_name="openai/clip-vit-base-patch32", num_classes=10):
         super().__init__()
         self.clip_model = CLIPModel.from_pretrained(
-            model_name, attn_implementation="eager"
+            model_name,
+            attn_implementation="eager",
+            use_safetensors=True,
         )
         self.vision_model = self.clip_model.vision_model
         self.visual_projection = self.clip_model.visual_projection  # projects to 512
@@ -79,7 +83,11 @@ def create_lora_model(model_name="openai/clip-vit-base-patch32", num_classes=10,
 
 def get_pretrained_model(model_name="openai/clip-vit-base-patch32"):
     """Load pretrained CLIP model for attention analysis (no classification head)."""
-    model = CLIPModel.from_pretrained(model_name, attn_implementation="eager")
+    model = CLIPModel.from_pretrained(
+        model_name,
+        attn_implementation="eager",
+        use_safetensors=True,
+    )
     model.eval()
     return model
 
@@ -94,3 +102,41 @@ def count_parameters(model):
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     total = sum(p.numel() for p in model.parameters())
     return trainable, total
+
+
+def load_classifier_from_checkpoint(checkpoint_path, map_location=None, eval_mode=True):
+    """Rebuild a saved classifier or LoRA classifier from checkpoint config."""
+    checkpoint_path = Path(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, map_location=map_location, weights_only=False)
+    state = checkpoint.get("model_state_dict", checkpoint)
+    config = checkpoint.get("config", {})
+
+    model_name = config.get("model_name", "openai/clip-vit-base-patch32")
+    dataset_name = str(config.get("dataset", "")).lower()
+    if "pet" in dataset_name:
+        default_num_classes = 37
+    elif "cifar100" in dataset_name:
+        default_num_classes = 100
+    else:
+        default_num_classes = 10
+    num_classes = config.get("num_classes", config.get("class_count", default_num_classes))
+    method = str(config.get("method", "full_ft")).lower()
+
+    if method.startswith("lora"):
+        model = create_lora_model(
+            model_name=model_name,
+            num_classes=num_classes,
+            lora_r=config.get("lora_r", 8),
+            lora_alpha=config.get("lora_alpha", 16),
+            lora_dropout=config.get("lora_dropout", 0.05),
+            target_modules=config.get("target_modules", ["q_proj", "v_proj"]),
+        )
+    else:
+        model = CLIPClassifier(model_name=model_name, num_classes=num_classes)
+
+    model.load_state_dict(state, strict=False)
+    if map_location is not None:
+        model = model.to(map_location)
+    if eval_mode:
+        model.eval()
+    return model, checkpoint, config

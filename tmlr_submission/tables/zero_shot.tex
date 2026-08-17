@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Zero-shot results using an adapter-aware image-encoding path for LoRA checkpoints. The pretrained baseline is retained from the original CLIP evaluation path, while adapted checkpoints are re-evaluated with their own image branch active.}
+\label{tab:zeroshot}
+\small
+\setlength{\tabcolsep}{5pt}
+\resizebox{0.8\textwidth}{!}{%
+\begin{tabular}{lrr}
+\toprule
+Model & CIFAR-100 (\%) & Flowers102 (\%) \\
+\midrule
+Pretrained baseline & 60.22 & 0.20 \\
+Full FT EuroSAT & 9.43 & 1.37 \\
+LoRA r=4 EuroSAT & 40.51 & 1.27 \\
+LoRA r=8 EuroSAT & 47.28 & 0.78 \\
+LoRA r=16 EuroSAT & 39.35 & 0.98 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
