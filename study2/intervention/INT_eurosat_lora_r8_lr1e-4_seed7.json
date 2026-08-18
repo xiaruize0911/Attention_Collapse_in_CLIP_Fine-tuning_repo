@@ -14,7 +14,7 @@
       0.75,
       1.0
     ],
-    "transfer_images": 5000,
+    "transfer_images": 10000,
     "device": "mps",
     "model_name": "openai/clip-vit-base-patch32",
     "splits": {
@@ -26,13 +26,13 @@
   },
   "selected_epoch": 4,
   "best_val_acc": 0.95,
-  "pretrained_transfer_acc": 0.619,
-  "transfer_images": 5000,
+  "pretrained_transfer_acc": 0.6133,
+  "transfer_images": 10000,
   "sweep": [
     {
       "alpha": 0.0,
       "test_acc": 0.1725925925925926,
-      "transfer_acc": 0.619,
+      "transfer_acc": 0.6133,
       "delta_entropy_pct": 0.0,
       "cka_mean": 1.0,
       "embedding_drift": 0.0,
@@ -42,43 +42,43 @@
     {
       "alpha": 0.25,
       "test_acc": 0.7818518518518518,
-      "transfer_acc": 0.6124,
+      "transfer_acc": 0.6082,
       "delta_entropy_pct": 0.09735270806543221,
       "cka_mean": 0.9943430870771408,
       "embedding_drift": 0.02282273769378662,
       "weight_drift_rel": 0.000923065501115122,
-      "transfer_retention": 98.93376413570276
+      "transfer_retention": 99.1684330670145
     },
     {
       "alpha": 0.5,
       "test_acc": 0.9051851851851852,
-      "transfer_acc": 0.6004,
+      "transfer_acc": 0.599,
       "delta_entropy_pct": 0.2970051868996726,
       "cka_mean": 0.9683961272239685,
       "embedding_drift": 0.1282612681388855,
       "weight_drift_rel": 0.0018990951913806806,
-      "transfer_retention": 96.99515347334412
+      "transfer_retention": 97.66835154084461
     },
     {
       "alpha": 0.75,
       "test_acc": 0.94,
-      "transfer_acc": 0.5848,
+      "transfer_acc": 0.5819,
       "delta_entropy_pct": 0.6004223329352073,
       "cka_mean": 0.9299956907828649,
       "embedding_drift": 0.33167386054992676,
       "weight_drift_rel": 0.002961768288945522,
-      "transfer_retention": 94.47495961227786
+      "transfer_retention": 94.88015653024621
     },
     {
       "alpha": 1.0,
       "test_acc": 0.9544444444444444,
-      "transfer_acc": 0.5428,
+      "transfer_acc": 0.5384,
       "delta_entropy_pct": 0.9554742434544224,
       "cka_mean": 0.8979331900676092,
       "embedding_drift": 0.5414965748786926,
       "weight_drift_rel": 0.004139858655550371,
-      "transfer_retention": 87.6898222940226
+      "transfer_retention": 87.7873797488994
     }
   ],
-  "runtime_seconds": 596.370062828064
+  "runtime_seconds": 1373.9548552036285
 }

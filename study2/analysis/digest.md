@@ -1,6 +1,6 @@
 # Study B digest (66 runs on the primary backbone)
 
-Plus 12 runs on `openai/clip-vit-base-patch16`, analysed separately in the backbone section below.
+Plus 18 runs on `openai/clip-vit-base-patch16`, analysed separately in the backbone section below.
 
 ## Cells (mean over seeds)
 
@@ -122,7 +122,7 @@ Plus 12 runs on `openai/clip-vit-base-patch16`, analysed separately in the backb
 
 ## Signal-based configuration choice
 
-- **eurosat**: 8 candidates above 95.00% test accuracy; retention range 17.1--58.1%, random pick 41.2%
+- **eurosat**: 8 candidates above 95.00% validation accuracy; retention range 17.1--58.1%, random pick 41.2%
     - abs_delta_entropy_pct: picks S2_eurosat_full_ft_lr3e-5_seed19 -> retention 24.0% (regret 34.1, range fraction 0.17)
     - abs_delta_entropy_last_layer_pct: picks S2_eurosat_full_ft_lr1e-5_seed19 -> retention 43.6% (regret 14.4, range fraction 0.65)
     - abs_delta_erf95_pct: picks S2_eurosat_full_ft_lr3e-5_seed19 -> retention 24.0% (regret 34.1, range fraction 0.17)
@@ -130,7 +130,7 @@ Plus 12 runs on `openai/clip-vit-base-patch16`, analysed separately in the backb
     - embedding_drift: picks S2_eurosat_full_ft_lr3e-6_seed19 -> retention 56.9% (regret 1.1, range fraction 0.97)
     - weight_drift_rel: picks S2_eurosat_full_ft_lr3e-6_seed19 -> retention 56.9% (regret 1.1, range fraction 0.97)
     - cka_mean: picks S2_eurosat_full_ft_lr3e-6_seed11 -> retention 50.1% (regret 8.0, range fraction 0.80)
-- **pets**: 6 candidates above 90.16% test accuracy; retention range 19.3--99.7%, random pick 50.2%
+- **pets**: 6 candidates above 90.16% validation accuracy; retention range 19.3--99.7%, random pick 50.2%
     - abs_delta_entropy_pct: picks S2_pets_lora_r8_lr1e-4_seed19 -> retention 99.7% (regret 0.0, range fraction 1.00)
     - abs_delta_entropy_last_layer_pct: picks S2_pets_lora_r8_lr1e-4_seed19 -> retention 99.7% (regret 0.0, range fraction 1.00)
     - abs_delta_erf95_pct: picks S2_pets_lora_r8_lr1e-4_seed19 -> retention 99.7% (regret 0.0, range fraction 1.00)
@@ -177,33 +177,33 @@ Plus 12 runs on `openai/clip-vit-base-patch16`, analysed separately in the backb
 | eurosat | 5 | 15 | 87.6 | 41.7 | 85.5 | 86.2 | 56.9 | 24.0 |
 | pets | 5 | 9 | 99.7 | 54.6 | 96.4 | 96.4 | 54.4 | 99.7 |
 
-## Second backbone: `openai/clip-vit-base-patch16` (12 runs)
+## Second backbone: `openai/clip-vit-base-patch16` (18 runs)
 
 | dataset | method | lr | n | test acc | dH % | C100 ret % | CKA |
 |---|---|---|---|---|---|---|---|
-| eurosat | Full FT | 1e-05 | 2 | 96.87 | -1.28 | 50.3 | 0.808 |
-| eurosat | Full FT | 3e-05 | 2 | 97.41 | +2.26 | 27.8 | 0.772 |
-| eurosat | Full FT | 1e-04 | 2 | 95.69 | +3.00 | 2.1 | 0.738 |
-| eurosat | LoRA r=8 | 1e-05 | 2 | 79.48 | +0.53 | 100.2 | 0.975 |
-| eurosat | LoRA r=8 | 3e-05 | 2 | 93.00 | +0.75 | 98.4 | 0.931 |
-| eurosat | LoRA r=8 | 1e-04 | 2 | 95.39 | +0.88 | 91.9 | 0.906 |
+| eurosat | Full FT | 1e-05 | 3 | 97.06 | -0.94 | 52.6 | 0.808 |
+| eurosat | Full FT | 3e-05 | 3 | 97.53 | +2.25 | 29.2 | 0.772 |
+| eurosat | Full FT | 1e-04 | 3 | 95.65 | +3.24 | 2.3 | 0.743 |
+| eurosat | LoRA r=8 | 1e-05 | 3 | 80.15 | +0.43 | 99.9 | 0.972 |
+| eurosat | LoRA r=8 | 3e-05 | 3 | 93.21 | +0.64 | 98.2 | 0.928 |
+| eurosat | LoRA r=8 | 1e-04 | 3 | 95.49 | +0.68 | 92.8 | 0.903 |
 
 Predictors of retention on this backbone:
 
 | predictor | n | rho | p |
 |---|---|---|---|
-| cka_mean | 12 | +0.993 | 1.3e-10 |
-| embedding_drift | 12 | -0.979 | 3.1e-08 |
-| weight_drift_rel | 12 | -0.965 | 3.9e-07 |
-| abs_delta_entropy_pct | 12 | -0.755 | 0.0045 |
-| delta_entropy_pct | 12 | -0.455 | 0.14 |
+| cka_mean | 18 | +0.990 | 6.3e-15 |
+| embedding_drift | 18 | -0.953 | 1.1e-09 |
+| weight_drift_rel | 18 | -0.965 | 1e-10 |
+| abs_delta_entropy_pct | 18 | -0.717 | 0.00081 |
+| delta_entropy_pct | 18 | -0.472 | 0.048 |
 
 ## Polarity by backbone x method (EuroSAT, run level)
 
 | backbone | method | n | rates | signed dH rho | CKA rho | w-drift rho |
 |---|---|---|---|---|---|---|
-| clip-vit-base-patch16 | full_ft | 6 | 3 | -0.771 | +0.943 | -0.886 |
-| clip-vit-base-patch16 | lora_r8 | 6 | 3 | -0.143 | +1.000 | -1.000 |
+| clip-vit-base-patch16 | full_ft | 9 | 3 | -0.717 | +0.933 | -0.917 |
+| clip-vit-base-patch16 | lora_r8 | 9 | 3 | +0.000 | +0.983 | -0.983 |
 | clip-vit-base-patch32 | full_ft | 12 | 4 | +0.944 | +0.944 | -0.951 |
 | clip-vit-base-patch32 | lora_r8 | 12 | 4 | -0.951 | +0.888 | -0.923 |
 

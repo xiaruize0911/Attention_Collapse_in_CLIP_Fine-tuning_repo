@@ -30,12 +30,13 @@ import pandas as pd
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 ANALYSIS_DIR = PROJECT_DIR / "study2" / "analysis"
+INTERVENTION_DIR = PROJECT_DIR / "study2" / "intervention"
 PAPER_DIR = PROJECT_DIR / "icdm2026_teen_submission"
 TEMPLATE = PAPER_DIR / "main_template.tex"
 OUTPUT = PAPER_DIR / "main.tex"
 FIGURES = ("study2_dose_response", "study2_predictors", "study2_layer_heatmap",
            "study2_layer_heatmap_compact", "study2_predictor_bars",
-           "study2_intervention")
+           "study2_intervention", "study2_visual_synthesis")
 
 FRACTIONAL = {"test_acc", "val_acc", "corruption_mean_acc", "corruption_gap"}
 DATASET_KEY = {"eurosat": "eurosat", "pets": "pets"}
@@ -73,13 +74,13 @@ def _fmt(value: float, fmt: str) -> str:
         mantissa = value / (10 ** exponent)
         if abs(mantissa - 1.0) < 0.05:
             return f"10^{{{exponent}}}"
-        return rf"{mantissa:.1f}\!\cdot\!10^{{{exponent}}}"
+        return rf"{mantissa:.1f}\cdot 10^{{{exponent}}}"
     if fmt == "lr":
         exponent = int(np.floor(np.log10(value)))
         mantissa = value / (10 ** exponent)
         if abs(mantissa - 1.0) < 1e-9:
             return f"10^{{{exponent}}}"
-        return rf"{mantissa:g}\!\cdot\!10^{{{exponent}}}"
+        return rf"{mantissa:g}\cdot 10^{{{exponent}}}"
     if fmt == "abs2":
         return format(abs(value), ".2f")
     if fmt == "abs1":
@@ -87,6 +88,39 @@ def _fmt(value: float, fmt: str) -> str:
     if fmt == "abs3":
         return format(abs(value), ".3f")
     return format(value, fmt)
+
+
+def _intervention(method: str, alpha: float, field: str) -> float:
+    """Read the validation-selected interpolation result from run records."""
+    records = []
+    for path in INTERVENTION_DIR.glob("*.json"):
+        record = json.loads(path.read_text())
+        config = record.get("config", {})
+        if config.get("method") != method:
+            continue
+        records.append(record)
+    if not records:
+        raise KeyError(f"no intervention record for {method=}")
+    best_val = max(float(record.get("best_val_acc", -np.inf)) for record in records)
+    selected = [record for record in records
+                if np.isclose(float(record.get("best_val_acc", -np.inf)), best_val)]
+    if len(selected) != 1:
+        raise KeyError(
+            f"expected one validation-selected intervention record for {method=}, "
+            f"found {len(selected)}"
+        )
+    matches = []
+    for row in selected[0].get("sweep", []):
+        if np.isclose(row.get("alpha", np.nan), alpha):
+            matches.append(row[field])
+    if len(matches) != 1:
+        raise KeyError(
+            f"expected one intervention row for {method=} {alpha=}, found {len(matches)}"
+        )
+    value = float(matches[0])
+    if field in {"test_acc", "transfer_acc"}:
+        value *= 100
+    return value
 
 
 def render(text: str, df: pd.DataFrame, summary: dict) -> tuple[str, list[str]]:
@@ -191,6 +225,10 @@ def render(text: str, df: pd.DataFrame, summary: dict) -> tuple[str, list[str]]:
                 values = [item[signal]["rho"] for item in summary["polarity_by_group"]
                           if signal in item]
                 return _fmt(min(values) if field == "min" else max(values), fmt)
+            if name == "int":
+                method, alpha, field = parts[:3]
+                fmt = parts[3] if len(parts) > 3 else ".1f"
+                return _fmt(_intervention(method, float(alpha), field), fmt)
             if name == "stat":
                 node = summary
                 for step in parts[0].split("."):

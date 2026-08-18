@@ -164,3 +164,19 @@ progress: 9/12
   [S2_eurosat_lora_r8_basep16_lr3e-5_seed19] test=0.9363 cifar100=0.6478 dH=+0.43% (47.7 min)
 progress: 10/12
   [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 1/6 loss=1.1384 val=0.8600 dH=+2.69% track=0.0190
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 2/6 loss=0.6339 val=0.7367 dH=+11.26% track=0.0160
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 3/6 loss=0.4576 val=0.9200 dH=+5.22% track=0.0190
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 4/6 loss=0.2956 val=0.8400 dH=+3.70% track=0.0180
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 5/6 loss=0.1341 val=0.9233 dH=+3.64% track=0.0210
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] epoch 6/6 loss=0.0495 val=0.9533 dH=+3.72% track=0.0160
+  [S2_eurosat_full_ft_basep16_lr1e-4_seed19] test=0.9559 cifar100=0.0178 dH=+3.72% (56.6 min)
+progress: 11/12
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 1/6 loss=1.5393 val=0.8800 dH=+0.88% track=0.6350
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 2/6 loss=0.3151 val=0.9233 dH=+0.55% track=0.6000
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 3/6 loss=0.1302 val=0.9467 dH=+0.29% track=0.6030
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 4/6 loss=0.0865 val=0.9400 dH=+0.33% track=0.5920
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 5/6 loss=0.0684 val=0.9433 dH=+0.40% track=0.5930
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] epoch 6/6 loss=0.0618 val=0.9433 dH=+0.39% track=0.5910
+  [S2_eurosat_lora_r8_basep16_lr1e-4_seed19] test=0.9570 cifar100=0.6261 dH=+0.29% (49.0 min)
+progress: 12/12
+=== 14:46:11 STAGE 8 complete ===

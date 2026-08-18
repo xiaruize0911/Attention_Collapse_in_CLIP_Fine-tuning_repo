@@ -20,6 +20,7 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 RESULTS_DIR = PROJECT_DIR / "study2" / "results"
 OUT_DIR = PROJECT_DIR / "study2" / "analysis"
 FIG_DIR = OUT_DIR / "figures"
+INTERVENTION_DIR = PROJECT_DIR / "study2" / "intervention"
 
 DEFAULT_MODEL = "openai/clip-vit-base-patch32"
 CORE_METHODS = ("full_ft", "lora_r8")
@@ -133,7 +134,7 @@ def latex_lr(lr: float) -> str:
     mantissa = lr / (10 ** exponent)
     if abs(mantissa - 1.0) < 1e-9:
         return f"$10^{{{exponent}}}$"
-    return f"${mantissa:g}\\!\\cdot\\!10^{{{exponent}}}$"
+    return f"${mantissa:g}\\cdot 10^{{{exponent}}}$"
 
 
 def core_grid_table(df: pd.DataFrame) -> str:
@@ -309,6 +310,7 @@ def predictor_ranking(df: pd.DataFrame, target: str = "cifar100_retention",
         for _, group in values.groupby(["dataset", "method"]):
             if len(group) >= 5 and group[column].nunique() > 2:
                 within.append(stats.spearmanr(group[column], group[target]).statistic)
+        signed_within = float(np.mean(within)) if within else float("nan")
         per_dataset = []
         for _, group in values.groupby("dataset"):
             if len(group) >= 8 and group[column].nunique() > 2:
@@ -379,6 +381,21 @@ def backbone_check(df_all: pd.DataFrame) -> dict:
                       "cells": cells.to_dict("records"),
                       "predictors": signals}
     return out
+
+
+def transfer_axis_agreement(df: pd.DataFrame) -> dict:
+    """Do the two zero-shot benchmarks rank runs the same way?
+
+    The paper reports CIFAR-100 in the body and only mentions CIFAR-10 in
+    passing; this is the number that licenses that choice.
+    """
+    core = df[df.method.isin(CORE_METHODS)]
+    values = core[["cifar100_retention", "cifar10_retention"]].dropna()
+    if len(values) < 4:
+        return {}
+    rho, pvalue = stats.spearmanr(values.cifar100_retention, values.cifar10_retention)
+    return {"spearman_rho": float(rho), "p_value": float(pvalue),
+            "n": int(len(values))}
 
 
 def bootstrap_predictor_gap(df: pd.DataFrame, target: str = "cifar100_retention",
@@ -681,7 +698,7 @@ def digest(df: pd.DataFrame, summary: dict) -> str:
     lines.append("\n## Signal-based configuration choice\n")
     for item in summary.get("selection_utility", []):
         lines.append(f"- **{item['dataset']}**: {item['n_candidates']} candidates above "
-                     f"{item['accuracy_cutoff']:.2f}% test accuracy; retention range "
+                     f"{item['accuracy_cutoff']:.2f}% validation accuracy; retention range "
                      f"{item['worst_retention']:.1f}--{item['oracle_retention']:.1f}%, "
                      f"random pick {item['random_choice_retention']:.1f}%")
         for signal, spec in item["signals"].items():
@@ -767,7 +784,7 @@ def digest(df: pd.DataFrame, summary: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def make_figures(df: pd.DataFrame) -> None:
+def make_figures(df: pd.DataFrame, df_all: pd.DataFrame) -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -978,6 +995,127 @@ def make_figures(df: pd.DataFrame) -> None:
     fig.savefig(FIG_DIR / "study2_trajectories.png", dpi=220)
     plt.close(fig)
 
+    # ---- Figure 5: compact visual synthesis for the paper -----------------
+    fig, axes = plt.subplots(
+        1, 3, figsize=(9.4, 2.55),
+        gridspec_kw={"width_ratios": [1.28, 1.16, 1.02]},
+    )
+
+    # (a) Signal direction across backbone x method groups.
+    ax = axes[0]
+    polarity = polarity_by_group(df_all)
+    model_order = [
+        ("openai/clip-vit-base-patch32", "full_ft", "ViT-B/32, Full FT"),
+        ("openai/clip-vit-base-patch32", "lora_r8", "ViT-B/32, LoRA"),
+        ("openai/clip-vit-base-patch16", "full_ft", "ViT-B/16, Full FT"),
+        ("openai/clip-vit-base-patch16", "lora_r8", "ViT-B/16, LoRA"),
+    ]
+    signal_order = [
+        ("delta_entropy_pct", r"signed $\Delta H$"),
+        ("cka_mean", "CKA"),
+        ("embedding_drift", "embed. drift"),
+        ("weight_drift_rel", "weight drift"),
+    ]
+    lookup = {(item["model"], item["method"]): item for item in polarity}
+    grid = np.full((len(model_order), len(signal_order)), np.nan)
+    for row, (model, method, _) in enumerate(model_order):
+        item = lookup.get((model, method), {})
+        for column, (signal, _) in enumerate(signal_order):
+            grid[row, column] = item.get(signal, {}).get("rho", np.nan)
+    image = ax.imshow(grid, cmap="RdBu_r", vmin=-1, vmax=1, aspect="auto")
+    ax.set_xticks(range(len(signal_order)))
+    ax.set_xticklabels([label for _, label in signal_order], rotation=24, ha="right")
+    ax.set_yticks(range(len(model_order)))
+    ax.set_yticklabels([label for _, _, label in model_order], fontsize=7)
+    for row in range(grid.shape[0]):
+        for column in range(grid.shape[1]):
+            value = grid[row, column]
+            if np.isfinite(value):
+                ax.text(column, row, f"{value:+.2f}", ha="center", va="center",
+                        fontsize=7, color="white" if abs(value) > 0.62 else "black")
+    ax.set_title("(a) Signal direction across groups")
+    bar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.03)
+    bar.set_label(r"Spearman $\rho$", fontsize=7)
+    bar.ax.tick_params(labelsize=6)
+
+    # (b) Accuracy-retention frontier on EuroSAT.
+    ax = axes[1]
+    frontier_methods = ("full_ft", "lora_r8", "last_block", "linear_probe")
+    frontier_colours = {
+        "full_ft": "#c0392b", "lora_r8": "#2471a3",
+        "last_block": "#239b56", "linear_probe": "#626567",
+    }
+    frontier_markers = {"full_ft": "o", "lora_r8": "s",
+                        "last_block": "^", "linear_probe": "D"}
+    cells = (df[(df.dataset == "eurosat") & df.method.isin(frontier_methods)]
+             .groupby(["method", "lr"])
+             .agg(test=("test_acc", "mean"), ret=("cifar100_retention", "mean"))
+             .reset_index())
+    nondominated = []
+    for index, row in cells.iterrows():
+        dominated = ((cells.test >= row.test) & (cells.ret >= row.ret)
+                     & ((cells.test > row.test) | (cells.ret > row.ret))).any()
+        if not dominated:
+            nondominated.append(index)
+    pareto = cells.loc[nondominated].sort_values("test")
+    if not pareto.empty:
+        ax.plot(100 * pareto.test, pareto.ret, color="#424949", linestyle=":",
+                linewidth=1.1, zorder=1)
+    for method in frontier_methods:
+        block = cells[cells.method == method]
+        if block.empty:
+            continue
+        edges = ["black" if index in nondominated else "none" for index in block.index]
+        ax.scatter(100 * block.test, block.ret, s=29, marker=frontier_markers[method],
+                   color=frontier_colours[method], edgecolors=edges, linewidths=0.7,
+                   label=METHOD_LABEL[method], zorder=2)
+    ax.set_xlabel("Target test accuracy (%)")
+    ax.set_ylabel("CIFAR-100 retention (%)")
+    ax.set_title("(b) EuroSAT accuracy-retention frontier")
+    ax.grid(alpha=0.22, linewidth=0.5)
+    ax.legend(frameon=False, fontsize=6.5, ncol=2, loc="lower left")
+
+    # (c) Interpolation trajectories for validation-selected configurations.
+    ax = axes[2]
+    selected_records = {}
+    for path in INTERVENTION_DIR.glob("*.json"):
+        record = json.loads(path.read_text())
+        method = record.get("config", {}).get("method")
+        if method not in CORE_METHODS:
+            continue
+        current = selected_records.get(method)
+        if current is None or record.get("best_val_acc", -np.inf) > current.get("best_val_acc", -np.inf):
+            selected_records[method] = record
+    for method in CORE_METHODS:
+        record = selected_records.get(method)
+        if record is None:
+            continue
+        # alpha=0 is degenerate (adapted classifier on a pretrained encoder), so
+        # it is dropped; everything above it is shown.
+        sweep = sorted((row for row in record.get("sweep", []) if row["alpha"] >= 0.25),
+                       key=lambda row: row["alpha"])
+        x = [100 * row["test_acc"] for row in sweep]
+        y = [row["transfer_retention"] for row in sweep]
+        ax.plot(x, y, "-o", color=colours[method], linewidth=1.4, markersize=4,
+                label=METHOD_LABEL[method])
+        # the two curves nearly coincide at alpha=0.25, so push one series'
+        # labels up and the other down or they overprint each other
+        dy = 5 if method == CORE_METHODS[1] else -9
+        for row, x_value, y_value in zip(sweep, x, y):
+            ax.annotate(rf"$\alpha={row['alpha']:g}$", (x_value, y_value),
+                        xytext=(4, dy), textcoords="offset points", fontsize=6.5,
+                        color=colours[method])
+    ax.set_xlabel("Target test accuracy (%)")
+    ax.set_ylabel("CIFAR-100 retention (%)")
+    ax.set_title("(c) Interpolation intervention")
+    ax.grid(alpha=0.22, linewidth=0.5)
+    ax.legend(frameon=False, fontsize=7, loc="lower left")
+
+    fig.tight_layout(w_pad=1.0)
+    fig.savefig(FIG_DIR / "study2_visual_synthesis.png", dpi=300,
+                bbox_inches="tight")
+    plt.close(fig)
+
 
 # --------------------------------------------------------------------------
 def main() -> None:
@@ -1025,7 +1163,15 @@ def main() -> None:
             for margin in (1.0, 2.0, 3.0, 5.0)
         },
         "temporal_ordering": temporal_ordering(df),
+        "transfer_axis_agreement": transfer_axis_agreement(df),
     }
+    # One entry in the bootstrap table is the reference itself (gap identically
+    # zero), so the number of *comparisons* is one fewer than the row count.
+    summary["bootstrap_n_comparisons"] = max(
+        0, len(summary["bootstrap_predictor_gap"]) - 1)
+    summary["bootstrap_n_gaps_excluding_zero"] = sum(
+        1 for item in summary["bootstrap_predictor_gap"]
+        if item["gap_vs_reference_mean"] != 0 and item["gap_ci_low"] > 0)
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, indent=2, default=str))
     (OUT_DIR / "core_grid_rows.tex").write_text(core_grid_table(df))
     (OUT_DIR / "digest.md").write_text(digest(df, summary))
@@ -1033,7 +1179,7 @@ def main() -> None:
     (OUT_DIR / "predictor_rows.tex").write_text(predictor_rows_table(df))
 
     if not args.no_figures:
-        make_figures(df)
+        make_figures(df, df_all)
 
     print(json.dumps({
         "runs": summary["n_runs"],

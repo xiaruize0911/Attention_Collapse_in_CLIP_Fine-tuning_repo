@@ -5,20 +5,20 @@ How this version answers each finding in `independent_review.md`. Status is
 
 | # | Finding | Response | Status |
 |---|---------|----------|--------|
-| 1.1 | Model selection and reporting both used the provided test split | Study B carves validation out of the training split (`study2/data_splits.py`), selects the epoch on validation accuracy, and reads the test split exactly once per run. Study A is now explicitly labelled as having the weaker protocol, and no accuracy claim rests on it alone. | done |
-| 1.2 | Primary evidence not reproducible; no dispersion or tests | Study B writes one JSON record per run including the full per-epoch history; `study2/analyze_study2.py` regenerates every table, statistic and figure. All Study B numbers carry standard deviations over seeds, and the Full FT vs LoRA comparison uses paired tests on identical (dataset, LR, seed) cells with Holm correction. | done |
-| 1.3 | Transfer comparison confounded by the trained visual projection | Added a `lora_r8_frozen_proj` configuration that trains adapters and classifier only. The result reverses the confound: freezing the projection makes both axes worse at 1e-4 (retention 86.4% to ~77%, encoder weight drift 0.0042 to 0.0065), and at 1e-5 it leaves drift and retention untouched while target accuracy falls 78.8% to 22.6%. The projection is a cheap place to put task adaptation; deny it and the encoder pays. LoRA's advantage is not an artifact of what it leaves alone. | done |
+| 1.1 | Model selection and reporting both used the provided test split | The primary controlled experiment carves validation out of the training split (`study2/data_splits.py`), selects the epoch on validation accuracy, and reads the test split exactly once per run. The earlier leakage-affected grid (previously labelled "Study A") no longer appears in the paper; no accuracy claim rests on it. | done |
+| 1.2 | Primary evidence not reproducible; no dispersion or tests | The primary controlled experiment writes one JSON record per run including the full per-epoch history; `study2/analyze_study2.py` regenerates every table, statistic and figure. All reported numbers carry standard deviations over seeds, and the Full FT vs LoRA comparison uses paired tests on identical (dataset, LR, seed) cells with Holm correction. | done |
+| 1.3 | Transfer comparison confounded by the trained visual projection | Added a `lora_r8_frozen_proj` configuration that trains adapters and classifier only. At 1e-4, freezing the projection reduces retention from 86.4% to 76.6% and raises encoder weight drift from 0.0042 to 0.0063; at 1e-5, it leaves drift and retention nearly unchanged while target accuracy falls from 78.8% to 22.6%. The projection provides an efficient subspace for task-specific adaptation, so LoRA's advantage is not an artifact of leaving it unchanged. | done |
 | 1.4 | Matched learning rate is not a sufficient control | Added a best-validation ("iso-accuracy") comparison that reports transfer at each method's own best operating point, and a decision-oriented selection analysis restricted to configurations within 2 points of the best target accuracy. | done |
 | 1.5 | No reference points bracketing the trade-off | Added linear probe (frozen encoder and projection) and last-block fine-tuning at multiple learning rates. | done |
 | 1.6 | The diagnostic claim was never tested | The paper's central analysis is now a head-to-head ranking of label-free signals (attention entropy magnitude, ERF, Gini, CKA, embedding drift, relative weight change) against target-task loss and accuracy, evaluated by Spearman correlation with CIFAR-100 retention, within-group correlation, an epoch-1 early-warning variant, and a selection-utility test. The test refuted the original hypothesis: CKA (0.960) and embedding drift (-0.919) lead, the attention magnitudes tie with a weight-norm measurement that needs no images (-0.836 against -0.837), and the signed entropy change collapses to +0.361. | done |
 | 1.7 | Attention measured on test-split images | The probe set is carved out of the training split and is disjoint from both the training subset and validation, and only its pixels are used. | done |
 | 2 | Statistical reporting: layer-averaged $\Delta H$ hides layer-12 behaviour; single-seed auxiliary claims; unreported ERF | The main table reports both the layer-averaged and the block-12 entropy change; the per-layer heatmap is generated from the new runs; ERF and Gini appear in the predictor table; single-seed auxiliary claims from the older exploratory suite are dropped. | done |
-| 3 | Thin related work | Bibliography rebuilt around the closest work: attention-entropy collapse, attention sinks, ViT registers, FLYP, task arithmetic, prompt learning, the projection norm, and the corruption benchmark. 11 entries before, 19 now after pruning citations that supported no claim, all in compact IEEE form to fit the page limit. | done |
+| 3 | Thin related work | Bibliography rebuilt around the closest work: attention-entropy collapse, attention sinks, ViT registers, robust fine-tuning, task arithmetic, low-rank adaptation, and the projection norm. The final 17 entries use compact IEEE form to fit the page limit. | done |
 | 4 | Two of five pages on side experiments and a narrated past bug | Sections V and VII of the previous version are removed. The adapter-aware evaluation point survives as two sentences in the method section, where it belongs. | done |
 | 5.4 | Only one transfer axis | Added CIFAR-10 zero-shot and the seven corrupted EuroSAT test splits. | done |
-| 6 | README deadline wrong | Corrected to August 20, 2026, with the source URL and the other venue facts. | done |
-| -- | Second backbone (ViT-B/16) | Six runs queued (EuroSAT, three learning rates). The analysis now records `model_name` per run and filters every primary statistic to ViT-B/32, with a separate digest section per additional backbone --- without that filter the second backbone would have been silently pooled into the core grid. | in progress |
-| -- | Causal claim | `study2/run_intervention.py` sweeps encoder interpolation after fine-tuning to test whether the predicted trade-off can be acted on. Inclusion depends on space. | open |
+| 6 | README deadline wrong | The README that carried the wrong date has since been removed from the package, so the venue facts now live here instead: Teen Research Symposium, up to 5 pages including references, IEEE CS proceedings format, single-blind, **paper deadline August 20, 2026**. | done |
+| -- | Second backbone (ViT-B/16) | Completed 18 EuroSAT runs across two methods, three learning rates, and three seeds. The analysis records `model_name`, filters every primary statistic to ViT-B/32, and reports the additional backbone separately to prevent accidental pooling. | done |
+| -- | Causal claim | Added a one-seed interpolation sweep for one validation-selected run per method. Reducing Full FT to $\alpha=0.5$ raises retention from 18.1% to 77.1% with target accuracy changing from 96.5% to 95.7%; the paper presents this as preliminary rather than causal evidence. | partial |
 
 ## Claims corrected against the completed data
 
@@ -41,7 +41,7 @@ were rewritten rather than kept:
   dH and |dH_12| survives. The paper states this rather than the earlier,
   stronger version.
 - The selection test is dataset-dependent: attention drift picks a 24.0%
-  retention run on EuroSAT where a random pick averages 46.4%, but on Pets every
+  retention run on EuroSAT where a random pick averages 41.2%, but on Pets every
   signal picks well. Stated as such, in the abstract and the conclusion too.
 
 ## Second independent review
@@ -75,8 +75,9 @@ confidence. Its findings, each reproduced independently before fixing:
   last-block also trains the output layer norm; Sec. III-A's R^49 does not
   describe the ViT-B/16 arm; Sec. III-D described the decision gate as target
   accuracy where the code uses validation.
-- The ViT-B/16 arm was single-seed with n = 3 per group, where |rho| = 1 arises
-  from 1 in 3 permutations under the null. Two further seeds are running.
+- The ViT-B/16 arm now has three seeds per cell (18 runs). At run level, signed
+  entropy drift is negative for Full FT ($\rho=-0.717$) and null for LoRA
+  ($\rho=0.000$), while CKA remains positive for both ($0.933$ and $0.983$).
 
 To pay for these in five pages, the corrupted-EuroSAT axis was cut from the paper
 (it remains in the repository). Shrinking the figures further would have put axis

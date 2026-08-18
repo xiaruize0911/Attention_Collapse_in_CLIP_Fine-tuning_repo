@@ -31,6 +31,14 @@ A.~Kumar, A.~Raghunathan, R.~Jones \emph{et~al.}, ``Fine-tuning can distort
   pretrained features and underperform out-of-distribution,'' in \emph{Proc.
   ICLR}, 2022.
 
+\bibitem{kornblith2019similarity}
+S.~Kornblith, M.~Norouzi, H.~Lee \emph{et~al.}, ``Similarity of neural network
+  representations revisited,'' in \emph{Proc. ICML}, 2019, pp. 3519--3529.
+
+\bibitem{hu2022lora}
+E.~J. Hu, Y.~Shen, P.~Wallis \emph{et~al.}, ``{LoRA}: Low-rank adaptation of
+  large language models,'' in \emph{Proc. ICLR}, 2022.
+
 \bibitem{wortsman2022robust}
 M.~Wortsman, G.~Ilharco, J.~W. Kim \emph{et~al.}, ``Robust fine-tuning of
   zero-shot models,'' in \emph{Proc. IEEE/CVF CVPR}, 2022, pp. 7959--7971.
@@ -43,10 +51,6 @@ G.~Ilharco, M.~T. Ribeiro, M.~Wortsman \emph{et~al.}, ``Editing models with
 S.~Goyal, A.~Kumar, S.~Garg \emph{et~al.}, ``Finetune like you pretrain:
   Improved finetuning of zero-shot vision models,'' in \emph{Proc. IEEE/CVF
   CVPR}, 2023, pp. 19\,338--19\,347.
-
-\bibitem{hu2022lora}
-E.~J. Hu, Y.~Shen, P.~Wallis \emph{et~al.}, ``{LoRA}: Low-rank adaptation of
-  large language models,'' in \emph{Proc. ICLR}, 2022.
 
 \bibitem{dosovitskiy2021image}
 A.~Dosovitskiy, L.~Beyer, A.~Kolesnikov \emph{et~al.}, ``An image is worth
@@ -73,10 +77,6 @@ G.~Xiao, Y.~Tian, B.~Chen \emph{et~al.}, ``Efficient streaming language models
 \bibitem{darcet2024vision}
 T.~Darcet, M.~Oquab, J.~Mairal, and P.~Bojanowski, ``Vision transformers need
   registers,'' in \emph{Proc. ICLR}, 2024.
-
-\bibitem{kornblith2019similarity}
-S.~Kornblith, M.~Norouzi, H.~Lee \emph{et~al.}, ``Similarity of neural network
-  representations revisited,'' in \emph{Proc. ICML}, 2019, pp. 3519--3529.
 
 \bibitem{yu2022predicting}
 Y.~Yu, Z.~Yang, A.~Wei \emph{et~al.}, ``Predicting out-of-distribution error

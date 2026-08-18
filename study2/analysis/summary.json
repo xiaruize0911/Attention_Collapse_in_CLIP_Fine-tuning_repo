@@ -1281,100 +1281,100 @@
   ],
   "backbone_check": {
     "openai/clip-vit-base-patch16": {
-      "n_runs": 12,
+      "n_runs": 18,
       "cells": [
         {
           "dataset": "eurosat",
           "method": "full_ft",
           "lr": 1e-05,
-          "n": 2,
-          "test_acc": 0.9687037037037036,
-          "delta_entropy_pct": -1.2755058920559024,
-          "cifar100_retention": 50.294561933534744,
-          "cka_mean": 0.8077475974957149,
-          "weight_drift_rel": 0.004241744878560411
+          "n": 3,
+          "test_acc": 0.9706172839506172,
+          "delta_entropy_pct": -0.9411199415202841,
+          "cifar100_retention": 52.578046324269884,
+          "cka_mean": 0.8076806788643202,
+          "weight_drift_rel": 0.004233092353307273
         },
         {
           "dataset": "eurosat",
           "method": "full_ft",
           "lr": 3e-05,
-          "n": 2,
-          "test_acc": 0.9740740740740741,
-          "delta_entropy_pct": 2.2614148158850043,
-          "cifar100_retention": 27.832326283987918,
-          "cka_mean": 0.772289012869199,
-          "weight_drift_rel": 0.00853763411677813
+          "n": 3,
+          "test_acc": 0.9753086419753086,
+          "delta_entropy_pct": 2.251032976207624,
+          "cifar100_retention": 29.184290030211482,
+          "cka_mean": 0.7716004484229617,
+          "weight_drift_rel": 0.008494265699189915
         },
         {
           "dataset": "eurosat",
           "method": "full_ft",
           "lr": 0.0001,
-          "n": 2,
-          "test_acc": 0.9568518518518518,
-          "delta_entropy_pct": 2.9999408390068845,
-          "cifar100_retention": 2.0845921450151055,
-          "cka_mean": 0.7378405978282293,
-          "weight_drift_rel": 0.02198778444702386
+          "n": 3,
+          "test_acc": 0.9565432098765432,
+          "delta_entropy_pct": 3.240771602095796,
+          "cifar100_retention": 2.2860020140986905,
+          "cka_mean": 0.7426532184084257,
+          "weight_drift_rel": 0.022011260013350766
         },
         {
           "dataset": "eurosat",
           "method": "lora_r8",
           "lr": 1e-05,
-          "n": 2,
-          "test_acc": 0.7948148148148149,
-          "delta_entropy_pct": 0.5326386717242478,
-          "cifar100_retention": 100.18882175226585,
-          "cka_mean": 0.9752991075317066,
-          "weight_drift_rel": 0.0010576891793698062
+          "n": 3,
+          "test_acc": 0.8014814814814816,
+          "delta_entropy_pct": 0.42892932505794357,
+          "cifar100_retention": 99.85397784491438,
+          "cka_mean": 0.9720834427409702,
+          "weight_drift_rel": 0.0010735635635536836
         },
         {
           "dataset": "eurosat",
           "method": "lora_r8",
           "lr": 3e-05,
-          "n": 2,
-          "test_acc": 0.9299999999999999,
-          "delta_entropy_pct": 0.7470121722553282,
-          "cifar100_retention": 98.38368580060424,
-          "cka_mean": 0.9313983395695686,
-          "weight_drift_rel": 0.002641617644742733
+          "n": 3,
+          "test_acc": 0.9320987654320988,
+          "delta_entropy_pct": 0.6414954529084012,
+          "cifar100_retention": 98.2074521651561,
+          "cka_mean": 0.9280967894527646,
+          "weight_drift_rel": 0.002639354704324749
         },
         {
           "dataset": "eurosat",
           "method": "lora_r8",
           "lr": 0.0001,
-          "n": 2,
-          "test_acc": 0.9538888888888889,
-          "delta_entropy_pct": 0.8837861551851678,
-          "cifar100_retention": 91.94864048338368,
-          "cka_mean": 0.9055747215946515,
-          "weight_drift_rel": 0.0040856224999035635
+          "n": 3,
+          "test_acc": 0.9549382716049383,
+          "delta_entropy_pct": 0.6849479913467199,
+          "cifar100_retention": 92.82477341389729,
+          "cka_mean": 0.9028035551309586,
+          "weight_drift_rel": 0.004158364790594987
         }
       ],
       "predictors": {
         "cka_mean": {
-          "spearman_rho": 0.9930069930069931,
-          "p_value": 1.3016730560634403e-10,
-          "n": 12
+          "spearman_rho": 0.9896800825593396,
+          "p_value": 6.262894222146963e-15,
+          "n": 18
         },
         "embedding_drift": {
-          "spearman_rho": -0.9790209790209792,
-          "p_value": 3.0898013985487064e-08,
-          "n": 12
+          "spearman_rho": -0.9525283797729618,
+          "p_value": 1.1169590316176146e-09,
+          "n": 18
         },
         "weight_drift_rel": {
-          "spearman_rho": -0.965034965034965,
-          "p_value": 3.88098529962746e-07,
-          "n": 12
+          "spearman_rho": -0.9649122807017543,
+          "p_value": 1.0347287642285863e-10,
+          "n": 18
         },
         "abs_delta_entropy_pct": {
-          "spearman_rho": -0.7552447552447553,
-          "p_value": 0.004508435484294224,
-          "n": 12
+          "spearman_rho": -0.717234262125903,
+          "p_value": 0.000807070648534508,
+          "n": 18
         },
         "delta_entropy_pct": {
-          "spearman_rho": -0.4545454545454546,
-          "p_value": 0.13765791634772945,
-          "n": 12
+          "spearman_rho": -0.4716202270381837,
+          "p_value": 0.04816897678955323,
+          "n": 18
         }
       }
     }
@@ -1383,45 +1383,45 @@
     {
       "model": "openai/clip-vit-base-patch16",
       "method": "full_ft",
-      "n": 6,
+      "n": 9,
       "n_rates": 3,
       "delta_entropy_pct": {
-        "rho": -0.7714285714285715,
-        "p_value": 0.07239650145772594
+        "rho": -0.7166666666666667,
+        "p_value": 0.029818035695845287
       },
       "cka_mean": {
-        "rho": 0.942857142857143,
-        "p_value": 0.004804664723032055
+        "rho": 0.9333333333333332,
+        "p_value": 0.00023589981215941676
       },
       "weight_drift_rel": {
-        "rho": -0.8857142857142858,
-        "p_value": 0.01884548104956266
+        "rho": -0.9166666666666666,
+        "p_value": 0.0005066190663052084
       },
       "embedding_drift": {
-        "rho": -0.8285714285714287,
-        "p_value": 0.04156268221574334
+        "rho": -0.7166666666666667,
+        "p_value": 0.029818035695845287
       }
     },
     {
       "model": "openai/clip-vit-base-patch16",
       "method": "lora_r8",
-      "n": 6,
+      "n": 9,
       "n_rates": 3,
       "delta_entropy_pct": {
-        "rho": -0.14285714285714288,
-        "p_value": 0.7871720116618075
+        "rho": 0.0,
+        "p_value": 1.0
       },
       "cka_mean": {
-        "rho": 1.0,
-        "p_value": 0.0
+        "rho": 0.9833333333333333,
+        "p_value": 1.9361963037459277e-06
       },
       "weight_drift_rel": {
-        "rho": -1.0,
-        "p_value": 0.0
+        "rho": -0.9833333333333333,
+        "p_value": 1.9361963037459277e-06
       },
       "embedding_drift": {
-        "rho": -1.0,
-        "p_value": 0.0
+        "rho": -0.9,
+        "p_value": 0.0009430623223403293
       }
     },
     {
@@ -2206,5 +2206,12 @@
       "damaged_mean": 0.7034392313045614,
       "healthy_mean": 0.960774018399177
     }
-  }
+  },
+  "transfer_axis_agreement": {
+    "spearman_rho": 0.9707151613124335,
+    "p_value": 3.887681753078811e-30,
+    "n": 48
+  },
+  "bootstrap_n_comparisons": 10,
+  "bootstrap_n_gaps_excluding_zero": 4
 }

@@ -1,0 +1,84 @@
+{
+  "run_id": "INT_eurosat_full_ft_lr1e-5_seed7",
+  "config": {
+    "dataset": "eurosat",
+    "method": "full_ft",
+    "lr": 1e-05,
+    "seed": 7,
+    "epochs": 6,
+    "batch_size": 32,
+    "alphas": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "transfer_images": 10000,
+    "device": "mps",
+    "model_name": "openai/clip-vit-base-patch32",
+    "splits": {
+      "train": 1600,
+      "val": 300,
+      "probe": 200,
+      "test": 2700
+    }
+  },
+  "selected_epoch": 3,
+  "best_val_acc": 0.97,
+  "pretrained_transfer_acc": 0.6133,
+  "transfer_images": 10000,
+  "sweep": [
+    {
+      "alpha": 0.0,
+      "test_acc": 0.09962962962962962,
+      "transfer_acc": 0.6133,
+      "delta_entropy_pct": 0.0,
+      "cka_mean": 1.0,
+      "embedding_drift": 0.0,
+      "weight_drift_rel": 0.0,
+      "transfer_retention": 100.0
+    },
+    {
+      "alpha": 0.25,
+      "test_acc": 0.7677777777777778,
+      "transfer_acc": 0.6066,
+      "delta_entropy_pct": 0.3314240435865058,
+      "cka_mean": 0.9468358556429545,
+      "embedding_drift": 0.07280313968658447,
+      "weight_drift_rel": 0.0009613762379131831,
+      "transfer_retention": 98.9075493233328
+    },
+    {
+      "alpha": 0.5,
+      "test_acc": 0.9422222222222222,
+      "transfer_acc": 0.5549,
+      "delta_entropy_pct": 0.6484269836277102,
+      "cka_mean": 0.8760523398717245,
+      "embedding_drift": 0.2796008586883545,
+      "weight_drift_rel": 0.0019227524788869282,
+      "transfer_retention": 90.47774335561715
+    },
+    {
+      "alpha": 0.75,
+      "test_acc": 0.9551851851851851,
+      "transfer_acc": 0.4411,
+      "delta_entropy_pct": 0.8387668680016436,
+      "cka_mean": 0.8285496011376381,
+      "embedding_drift": 0.5389087796211243,
+      "weight_drift_rel": 0.0028841287259065537,
+      "transfer_retention": 71.92238708625469
+    },
+    {
+      "alpha": 1.0,
+      "test_acc": 0.9537037037037037,
+      "transfer_acc": 0.2781,
+      "delta_entropy_pct": 0.9440077706789246,
+      "cka_mean": 0.7966043576598167,
+      "embedding_drift": 0.6918119192123413,
+      "weight_drift_rel": 0.0038455049337980025,
+      "transfer_retention": 45.34485569867928
+    }
+  ],
+  "runtime_seconds": 1977.1928508281708
+}
